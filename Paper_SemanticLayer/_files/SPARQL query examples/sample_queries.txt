@@ -1,0 +1,441 @@
+#Number of articles mentioning Rajiv Gandhi 
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Rajiv_Gandhi> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Rajiv Gandhi
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Rajiv_Gandhi> .
+ ?article dc:title ?title
+}
+
+#Entities most frequently co-mentioned with Rajiv Gandhi
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?e (count(DISTINCT ?article) as ?numOfArticles) WHERE {
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Rajiv_Gandhi> .
+  ?article oae:mentions ?entity2 .
+  ?entity2 oae:hasMatchedURI  ?e .
+} GROUP BY ?e ORDER BY DESC(?numOfArticles)
+
+
+
+#Articles mentioning Rajiv Gandhi and his role in Bofors Scandal
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity1 .
+ ?entity1 oae:hasMatchedURI <http://dbpedia.org/resource/Rajiv_Gandhi> .
+ ?article oae:mentions ?entity2 .
+ ?entity2 oae:hasMatchedURI <http://dbpedia.org/resource/Bofors_scandal> .
+ ?article dc:title ?title
+}
+
+#Articles mentioning Rajiv Gandhi and his role in Sri Lankan Civil War
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity1 .
+ ?entity1 oae:hasMatchedURI <http://dbpedia.org/resource/Rajiv_Gandhi> .
+ ?article oae:mentions ?entity2 .
+ ?entity2 oae:hasMatchedURI <http://dbpedia.org/resource/Sri_Lankan_Civil_War> .
+ ?article dc:title ?title
+}
+
+#Politicians mostly co-mentioned with Rajiv Gandhi
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?politicianURI (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+     ?politicianURI a yago:Politician110451263 }
+
+  ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Rajiv_Gandhi> .
+ 
+  ?article oae:mentions ?polit .
+  ?polit oae:hasMatchedURI ?politicianURI.
+
+} GROUP BY ?politicianURI ORDER BY DESC(?numOfArticles)
+
+#Assassinated Indian Politicians 
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?e (count(DISTINCT ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?e <http://purl.org/dc/terms/subject> dbc:Assassinated_Indian_politicians } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1997-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?e .
+} GROUP BY ?e ORDER BY DESC(?numOfArticles)
+
+#Articles about Saint Petersburg before its name was changed in 1991 (implicitly mentioned as same as Leningrad in DBPedia)
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1990-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Saint_Petersburg> .
+ ?article dc:title ?title
+}
+
+#Number of articles about German reunification 
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/German_reunification> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Entities most frequently co-mentioned with German reunification
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?e (count(DISTINCT ?article) as ?numOfArticles) WHERE {
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI <http://dbpedia.org/resource/German_reunification> .
+  ?article oae:mentions ?entity2 .
+  ?entity2 oae:hasMatchedURI  ?e .
+} GROUP BY ?e ORDER BY DESC(?numOfArticles)
+
+
+#Articles about German reunification and Berlin Wall
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1991-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/German_reunification> .
+ ?article oae:mentions ?entity2.
+ ?entity2 oae:hasMatchedURI <http://dbpedia.org/resource/Berlin_Wall> .
+ ?article dc:title ?title
+}LIMIT 20
+
+#Articles about Czech Republic (before disintegration from Czechoslovakia in 1993)
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1990-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Czech Republic> .
+ ?article dc:title ?title
+}
+
+#Entities most frequently co-mentioned with Czechoslovakia dissolution
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?e (count(DISTINCT ?article) as ?numOfArticles) WHERE {
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Dissolution_of_Czechoslovakia> .
+  ?article oae:mentions ?entity2 .
+  ?entity2 oae:hasMatchedURI  ?e .
+} GROUP BY ?e ORDER BY DESC(?numOfArticles)
+
+#Most significant events between 1989 and 1991
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+SELECT DISTINCT ?event (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?event a dbo:Event } 
+  
+  ?article oae:mentions ?eventName .
+  ?eventName oae:hasMatchedURI  ?event .
+
+  ?article dc:date ?date FILTER(?date >= "1989-01-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) .
+  ?article dc:title ?title } ORDER BY DESC(?numOfArticles)
+
+#Most discussed politicians between 1989 and 1991
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?politician (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?politician a yago:Politician110451263 } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?politician .
+} GROUP BY ?politician ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+#Most discussed Hollywood Films between 1989 and 1991
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?movie (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?movie dc:subject dbc:American_films } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?movie .
+} GROUP BY ?movie ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+#Most discussed Crime Thriller Films between 1989 and 1991
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?movie (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?movie dc:subject dbc:American_crime_thriller_films } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?movie .
+} GROUP BY ?movie ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+#Most discussed Crime Thriller Films or Horror Films between 1989 and 1991
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?movie (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    {?movie dc:subject dbc:American_crime_thriller_films}
+      UNION 
+    {?movie dc:subject dbc:American_horror_films}
+    }
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?movie .
+} GROUP BY ?movie ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+#Most discussed Crime Thriller Films or Horror Films between 1989 and 1991 shot in state of Illinois
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?movie (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    {?movie dc:subject dbc:American_crime_thriller_films;
+            dc:subject dbc:Films_set_in_Illinois.
+     
+     }
+      UNION 
+    {?movie dc:subject dbc:American_horror_films;
+            dc:subject dbc:Films_set_in_Illinois.
+    }
+    }
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?movie .
+} GROUP BY ?movie ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+#Crime Thriller Films or Horror Films between 1989 and 1991 shot in New York that won Academy Award
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?movie (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    {?movie dc:subject dbc:American_crime_thriller_films;
+            dc:subject dbc:Films_set_in_Virginia;
+            dc:subject dbc:Best_Picture_Academy_Award_winners.
+            dbo:abstract ?abstr FILTER(lang(?abstr)='de')
+     }
+      UNION 
+    {?movie dc:subject dbc:American_horror_films;
+            dc:subject dbc:Films_set_in_Virginia;
+            dc:subject dbc:Best_Picture_Academy_Award_winners.
+    }
+    }
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?movie .
+} GROUP BY ?movie ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+#Crime Thriller Films or Horror Films between 1989 and 1991 shot in New York featuring Serial Killers(with abstract in German)
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?movie ?abstr (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    {?movie dc:subject dbc:American_crime_thriller_films;
+            dc:subject dbc:Films_set_in_Virginia;
+            dc:subject dbc:Serial_killer_films;
+            dbo:abstract ?abstr FILTER(lang(?abstr)='de').
+     }
+      UNION 
+    {?movie dc:subject dbc:American_horror_films;
+            dc:subject dbc:Films_set_in_Virginia;
+            dc:subject dbc:Serial_killer_films;
+            dbo:abstract ?abstr FILTER(lang(?abstr)='de').
+    }
+    }
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1991-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?movie .
+} GROUP BY ?movie ?abstr ORDER BY DESC(?numOfArticles)
+LIMIT 20
+
+
+

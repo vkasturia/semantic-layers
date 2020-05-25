@@ -1,0 +1,14 @@
+#1	http://dbpedia.org/resource/Nelson_Mandela	1990-02-06	1990-02-15	day
+#1	http://dbpedia.org/resource/Fidel_Castro	1987-01-01	1987-04-30	day
+#1	http://dbpedia.org/resource/Gulf_War	1991-01-16	1991-01-18	day
+#1	http://dbpedia.org/resource/The_Beatles	1988-10-15	1988-12-31	day
+#1	http://dbpedia.org/resource/Nintendo	1991-07-01	1991-09-30	day
+#1	http://dbpedia.org/resource/United_Airlines	1990-10-01	1990-10-31	day
+#1	http://dbpedia.org/resource/Alzheimer's_disease	1991-01-01	1991-02-28	day
+#2	http://dbpedia.org/resource/George_H._W._Bush	http://dbpedia.org/resource/Mikhail_Gorbachev	1988-11-10	1989-12-31	month
+#3	http://dbpedia.org/resource/Nelson_Mandela	http://dbpedia.org/resource/F._W._de_Klerk	http://dbpedia.org/resource/Apartheid	1990-05-01	1990-08-10	day
+#2	http://dbpedia.org/resource/Rajiv_Gandhi	http://dbpedia.org/resource/Liberation_Tigers_of_Tamil_Eelam	1987-07-15	1991-07-31	month
+#2	http://dbpedia.org/resource/German_reunification	http://dbpedia.org/resource/Berlin_Wall	1989-11-01	1990-02-10	month
+#2	http://dbpedia.org/resource/Robert_De_Niro	http://dbpedia.org/resource/Sean_Connery	1987-01-01	1991-12-31	month
+#2	http://dbpedia.org/resource/Ronald_Reagan	http://dbpedia.org/resource/Ruhollah_Khomeini	1987-03-01	1987-06-30	month
+2	http://dbpedia.org/resource/Israel	http://dbpedia.org/resource/Hezbollah	1990-01-01	1990-05-31	month

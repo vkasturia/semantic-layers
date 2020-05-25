@@ -1,0 +1,22 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix oae: <http://www.ics.forth.gr/isl/oae/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix twitter: <http://www.openlinksw.com/schemas/twitter#> .
+
+_:tweet690937260771008513	rdf:type	twitter:Tweet ;
+	dc:date	"2016-01-23T17:40:54"^^xsd:dateTime ;
+	schema:text	"Yoenis Cespedes (@ynscspds) and the @Mets agreed on a 3-year deal worth $75M, source says http://nwsdy.li/1TfCbQZ pic.twitter.com/FhJvdjuUyc" ;
+	dc:creator	"Newsday" ;
+	twitter:favoriteCount	"7"^^xsd:integer ;
+	twitter:retweetCount	"7"^^xsd:integer .
+_:tweet690937260771008513	schema:mentions	_:entity690937260771008513_1 .
+_:entity690937260771008513_1	oae:detectedAs	"yoenis cespedes" ;
+	oae:confidence	"-1.0621437711711146"^^xsd:double ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Yoenis_C%C3%A9spedes> .
+_:tweet690937260771008513	schema:mentions	_:entity690937260771008513_2 .
+_:entity690937260771008513_2	oae:detectedAs	"the mets" ;
+	oae:confidence	"-3.6504187377761856"^^xsd:double ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/New_York_Mets> .
+	

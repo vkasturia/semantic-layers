@@ -1,0 +1,18 @@
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX tw: <http://www.openlinksw.com/schemas/twitter#>
+PREFIX schema: <http://schema.org/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX yago: <http://dbpedia.org/class/yago/>
+PREFIX owa: <http://l3s.de/owa#>
+
+SELECT DISTINCT ?journ (count(distinct ?page) as ?num) WHERE {
+ SERVICE <http://dbpedia.org/sparql> {
+   ?journ a yago:Journalist110224578 }
+ ?page a owa:ArchivedDocument ; dc:hasVersion ?version .
+ ?version schema:mentions ?entity .
+ ?entity oae:hasMatchedURI  ?journ .
+} GROUP BY ?journ ORDER BY DESC(?num)

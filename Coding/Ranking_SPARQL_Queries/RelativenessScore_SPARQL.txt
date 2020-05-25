@@ -1,0 +1,17 @@
+PREFIX oa: <http://www.w3.org/ns/oa#>                  
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX schema:  <http://schema.org/>
+SELECT DISTINCT ?article (xsd:double(?entitycount)/(xsd:double(?relentitycount)/xsd:double(?entitycount)) as ?relativenessscore)
+WHERE{
+		SELECT DISTINCT ?article  (count(?entityURI2) as ?relentitycount) (count(distinct ?entity) as ?entitycount)
+		WHERE {
+				?article dc:date ?date FILTER(?date >= xsd:date("1990-01-01") &&
+				?date <= xsd:date("1990-03-31")). 
+				?article schema:mentions ?entity .
+				?entity oae:hasMatchedURI <http://dbpedia.org/resource/Nelson_Mandela>.  
+				?article schema:mentions ?entity2 .
+				?entity2 oae:hasMatchedURI  ?entityURI2
+			  }
+	}

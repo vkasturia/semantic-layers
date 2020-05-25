@@ -1,0 +1,13 @@
+URL	TITLE	RELEVANT?	EXPLANATION
+http://query.nytimes.com/gst/fullpage.html?res=9504EFDC173FF93BA35754C0A962958260	Sports of The Times; Many Called, But Who&apos;ll Be Chosen?	NO	Article has incorrect mapping to Kevin Wright, an Australian Cricketer but in the article referring to some other person.		
+http://query.nytimes.com/gst/fullpage.html?res=9A03E1D71F3CF935A35754C0A962958260	In America; Dyson the Disdainful	NO	Article has incorrect mapping to Kevin Wright, an Australian Cricketer but in the article referring to Deputy Mayor of New York John Dyson by the same name.
+http://query.nytimes.com/gst/fullpage.html?res=9C05E7D7143FF933A25754C0A962958260	The Year in Albany: Results of the 217th Session of the Legislature	NO	Article has incorrect mapping to Kevin Wright, an Australian Cricketer but in the article referring to Deputy Mayor of New York John Dyson by the same name.
+http://query.nytimes.com/gst/fullpage.html?res=9A0DE5DF113FF936A25754C0A962958260	Nowadays, Workers Enjoy Dressing Down for the Job	NO	Article has incorrect mapping to Matthew Elliott, an Australian Cricketer but in the article referring to some other person.
+http://query.nytimes.com/gst/fullpage.html?res=9C01E7D8163EF93AA25754C0A962958260	Goodbye to a Bad Deal	NO	Article has incorrect mapping to Kevin Wright, an Australian Cricketer but in the article referring to Deputy Mayor of New York John Dyson by the same name.	
+http://query.nytimes.com/gst/fullpage.html?res=9A06E4D7153EF931A15754C0A962958260	Results Plus	YES	Article mentions Kepler Wessels	
+http://query.nytimes.com/gst/fullpage.html?res=9507E2D91530F931A2575BC0A962958260	TRANSACTIONS	NO	The article mentions transactions of American Baseball. Might contain baseball player incorrectly matched to Australian Cricket Player	
+http://query.nytimes.com/gst/fullpage.html?res=9C0DE5DD1339F936A1575BC0A962958260	Lac Minerals Agrees to Friendly Takeover	NO	Article is about some takeover for Canadian Company	
+http://query.nytimes.com/gst/fullpage.html?res=9D01EFDD1339F936A1575BC0A962958260	Video-Game Maker Making the Switch to PC Hardware	NO	Articles is about video game console makers Nintendo	
+http://query.nytimes.com/gst/fullpage.html?res=9800E6DB1738F932A3575AC0A962958260	Along the Andersonstown Road, Relief and Armed Patrols	NO	Article has incorrect mapping to Alan Connolly, an Australian Cricketer but in the article referring to some other person.	
+http://query.nytimes.com/gst/fullpage.html?res=9B05E0DC133BF935A2575AC0A962958260	Nexgen Begins Shipping a Chip Comparable to Pentium	NO	Article is about Microprocessor Chips	
+

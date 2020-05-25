@@ -1,0 +1,751 @@
+\documentclass[runningheads,a4paper]{libtex/llncs}
+
+\usepackage{url}
+\usepackage{color}
+\usepackage{paralist}
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{subfig}
+\usepackage[nomove]{cite}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+
+\input{libtex/procs}
+
+\newcommand{\q}[1]{\lq\lq{}{}#1\rq\rq{}{}}
+
+%%%% FOR NEW AND INTERNAL CONTENT USE: %%%%
+\newcommand{\new}[1]{{\color{red}#1}}
+\newcommand{\internal}[1]{
+  \footnote{
+          \fbox{{\tiny InternalNote:}}
+          {\tt\em
+                #1
+          }
+      }
+  }
+ \newcommand{\draft}[1]{\underline{{\bf (Draft)}}{\bf\em #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\urldef{\mails}\path|{fafalios, ...}@l3s.de|
+
+\begin{document}
+
+
+\title{Building and Querying a Semantic Layer for Web Archives }
+\titlerunning{Building and Querying a Semantic Layer for Web Archives}
+
+
+\author{Pavlos Fafalios \and ...}
+\authorrunning{ }
+
+\institute{L3S Research Center, Hannover, Germany\\
+\mails}
+
+\maketitle
+
+
+\begin{abstract}
+Web archiving is the process of collecting portions of the Web
+to ensure the information is preserved in an archive for future exploitation.
+Easy and meaningful access to Web Archives becomes more and more important
+especially for historian, sociologists and journalists whose work
+relies on easy access to such information sources.
+However, existing approaches on exploring Web Archives offer
+very limited query and browsing capabilities.
+In this paper, we elaborate on this problem and introduce an approach
+that allows exploring a Web archive in an advanced and meaningful way.
+We first propose a semantic (RDF/S) model that enables:
+i) {\em describing} metadata information about the contents of a Web Archive,
+ii) {\em annotating} the archives with useful semantic information (like entities and events), and
+iii) {\em publishing} all this data on the Web as Linked Data.
+We then analyze the process of constructing and maintaining a semantic repository (actually an RDF graph)
+of structured data about a Web Archive.
+Such a repository acts as a semantic layer over the actual sources,
+offers advanced query and browsing capabilities,
+and makes metadata information about Web archives
+directly exploitable by other systems and tools.
+Finally, we propose and evaluate ranking algorithms
+for identifying the important documents, entities/events, and time periods
+related to one or more entities or events.
+
+\comment{====
+    We test our approach by constructing a semantic layer for the
+    {\em X and Y collections (maybe New York Times and Another With Versions)} and
+    ... (how to evaluate it?) examine
+    the execution of a workload of queries selected by historians working with Web Archives.
+    FOR ADDING TECHNICAL DEPTH: We also propose an algorithm that exploits the semantic layer
+    for identifying...(e.g., important entities in a specific time period, or important time periods
+    of a specific entity, ...).
+    (MAYBE) Application over a semantic layer that allows entity-based and time-aware
+    browsing of a Web Archive.
+====}
+\end{abstract}
+
+
+
+\section{Introduction}
+
+Significant parts of our cultural heritage are produced and consumed on the Web.
+However, the ephemeral nature of the Web makes most if its information
+unavailable and lost after a short period of time.
+Aiming to avoid losing important historical information,
+a Web archive captures portions of the Web to ensure the information
+is preserved for future researchers, historians, and interested parties in general.
+Web archives are created by regularly crawling (parts of) the Web
+to create snapshots of Web sites at different points in time.
+Such collections are valuable to explore the past of the Web.
+As an example, news archives are of immense value to
+historians and journalists,
+and thus easy access to such collections
+is crucial for them.
+
+Despite the increasing number of Web archives worldwide,
+the absence of efficient and meaningful exploration methods
+still remains a major hurdle in the
+way of turning Web archives into a usable source of information.
+The unique temporal dimension of Web archives
+as well as their (usually) huge size,
+the high redundancy of their contents
+and the imbalance of revisions due to selective crawling strategies,
+make their effective exploration a challenging task.
+The main functionality offered by existing systems is to find
+older versions of a specific Web page
+while more recent approaches allow users to search using keywords (like in classic Web searching)
+and maybe filter the retrieved results by
+selecting some metadata values (like time period and content type).
+However, for a bit more complex information needs, keyword-based search
+leads to ineffective interactions and poor results.
+This is true especially for {\em exploratory search} needs
+where searchers often
+are unfamiliar with the domain of their goals, unsure about the ways to achieve their
+goals, and/or need to learn about the topic in order to understand how to
+achieve their goals \cite{marchionini2006exploratory}.
+%RECENT APPROACHES TRY TO INCORPORATE THE TIME, DIVERSITY AND ENTITY ASPECT FOR BETTER RETRIEVAL RESULTS
+
+An important characteristic of Web archives that limits their potential exploitation
+is the fact that they have no \q{semantics} in their current form.
+We do not know for what exactly an archived document talks about
+and we cannot semantically associate different documents
+especially if there are not links among them.
+Thereby, it is almost impossible to find an interesting part of a Web archive
+related to some entities and events
+unless we download and parse all the archived documents.
+This makes also very difficult to integrate information (ideally at real-time)
+by exploiting data from both Web archives
+and external knowledge bases,
+like data from the emerging Linked Open Data (LOD) cloud \cite{heath2011linked}.
+
+%HIGHLIGHT THE IMPORTANCE OF ENTITIES, EVENTS, AND TIME IN WEB ARCHIVES
+%Searchers (e.g. a journalist, or a historian) are often looking information
+%about an entity or an event from the past.
+
+To cope with the aforementioned problems,
+we propose building a semantic profile/layer that describes information about
+the contents of the archived documents.
+Specifically, we base upon Semantic Web technologies and
+propose an RDF/S vocabulary that allows:
+a) describing useful metadata information about each archived document,
+b) annotating each document with entities and events detected in its textual contents,
+c) enriching the detected entities/events\footnote{From now on,
+    when we say \q{entities} we refer to both entities and events.} with more semantic information
+   (like properties and related entities coming from the LOD), and
+d) publishing all this data on the Web in the standard RDF format
+   (making thereby all this information directly accessible and exploitable by other systems and tools).
+Then, we can use that model for creating and maintaining a semantic repository
+of structured data about a Web archive.
+We should highlight that the actual contents of the Web archive are not
+stored in the repository.
+The proposed approach only stores metadata information
+that allows identifying interesting documents and information based on
+several aspects (time, entity, category of entities, etc.).
+Thus, such a repository acts as a semantic layer over the archived documents.
+Now, by exploiting the expressive power of SPARQL,
+one can run advanced queries over the contents of a Web archive (actually over the semantic layer)
+but also integrate information from external semantic knowledge bases (like DBpedia \cite{lehmann2015dbpedia}).
+For example, in case we have constructed such a semantic layer for a {\em news archive},
+we can ask for
+\q{{\em articles of 2000 discussing about republican politicians born in Germany}},
+and also for each such politician to get a {\em photo} and a {\em description in Italian} from DBpedia.
+
+Nevertheless, even a very specialized SPARQL query may return hundreds,
+thousands or even millions of results.
+Thereby, there is also the need to {\em rank} the returned results.
+However, a characteristic of these results is that
+they equally and perfectly match the submitted SPARQL query.
+This makes the identification of the \q{more important} results a challenging issue.
+In this paper, we focus on the following three problems:
+\begin{itemize}
+\item on how to rank {\em documents} related to a time period and one or more entities
+\item on how to rank {\em entities} related to a time period and one or more other entities
+\item on how to rank {\em time periods} related to one or more entities
+\end{itemize}
+By taking into account the temporal characteristics of a web archive as well as
+the associations among documents, entities and time periods in the semantic layer,
+we propose and evaluate algorithms which cope with the above problems.
+
+The rest of this paper is organized as follows: (DRAFT)
+Section \ref{sec:motivAndRW} motivates our work and presents related literature.
+Section \ref{sec:semanticmodel} introduces a semantic model for profiling Web archives.
+Section \ref{sec:constrSemLayer} details the construction of the semantic layer.
+Section \ref{sec:queryingSemLayer} presents algorithms for ranking documents, entities, and time periods.
+Section X evaluates...
+Finally, Section \ref{sec:concl} concludes the paper and presents interesting directions
+for future research.
+
+
+\section{Motivation and Related Works (DRAFT)}
+\label{sec:motivAndRW}
+
+In this section, we first (in \S \ref{motivation})
+motivate our work by discussing some information needs related to web archives,
+and then (in \S \ref{rw}) we review related works.
+
+\subsection{Motivating questions (DRAFT)}
+\label{motivation}
+
+\begin{itemize}
+\item   How to explore documents about entities from the past in an advanced and meaningful way?
+        For example: {\em \q{find articles of a specific year discussing about a specific category of
+        entities, or about entities sharing some characteristics}.}
+\item   How to explore Web Archives by also integrating
+        semantic information already available on the Web?
+        For example: {\em \q{find articles from a specific time period, discussing about
+        entities sharing some properties, and for each such entity
+        show some specific characteristics (e.g., an image and a description in a specific language)}.}
+        Such information may be available in semantic knowledge bases like DBpedia.
+\item   How to infer new information?
+        For example:
+        {\em \q{find news articles of a specific time period related to a specific domain}}
+        (if an article contains many entities of type drug and disease, it may be related to the
+        medical domain), or:
+        {\em \q{find the more popular/discussed Greek politician in news articles of 2009}}
+        (we can exploit the document frequency of an entity).
+\item   How to facilitate exploitation of Web archives by other systems and tools?
+        How to avoid downloading and parsing the entire Web archive for
+        identifying an interesting part of it related both to a time period
+        and to some entities. For example, one may be interested only
+        in {\em \q{articles of 2000-2004 discussing about Greek politicians}.}
+\item   How to expose semantic information about Web Archives in a standard and machine-readable
+        format, that will be always available on the Web and accessible by other services,
+        and that will allow for easy information integration by exploiting also external sources?
+\item   How to identify the important (top-K) documents related to both a time period and one or more
+        entities?
+\item   How to identify the important (top-K) entities related to both a time period and one or more other
+        entities?
+\item   How to identify the important (top-K) time periods related to one or more entities?
+\end{itemize}
+
+
+
+
+
+\subsection{Related Work (DRAFT)}
+\label{rw}
+
+\subsection*{Profiling Web Archives}
+
+The proposed semantic layer can be considered a way to {\em profile}
+the contents of a Web archive.
+The work in \cite{alsum2014profiling} exploits the age of the archived copies
+and their supported domains,
+in order to avoid sending queries to archives that likely not hold the archived page.
+In \cite{alam2015web} the authors examine the size and precision
+trade-offs in different policies for producing profiles of Web archives
+(ranging between using full URIs and only top-level domains).
+The objective of both works is to improve the effectiveness of
+query routing strategies in distributed archive search.
+However, such profiling approaches do not express semantic information about the
+contents of a Web archive and thus cannot be used
+for advanced (entity- and event-based) browsing and exploration.
+
+
+
+
+\subsection*{Exploring Web Archives}
+\begin{itemize}
+\item   The Wayback Machine\footnote{\url{https://archive.org/web/}}
+\item   Memento Project\footnote{\url{http://timetravel.mementoweb.org}}
+\item   Archive-IT\footnote{\url{https://archive-it.org}}
+\item   Tempas (Tempas: Temporal Archive Search Based on Tags\cite{holzmann2016tempas})
+        (temporally searching a Web archive by indexing tags and time)
+\item   How to Search the Internet Archive Without Indexing It \cite{kanhabua2016search}
+        (entity-oriented search system to support retrieval and analysis processes on web archives,
+        using  Bing for searching the current Web to retrieve a ranked list of results, and linking
+        the results to the WayBack Machine)
+\item   HistDiv \cite{singh2016history} (Historical Query Intent as a search result diversification task)
+\item   Can We Find Documents in Web Archives without Knowing their Contents? \cite{vo2016can}
+        (how to use other information than the document contents to help finding relevant and
+        important documents with adequate performance, while avoiding the high cost of
+        fully indexing the Web archive. Sources: the URL of the document, the header
+        of the archive files (.arc and .warc formats), and the hyperlinks)
+\item   Time Explorer: Searching through time in the New York Times \cite{matthews2010searching}
+        (search engine that allows users to see how topics have evolved over time and how
+        they might continue to evolve in the future)
+\end{itemize}
+
+
+\subsection*{Ranking in Knowledge Graphs}
+
+Ranking approaches on structured data typically adapt the analysis methods for unstructured data to structured data. Also, semantic relationships that exist in Structured data are exploited for ranking the results of structured queries.
+\\\\
+Singh et al.\cite{singh2016history} designed a system to model the need of Historians for documents related to the history of an Entity or an Event. The system deals with the ranking of such documents from the NYT Archives by retrieving important aspects from important points in time. The notion of important aspects is based on the association of groups of entities in the articles and the probability distribution of these entities in a time interval. The system builds a Time-Aspect Space treating time diversity and topical diversity as separate and relies upon prior probabilities to return user important NYT articles.
+\\\\
+Dali et al.\cite{dali2012query} proposed a query independent LTR approach for RDF entity search. The query independent features extracted by them are can be categorized as: features extracted from RDF graph, search engine based features and centrality-based features which include PageRank and HITS. These features are represented as vectors and the ranking score is a summation of the weights of the feature vectors. This total score is then compared to the target features to estimate the closeness between extracted features and target features and derive a ranking score based on this closeness. The target features act as a ground truth and these are obtained from access logs. The authors classify the results using an SVM with a soft margin approach.
+\\\\
+Latifi and Nematbakhsh \cite{latifi2014query} proposed the same approach as Dali et al.\cite{dali2012query} as outlined in the previous section. They claim that the centrality-based features used by Dali et al. do not use the semantics of links and suggest the use of another query independent feature called Information Content(IC) which they define as the information associated with a given entity. They say that although the features obtained from RDF graphs in previous system provide a very good ranking, however, they take a huge amount of time to extract when compared to the use of Information Content(IC) as a feature for ranking.
+\\\\
+Elbassuoni et al.\cite{elbassuoni2009language} designed a system that allowed for keyword based searches and approximate matches for results of SPARQL queries. The idea was that it may be desirable to allow users to narrow search by specifying certain keywords in queries and getting approximate matches when less or no exact matches exist. The authors performed query dependent ranking using Language Model(LM). The LM is used to construct query and result graph and then ranking is performed using Kullback-Liebler(KL) Divergence. A critical features in such ranking is the witness count. The authors considered witness count using keywords while finding keyword matches. Query relaxation was permitted to allow approximate matches with assignment of less weight to relaxed queries.
+\\\\
+OntologyRank algorithm mentioned in Ding et. al.\cite{ding2005finding} is the approach used by the authors in their Semantic web search engine \emph{Swoogle}. This approach identifies Semantic Web Ontologies(SWOs) in Semantic Web Documents(SWDs) and is further able to rank terms in an Ontology based on their popularity. It is also able to list the most popular properties for a class by ranking class-property bonds which is useful for users desiring maximum data visibility. OntologyRank calculates relevance of SWDs taking into account the following relationships: \emph{imports(A,B)}, \emph{uses-term(A,B)}, \emph{extends(A,B)} and \emph{asserts(A,B)} where A and B are SWDs. The ranking score is computed based on these relationships and the algorithm is PageRank like but boosted to identify ontologies. Thus, the authors show that their variation of PageRank helps their Swoogle search engine detect ontologies better than Google.
+\\\\
+Rocha et al.\cite{rocha2004hybrid} proposed a hybrid approach combining classical search engine techniques with spread activation techniques. The motivation behind this approach was that usually in systems supporting keyword searches only the results where the keyword actually occurs get returned to the user because of the use of string comparison techniques. Due to this, results which are conceptually related to the results but where the keyword does not occur are not returned. Spread activation techniques work as a concept explorer identifying concepts which are closely related to the initial set of activated concepts.
+\\\\
+Fafalios and Tzitzikas\cite{fafalios2014post} developed an approach that integrates classical Web with the Web of Linked Data. For the top-100 results BING search engine for keyword search, the system first detects the entities in the snippets of the results. Then for the top-k entities derived from a PageRank like algorithm, using the information available on the LOD tries to show the user how the top detected entities are related. The semantic graphs for the entities using which subsequent identification of the top relationships among entities can be performed at query time. Hence, this approach is useful as it provides users with semantic context and thus help users save time in exploratory search scenarios.
+\\\\
+ReConRank proposed in Hogan et al.\cite{hogan2006reconrank}, is a PageRank based algorithm that performs dynamic ranking and only analyses the result data that matches the user query. An advantage of this approach is that since the ranking is not static, the returned results would be more relevant to the user queries. Disadvantages of this approach are that the extraction of topical graph is a challenge. Since dynamic ranking is performed query time is a challenge as well. The change made to the PageRank algorithm is that the ratio of all links received is considered as in-links in this algorithm. Because of this change, the number of iterations reduce to one-third. Weightings can be manipulated as well. It can be tuned according to the user. The goodness of ReConRank relies on the relationships between resources and its provenance.
+\\\\
+Graves et al.\cite{graves2008method} proposed NOC-ORDER to rank nodes in an RDF Graph. NOC- ORDER ranks nodes based on centrality measure. The approach can be understood by an example of considering a traveller with a limited amount of money wanting to explore maximum number of places in a city but having familiarity with the city. Naturally, the traveller would like to be in a central location in a city which connects to the maximum number of places with low cost to reach each of them. The algorithm tries to rank nodes in a graph based on this same idea. It checks the connectedness and distance of each node to the other nodes. The algorithm is an adaptation of All-Pairs Shortest Path algorithm for RDF Graph.
+
+
+
+
+\section{The Open Web Archive Data Model}
+\label{sec:semanticmodel}
+
+In this section, we introduce an RDF/S data model
+for describing metadata and annotation information about the documents in a Web Archive.
+
+\begin{figure}[htbp]
+\vspace{-1mm}
+\centerline{\fbox{\epsfig{figure=figures/owa.eps,width=12.2cm}}}
+\vspace{-1mm}
+\caption{Open Web Archive Data Model.}
+\label{fig:owa}
+\vspace{-3mm}
+\end{figure}
+
+Figure \ref{fig:owa} depicts the proposed model, which we call \q{Open Web Archive Data Model}
+(its specification is available at \url{http://l3s.de/owa(?)}).
+We have defined 2 new classes and 3 new properties,
+while we exploit elements of 4 other models.
+
+The class {\tt owa:ArchivedURL} represents a URL that has been archived.
+An archived URL may be linked or may not be linked with some versions
+(i.e., instances of {\tt owa:VersionedURL}).
+For example, an archived article from the
+New York Times corpus \cite{sandhaus2008new} do not contains versions
+(since its content never changes).
+On the contrary,
+Internet Archive\footnote{\url{https://archive.org/web/}}
+contains versions of billions of web sites.
+In case the archived URL contains versions,
+it can be also associated with some metadata information
+(like date of first capture, date of last capture, total number of captures, etc.).
+%
+Both an archived and a versioned URL
+are associated with three kinds of elements:
+i) with some metadata information like date of publication/capture,
+title of Web page, and format (mime type),
+ii) with other archived or not URLs (i.e., links to other pages), and
+iii) with a set of entity annotations.
+%
+For describing some of the metadata we exploit terms of the
+Dublin Core Metadata Initiative\footnote{\url{http://dublincore.org/documents/2012/06/14/dcmi-terms/}}.
+For describing an annotation, we exploit
+the Open Annotation Data Model\footnote{http://www.openannotation.org/spec/core/} \cite{sanderson2013open}
+and the Open Named Entity Extraction (NEE) Model\footnote{\url{http://www.ics.forth.gr/isl/oae/}} \cite{fafalios2015ijait}.
+The Open Annotation Data Model specifies an RDF-based framework for creating associations (annotations)
+between related resources, while the Open NEE Model is an extension of the Open Annotation Data Model
+that allows describing the result of an entity extraction process.
+%
+An annotation has a {\em target}, which in our case is an archived or versioned URL, and
+a {\em body} which is an entity or event.
+An entity/event can be associated with information like
+its name, a confidence score, its positions in the document, and a resource (URI).
+The URI allows retrieving more information about the entity
+like properties and related entities from the LOD.
+
+Figure \ref{fig:owa_instNonVers} depicts an example of an archived article (with no versions).
+We can see some of its metadata values (date, format, title),
+its references to other URLs, and its annotations.
+We notice that the entity name \q{Federer} was identified twice in that document.
+We can also see that this entity has been linked with the DBpedia resource
+corresponding to the tennis player Roger Federer.
+By accessing DBpedia, we can now retrieve more information about that entity
+like its birth date and place, an image, a description in a specific language, etc.
+
+\begin{figure}[htbp]
+\vspace{-3mm}
+\centerline{\fbox{\epsfig{figure=figures/owa_inst2.eps,width=12.2cm}}}
+\vspace{-2mm}
+\caption{Describing an archived article (non-versioned) using the Open Web Archive Data Model.}
+\label{fig:owa_instNonVers}
+\vspace{-3mm}
+\end{figure}
+
+Figure \ref{fig:owa_inst} depicts an example of an archived web page that contains versions.
+Now, each version has its own metadata information, annotations and references to other URLs.
+We notice that the event \q{Euro 2008} was identified in the first version of the archived URL
+and was linked to the DBpedia resource corresponding to the soccer tournament UEFA Euro 2008.
+The archived URL is also associated with some metadata information related to its versions.
+Specifically we can see the date of its first capture, the date of its last capture and
+that the total number of captures is 17.
+In addition, by exploiting the {\tt same-as} property of OWL Web ontology language \cite{bechhofer2009owl},
+we can also define that a specific version of a URL is exactly the same as another version
+(e.g., versions 2 and 3 in our example).
+Thereby, we can avoid storing exactly the same data for two identical versions
+(as we stated in the introduction, redundancy is a common problem in Web archives).
+
+\begin{figure}[htbp]
+\vspace{-2mm}
+\centerline{\fbox{\epsfig{figure=figures/owa_inst.eps,width=12.3cm}}}
+\vspace{-2mm}
+\caption{Describing a versioned web archive using the Open Web Archive Data Model.}
+\label{fig:owa_inst}
+\end{figure}
+
+
+Figure \ref{fig:queryExample1} shows an example of a SPARQL query
+that can be answered by a semantic repository of such structure data.
+The query asks for articles of 2005 (lines 2-5)
+discussing about German politicians born in West Germany (lines 6-9).
+The query also exploits the federated features of SPARQL 1.1 \cite{prud2013sparql}
+and accesses DBpedia's SPARQL endpoint for retrieving the
+birth place and the name of the matched German politicians (lines 10-12).
+
+
+\begin{figure}[th]
+%\vspace{-4mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT ?arc ?date ?title ?entityName WHERE {
+  ?arc  a  owa:ArchivedURL ;
+        dc:title  ?title .
+        dc:date  ?date FILTER (?date >= "2005-01-01"^^xsd:dateTime &&
+                               ?date <= "2005-12-31"^^xsd:dateTime) .
+  ?annot  oe:hasTarget  ?arc ;
+          oe:hasBody  ?entity .
+  ?entity  oae:hasMatchedURI  ?entityURI .
+  ?entityURI  dct:subject  dbc:German_politicians .
+  SERVICE <http://dbpedia.org/sparql> {
+    ?entityURI  dbo:birthPlace  dbr:West_Germany .
+    ?entityURI  foaf:name  ?entityName  FILTER(lang(?entityName)="en") } }
+\end{Verbatim}
+\vspace{-4.5mm}
+\caption{SPARQL query for retrieving articles of 2005 discussing
+about German politicians born in West Germany.}
+\label{fig:queryExample1}
+%\vspace{-4mm}
+\end{figure}
+
+
+We should also stress here that this model is highly extensible.
+For instance, we can exploit the PROV data model \cite{moreau2013prov}
+and also store provenance-related information
+(e.g., which tool was used for crawling the documents or for annotating them, etc.).
+Likewise, one may exploit the VoID Vocabulary \cite{alexander2011describing}
+and express metadata information for the derived RDF dataset
+(e.g., access and structural metadata, links between datasets, etc.).
+
+
+
+
+\section{Constructing a Semantic Layer (DRAFT)}
+\label{sec:constrSemLayer}
+(to describe the process and some decisions made)
+Misc:
+\begin{itemize}
+\item   Use blank nodes for instances of {\tt oa:Annotation}, {\tt oae:Entity}, and {\tt dc:Event},
+        use URL given by the archive provider for instances of {\tt owa:VersionedURL}.
+\item   Include same-as links between archived documents with the same checksum
+\item   Enrichment by including triples from other KBs?
+\item   Easy update, just add triples to the repository (actually nodes and edges in the RDF graph)
+\end{itemize}
+
+
+\subsection{A Semantic Layer for the New York Times corpus}
+
+Good dataset to experiment with:
+
+\begin{itemize}
+\item   (nice topic) Articles of New York Times\footnote{\url{https://catalog.ldc.upenn.edu/LDC2008T19}}
+\item   (not very small / not very big) 1.8 million articles published by the New York Times between January 1, 1987 and June 19, 2007
+\item   (we already have entities) Entities extracted using AIDA
+\end{itemize}
+
+
+
+\pagebreak
+\section{Querying the Semantic Layer}
+\label{sec:queryingSemLayer}
+
+In this section, we formalize the problem of ranking documents returned by
+structured (SPARQL) queries and define a ranking model.
+First we define the required notions and notations.
+
+\subsection{Notions and Notations}
+
+{\bf Web Entities, Concepts and Events}.
+In our problem, a {\em web entity} is anything with a distinct, separate and meaningful existence
+that also has a \q{web identity} expressed through a unique URI (e.g., a Wikipedia/DBpedia URI).
+This does not only include persons, locations, organizations, etc., but also
+concepts (e.g., {\em democracy}) and
+events (e.g., {\em US 2016 presidential election}).\footnote{From now on,
+when we say {\em entity} we refer to {\em entity}, {\em concept}, or {\em event}.}
+Let $E$ be a finite set of web entities, e.g., all Wikipedia entities, concepts and events.
+Each entity $e \in E$ is associated with a unique URI, while several labels/names
+can be used to refer to this entity.
+For example, for the entity {\em Barack Obama} (\url{https://en.wikipedia.org/wiki/Barack_Obama}),
+possible names are \q{Barack Obama}, \q{Obama}, \q{former President Obama}, etc.
+%For an entity URI $e \in E_\mathcal{W}$, let $names(e)$ be the different names (surface forms)
+%that can be used to refer to this entity.
+%For instance, for the entity \q{Barack Obama} (\url{https://en.wikipedia.org/wiki/Barack_Obama}),
+%possible names are \q{Barack Obama}, \q{Obama}, \q{former President Obama}, etc.
+
+\vspace{2mm} \noindent
+{\bf Documents and extracted entities}.
+Let $D$ be a set of documents, e.g., a set of news articles.
+For a document $d \in D$, let $publ(d)$ denote its publication date.
+Let also  $ents(d) \subseteq E$ be all entities mentioned in $d$.
+%(actually the URIs of these entities\footnote{From now on, when we say \q{entity} we mean \q{web entity URI}.}).
+Inversely, for an entity $e \in E$, let $docs(e) \subseteq D$
+be all documents that mention $e$, i.e., $docs(e) = \{d \in D ~|~ e \in ents(d)\}$.
+For an entity $e \in E$ and a document $d \in D$,
+let $count(e, d)$ be the number of occurrences of $e$ in $d$.
+Now, let $ef(e, d) = \frac{count(e, d)}{\sum_{e' \in ents(d)}{count(e', d)}}$ be the
+(normalized) frequency of $e$ in $d$.
+Finally, let $E_D$ be all entities mentioned in documents of $D$,
+i.e., $E_D = \cup_{d \in D}{ents(d)}$.
+
+\vspace{2mm} \noindent
+{\bf Time periods}.
+Let $\Delta$ be a fixed time period (e.g., {\em day}, {\em week} or {\em month}).
+Based on a time period $\Delta$,
+let $T = (t_0, t_1, \dots, t_n)$ be an ordered list of consecutive time points
+covering the publication dates of all documents in $D$.
+Note that $t_i - t_{i-1} = \Delta$, for each $i \geq 1$.
+Now, let $\delta_i = [t_i, t_{i+1})$ be the time period of size $\Delta$ between two consecutive time points.
+We consider that a document $d$ is published in the period $\delta_i$, if $t_i \leq publ(d) < t_{i+1}$.
+For a document $d \in D$, let $timep(d)$ be the time period in which $d$ was published.
+Now, let $P$ denote the set of distinct time periods of all documents in $D$, i.e., $P = \cup_{d \in D}{\{timep(d)\}}$.
+For a time period $p \in P$, let $docs(p) \subseteq D$ be the set of all
+documents published within $p$, i.e., $docs(p) = \{d \in D ~|~ timep(d) = p\}$.
+
+\subsection{Problem Definition}
+For a given structured (SPARQL) query $Q$ requesting documents
+published within a set of {\em time periods} $P_Q \subseteq P$ and
+related to one or more {\em Entities of Interest (EoI)} $E_Q \subseteq E_D$
+with logical {\tt AND} (mentioning all entities) or {\tt OR} (mentioning at least one entity) semantics,
+the problem is how to rank the documents $D_Q \subseteq D$ that (equally) match the query $Q$.
+
+Figure \ref{fig:modelingExampleQ1} shows an example SPARQL query
+requesting documents published in 1990
+discussing about the entities {\em Nelson Mandela} %(\url{http://dbpedia.org/resource/Nelson_Mandela})
+and {\em Frederik Willem de Klerk} %(\url{http://dbpedia.org/resource/F._W._de_Klerk}).
+({\tt AND} semantics),
+while the query in Figure \ref{fig:modelingExampleQ2} requests
+articles of 1990 discussing about {\em state presidents of South Africa}
+({\tt OR} semantics).
+
+
+\begin{figure}[th]
+\vspace{-4mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?article WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date) .
+  ?article oae:mentions ?entity1, ?entity2 .
+  ?entity1 oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> .
+  ?entity2 oae:hasMatchedURI  <http://dbpedia.org/resource/F._W._de_Klerk> }
+\end{Verbatim}
+\vspace{-5.5mm}
+\caption{SPARQL query for retrieving articles of 1990 discussing
+about {\em Nelson Mandela} and {\em Frederik Willem de Klerk}.}
+\label{fig:modelingExampleQ1}
+
+%\vspace{-4mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?article WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?p dc:subject <http://dbpedia.org/resource/Category:State_Presidents_of_South_Africa> }
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date)
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?p }
+\end{Verbatim}
+\vspace{-5.5mm}
+\caption{SPARQL query for retrieving articles of 1990 discussing
+about {\em state presidents of South Africa}.}
+\label{fig:modelingExampleQ2}
+\vspace{-4mm}
+\end{figure}
+
+
+\subsection{Modeling}
+We first focus on {\tt AND} semantics (\q{$\wedge$}),
+i.e. each document in $D_Q$ mentions all EoI,
+and then on {\tt OR} semantics (\q{$\wedge$}),
+i.e. each document in $D_Q$ mentions at least one EoI.
+
+\vspace{2mm}
+\noindent
+{\bf Ranking documents that mention \underline{all} EoI ({\tt\em AND} semantics)}
+
+\vspace{2mm}
+\noindent
+The idea is to promote documents that:
+i) mention the EoI many times in their contents;
+ii) have been published in important (for the EoI) time (sub)periods; and
+iii) mention many other entities that co-occur frequently with the EoI in important time (sub)periods.
+We start by computing an {\em importance score} for the time (sub)periods
+and the related entities.
+
+
+\vspace{2mm}
+\noindent
+{\em Ranking of time (sub)periods}.
+We consider that a time period $p \in P_Q$ is important
+for the entities in $E_Q$, if there is a relatively big number of documents in $D_Q$
+discussing about these entities during $p$.
+For example, a big number of articles about {\em Nelson Mandela}
+was published the period 11-13 of February 1990 because
+in February 11 {\em Nelson Mandela} was released from prison.
+Thus, articles published during that period should be promoted since
+they are probably related to this important event of {\em Nelson Mandela}'s life.
+
+We define the following importance score of a time period $p$:
+\begin{equation}
+ScoreP_\wedge(p) = \frac{|docs(p) \cap D_Q|}{|D_Q|}
+\end{equation}
+
+
+\vspace{2mm}
+\noindent
+{\em Ranking of related entities}.
+The objective is to promote entities that are co-mentioned frequently with the EoI
+in important time (sub)periods.
+For example, {\em Apartheid} was an important concept
+related to {\em Nelson Mandela} %and {\em Frederik Willem de Klerk}
+during 1990,
+thus articles discussing for both {\em Apartheid} and {\em Nelson Mandela} %, and {\em Frederik Willem de Klerk}
+should be promoted.
+However, there may be also some general entities (e.g., {\em South Africa} in our example)
+that co-occur with the EoI in almost all documents in $D_R$ (independently of time subperiods).
+Thus, we should also avoid over-emphasizing documents mentioning such \q{common} entities
+(in a similar way to the computation of {\em tf-idf} in IR).
+
+For a {\em related entity} $e \in E_D \setminus E_Q$
+we consider the following importance score:
+
+\begin{equation}
+\small
+ScoreE_\wedge(e) = idf(e) \cdot \sum_{p \in P_Q}{(ScoreP_\wedge(p) \cdot \frac{|docs(p) \cap docs(e)|}{|docs(p)|})}
+\end{equation}
+where $idf(e)$ is the inverse document frequency
+of entity $e$ in the collection of documents $D_Q$, specifically:
+\begin{equation}
+\small
+idf(e) = log\frac{|D_Q|}{|docs(e) \cap D_Q|}
+\end{equation}
+
+\vspace{1mm}
+\noindent
+{\em Ranking of Documents}.
+First, we consider that if the EoI are mentioned multiple times
+within a document, the document should receive a high score
+(since the document's topic may be about these entities).
+The score of a document $d \in D_Q$ based only on the frequency of the EoI is
+defined as:
+\begin{equation}
+\small
+ScoreD^{ef}_{\wedge}(d) = \frac{\sum_{e \in E_Q}{ef(e, d)}}{\sum_{e' \in ents(d)}{ef(e', d)}}
+\end{equation}
+If we also consider the important time periods, the formula can be defined as:
+\begin{equation}
+\small
+ScoreD^{ef,P}_{\wedge}(d) =  ScoreD^{ef}_{\wedge}(d) \cdot  ScoreP_\wedge(timep(d))
+\end{equation}
+In case we consider only the important related entities, the score is defined as:
+\begin{equation}
+\small
+ScoreD^{E}_{\wedge}(d) = \frac{\sum_{e \in ents(d) \setminus E_Q}{ScoreE_\wedge(e)}}{\sum_{e' \in E_D \setminus E_Q}{ScoreE_\wedge(e')}}
+\end{equation}
+\comment{====
+    Likewise, if we consider both the important time periods and the important related entities,
+    the score can be defined as:
+    \begin{equation}
+    \small
+    ScoreD^{E,P}_{\wedge}(d) = ScoreD^{E}_{\wedge}(d) \cdot  ScoreP_\wedge(timep(d))
+    \end{equation}
+====}
+Now, if we account both the frequency of the EoI, the important related entities,
+and the important time periods, the score can be defined as:
+\begin{equation}
+\small
+ScoreD^{ef,P,E}_{\wedge}(d) = \beta \cdot ScoreD^{ef, P}_{\wedge}(d) +
+                              (1 - \beta) ScoreD^{E}_{\wedge}(d))
+\end{equation}
+where $\beta$ is a decay factor.
+
+
+
+\vspace{5mm}
+\noindent
+{\bf Ranking documents that mention \underline{at least one} EoI ({\tt\em OR} semantics)}
+
+
+
+
+\clearpage
+
+
+
+\comment{====
+    \subsection{Ranking Documents}
+
+    Rank documents related to a time period and one or more entities/events.
+
+
+
+    \subsection{Ranking Entities}
+
+    Rank entities/events related to a time period and one or more other entities/events.
+
+
+
+    \subsection{Ranking Time Periods}
+
+    Rank time periods related to one or more entities/events
+====}
+
+\subsection{(other aspects)}
+
+\begin{itemize}
+\item   Evolution (of entities)
+\item   Entity Summarization
+\item   Identify \q{communities} (e.g., documents of the same topic)
+\item   Identify similar/near-duplicate documents
+        (by exploiting the detected entities and their number of occurrences)
+\item   ...
+\item   ...
+\end{itemize}
+
+\section{Conclusion}
+\label{sec:concl}
+
+We have introduced ...
+
+
+\subsection*{Acknowledgements} The work was partially funded by the
+European Commission for the ERC Advanced Grant ALEXANDRIA under
+grant No. 339233.
+
+
+\bibliographystyle{abbrv}
+\bibliography{bib/semlayer}
+
+
+\end{document}

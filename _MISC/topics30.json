@@ -1,0 +1,1016 @@
+[
+	{	
+		"topic": 1,
+		"type": "person",
+		"query": "rudolph giuliani",
+		"description": "I want to know the history of rudolph giuliani the american politician between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "Giuliani the litigator. Life as a lawyer in New York."
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Mayoral Campaigns - 1989 (losing to Dinkins) 1993 (improving police protection, beating dinkins) 1997( first Republican to win a second term as mayor) 2001 (just before 9/11)"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Mayoralty - mayor of New York City from 1994 through 2001. The major obstacles he had to overcome during his time as mayor. (Law enforcement, Appointees as defendants, City services- schooling, )"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "2000 U.S. Senate campaign. His main opponent being Hilary Clinton."
+			},
+			{
+				"subtopic":5,
+				"type": "burst",
+				"description": "September 11 terrorist attacks. Giulianis work for helping New York recover"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "Post-mayoralty- what did Giuliani do in the political scene after leaving his post as mayor (after 2001) (running for president for 2008, endorsing bush for re-election in 2004, Giuliani founded a security consulting business, Giuliani Partners LLC in 2002, In 2005, Giuliani joined the law firm of Bracewell & Patterson LLP)"
+			},
+			{
+				"subtopic":7,
+				"type": "span",
+				"description": "His personal life - knighthood, time person of the year, cancer, affair, divorce"
+			}
+		]
+	},
+	{	
+		"topic": 2,
+		"type": "location",
+		"query": "silicon valley",
+		"description": "I want to know the history of the silicon valley in the United States Of America 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "The rise of the micro computer and microchips industry in the 1980s/70s"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Silicon valley's job scenario improves"
+			},
+			{
+				"subtopic":3,
+				"type": "burst",
+				"description": "The Dot Com Bubble - mid 1990s - Silicon Valley is generally considered to have been the center of the dot-com bubble, which started in the mid-1990s and collapsed after the NASDAQ stock market began to decline dramatically in April 2000"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Famous software companies starting in silicon valley"
+			}
+		]
+	},
+	{	
+		"topic": 3,
+		"type": "event",
+		"query": "reunification of germany",
+		"description": "I want to know the history behind the reunification of germany in 1990",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "Precursors to reunification - pre 1989"
+			},
+			{
+				"subtopic":2,
+				"type": "burst",
+				"description": "Process of reunification - Cooperation, Economic merger, German Reunification Treaty, Constitutional merger, International effects, Day of German Unity - 1989 -1990"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": " Foreign support and opposition - Britain and France, The rest of Europe and America"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": " Aftermath - Full German sovereignty, confirmation of borders, withdrawal of the last Allied Forces, Cost of reunification, Inner reunification - post 1990"
+			}
+		]
+	},
+	{	
+		"topic": 4,
+		"type": "product",
+		"query": "sony playstation",
+		"description": "I want to know the history of the sony playstation between 1987 and 2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "playstation releases"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Sony playstation vs the xbox"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Sony playstation vs the nintendo & sega"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "online multiplayer gaming"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "popular video game titles for the playstation"
+			}
+		]
+	},
+	{	
+		"topic": 5,
+		"type": "sporting event",
+		"query": "team usa soccer world cup",
+		"description": "I want to know the history behind team USA at the soccer world cups between 1987 and 2007 (mens world cup - from 1990 held every 4 years)",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "burst",
+				"description": "USA world cup 1994"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Tactics, team selection and preparation for the world cup. Famous players and coaches."
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "growth of soccer in the united states"
+			},
+			{
+				"subtopic":4,
+				"type": "cyclic bursts",
+				"description": "Team performance in the world cup and qualifiers"
+			},
+			{
+				"subtopic":5,
+				"type": "cyclic bursts",
+				"description": "Womens world cup"
+			}	
+		]
+	},
+	{	
+		"topic": 6,
+		"type": "event",
+		"query": "elections in the middle east",
+		"description": "I want to know the history behind the elections in the middle east they were held between 1987 and 2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Iranian elections"
+			},
+			{
+				"subtopic":2,
+				"type": "acyclic bursts",
+				"description": "Iraqi elections"
+			},
+			{
+				"subtopic":3,
+				"type": "acyclic bursts",
+				"description": "Israeli elections"
+			},
+			{
+				"subtopic":4,
+				"type": "acyclic bursts",
+				"description": "Syrian elections"
+			},
+			{
+				"subtopic":5,
+				"type": "acyclic bursts",
+				"description": "Palestinian elections"
+			},
+			{
+				"subtopic":6,
+				"type": "acyclic bursts",
+				"description": "other countries"
+			},
+			{
+				"subtopic":7,
+				"type": "span",
+				"description": "US interventions"
+			}
+		]
+	},
+	{	
+		"topic": 7,
+		"type": "business",
+		"query": "apple vs microsoft",
+		"description": "I want to know the history between the companies apple and microsoft between the years 1987 and 2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "lawsuits: for example, Apple sues microsoft for stealing mac GUI elements not included in their previous agreement"
+			},
+			{
+				"subtopic":2,
+				"type": "burst",
+				"description": "Apple forms allegiance with other companies to take on Microsoft"
+			},
+			{
+				"subtopic":3,
+				"type": "burst",
+				"description": "Technology development agreement between Microsoft and Apple"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "zune vs ipod"
+			},
+			{
+				"subtopic":5,
+				"type": "burst",
+				"description": "Microsoft's anti trust case. Apple, other companies and the government take on the Microsoft's monoply. Apple and other companies are against Microsofts bullying of software competitors."
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "Apple's OS vs Moicrosoft's OS"
+			}
+		]
+	},
+	{	
+		"topic": 8,
+		"type": "business scandals",
+		"query": "enron energy company",
+		"description": "I want to know the history of the Enron energy company between the years 1987 and 2007. Enron, a corporation headquartered in Houston, operated one of the largest natural gas transmission networks in North America, totaling over 36,000 miles, in addition to being the largest marketer of natural gas and electricity in the United States.",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"description": "Enron's innovation and success in the energy market"
+			},
+			{
+				"subtopic":2,
+				"description": "Growth of the business by diversifying, mergers and acquisitions: for example going into broadband services"
+			},
+			{
+				"subtopic":3,
+				"description": "Enron scandal 2001 - complaints about the opaqueness of Enron's financial reporting were raising concerns. Executives were the major culprits"
+			},
+			{
+				"subtopic":4,
+				"description": "Fallout from the bankrupcy scandal. Other companies trying to buy enron"
+			}
+		]
+	},
+	{	
+		"topic": 9,
+		"type": "acyclic event",
+		"query": "islamic terrorist attacks",
+		"description": "I want to know the history of major islamic terrorist attacks in the world between the years 1987 and 2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Airplane related attacks/hijacks"
+			},
+			{
+				"subtopic":2,
+				"type": "acyclic bursts",
+				"description": "bombings/attacks on public areas"
+			},
+			{
+				"subtopic":3,
+				"type": "acyclic bursts",
+				"description": "bombing/attacks on government buildings"
+			},
+			{
+				"subtopic":4,
+				"type": "acyclic bursts",
+				"description": "bombing/attacks of trains"
+			},
+			{
+				"subtopic":5,
+				"type": "acyclic bursts",
+				"description": "chemical attacks"
+			},
+			{
+				"subtopic":6,
+				"type": "acyclic bursts",
+				"description": "suicide bombings"
+			},
+			{
+				"subtopic":7,
+				"type": "acyclic bursts",
+				"description": "Alleged plots thwarted by the authorities"
+			},
+			{
+				"subtopic":8,
+				"type": "span",
+				"description": "Osam Bin Laden and Al Qaeda"
+			},
+			{
+				"subtopic":9,
+				"type": "span",
+				"description": "Hamas - Palestinian terror group"
+			}	
+		]
+	},
+	{	
+		"topic": 10,
+		"type": "subject",
+		"query": "mad cow disease",
+		"description": "I want to know the history of the mad cow disease in the news between the years 1987 and 2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "outbreaks and reported cases"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "impact on beef trade and economy"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "medical research advancements in mad cow disease"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "efforts made by governments & organizations to fight mad cow disease"
+			}
+		]
+	},
+	{	
+		"topic": 11,
+		"type": "subject",
+		"query": "web browser wars",
+		"description": "I want to know the history of the web browser wars in the news between the years 1987 and 2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "Internet explorer vs Netscape"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Internet explorer vs Firefox"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Criticism of internet explorer & market domination (being bundled with the OS without any possibility of removing it)"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Safari as a competitor"
+			}
+		]
+	},
+	{	
+		"topic": 12,
+		"type": "person",
+		"query": "landon donovan",
+		"description": "I want to know the personal history of landon donovan the american soccer player between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "Club career outside USA"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Club career in the MLS"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "His performances for USMNT"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Becoming captain of the USMNT"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Personal life and awards"
+			}
+		]
+	},
+	{	
+		"topic": 13,
+		"type": "person",
+		"query": "bob dole",
+		"description": "I want to know the personal history of Bob Dole the american politician between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "His role as senator and other issues related to him being senator like campaigns."
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "1996 presidential campaign"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "His work after Retirement as a TV personality and writer"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Bob Dole vs George Bush Senior rivalry "
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Personal life and awards"
+			}
+		]
+	},
+	{	
+		"topic": 14,
+		"type": "person",
+		"query": "al gore",
+		"description": "I want to know the personal history of Al Gore the american politician between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "He lost his bid for the Democratic presidential nomination to Michael Dukakis in 1988"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "President Bill Clinton's successful running mate in 1992 and again in 1996. Vice president Gore."
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "In his 2000 presidential campaign, Gore won the popular vote, but eventually conceded defeat to Republican George W. Bush"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Environmental Activism"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Personal life and other ventures like his TV Channel"
+			}	
+		]
+	},
+	{	
+		"topic": 15,
+		"type": "location",
+		"query": "oklahoma city",
+		"description": "I want to know the personal history of Oklahoma city,USA, between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "In 1993, the city passed a massive redevelopment package known as the Metropolitan Area Projects (MAPS)"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": " on April 19, 1995 when Timothy McVeigh set off a bomb in front of the Murrah building. Memorial opened in 2000"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "sports teams from oklahoma"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "natural disasters in oklahoma"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "aftermath of 1995 bombing"
+			}	
+		]
+	},
+	{	
+		"topic": 16,
+		"type": "location",
+		"query": "world trade center",
+		"description": "I want to know the personal history of the World Trade Center in New York between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "span",
+				"description": "1993 bombing"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "9/11 Al Qaeda attack"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "1998 robbery"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "the Port Authority's role( WTC's governing body ) and privatization of the WTC"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Cleanup and rebuilding after 9/11 - Freedom Tower proposed"
+			}	
+		]
+	},
+	{	
+		"topic": 17,
+		"type": "event",
+		"query": "gay marriage",
+		"description": "I want to know the history of gay marriage around the world and the US between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "support from governments by amending laws"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "governments against gay marriage"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "public opinion on gay marriages"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "religion vs gay marriages"
+			}
+		]
+	},
+	{	
+		"topic": 18,
+		"type": "event",
+		"query": "india pakistan kargil war",
+		"description": "I want to know the history of the india pakistan kargil war between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "initial reports or reasons of Pakistani occupation"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "India attacks pakistani positions"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "pakistan attacks inidan postions"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Nuclear threat"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "World opinion: what do other countries think of the situation and how do they get involved"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "Talks of peace"
+			},
+			{
+				"subtopic":7,
+				"type": "span",
+				"description": "Aftermath of the war: how did the nations start rebuilding their ties and maintain peace"
+			}
+
+		]
+	},
+	{		
+		"topic": 19,
+		"type": "subject",
+		"query": "sarin gas",
+		"description": "I want to know the history of sarin gas, a deadly toxic gas, between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "usage of sarin gas as a chemical weapon in warfare"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "sarin gas attacks in japan"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "The effects of being exposed to sarin gas"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Steps taken to eradicate sarin gas usage"
+			}
+		]
+	},
+	{		
+		"topic": 20,
+		"type": "subject",
+		"query": "arab israeli wars",
+		"description": "I want to know the personal history of the arab israeli wars between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Attacks by Hamas & Hezbollah"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Attacks by Israeli Authorities and Palestinai aithorities"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Peace Efforts"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Rise of suicide bombings"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "US interventions"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "The West bank and the gaza strip being disputed - Israel constructs a wall; Israel withdraws; Battle of Gaza"
+			}
+		]
+	},
+	{		
+		"topic": 21,
+		"type": "location",
+		"query": "atlantic city",
+		"description": "I want to know the personal history Atlantic City, the famous casino hotspot in the US, between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Atlantic City's decline: Business slows down. Toursism is down. Jobs are cut. Casinos are shutdown."
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Donald Trumps casinos and efforts"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Borgata and other new casinos being set up"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Competitors - other cities with casinos that are seen as competition"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Hosting of Miss america"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "Efforts to revitalise Atlantic city"
+			}	
+		]
+	},
+	{		
+		"topic": 22,
+		"type": "subject",
+		"query": "Human Genome Project",
+		"description": "I want to know the personal history ofthe Human Genome Project between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "early genome project and its formation in 1988 thanks to Congress funding. Initially started of as a research center."
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Famouse people like James Watson who led the project"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "five-year plans anounced in the journal Science to further research"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Center for Inherited Disease Research (CIDR) created"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "In 1997, the NCHGR received full institute status at NIH, becoming the National Human Genome Research Institute in 1997"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "2000/2001 human genome is sequenced and 2003 the whole genome is sequenced"
+			},
+			{
+				"subtopic":7,
+				"type": "span",
+				"description": "other genomes sequenced"
+			}
+		]
+	},
+	{		
+		"topic": 23,
+		"type": "business",
+		"query": "rise of google",
+		"description": "I want to know the history behind the rise of google between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Google starts dominating the search market and also hogs ad revenue - web search wars;"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Google buys youtube and starts to increase its portfolio"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Googles's IPO: initally stocks were sold at a low price but rapidly rose later"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Larry Page and Sergej Brinn start google based on PageRank(research) in 1999"
+			}	
+		]
+	},
+	{		
+		"topic": 24,
+		"type": "event",
+		"query": "war on terror",
+		"description": " I want to know the history (1987-2007) of : The War on Terror (WOT), also known as the Global War on Terrorism (GWOT) is a term which has been applied to an international military campaign that started after the 11 September 2001 terrorist attacks on the United States.",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "US invasion of iraq"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "9/11, Al Qaeda and Osama Bin Laden"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "U.S. and NATO-led military operations - Afghanistan, Philippines"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "International military support"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Other military operations in Pakistan, Kashmir, Yemen and other islamic states"
+			}	
+		]
+	},
+	{		
+		"topic": 25,
+		"type": "entity",
+		"query": "New York Stock Exchange",
+		"description": "I want to know the history of the New York Stock Exchange between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Mergers:  with Archipelago and Euronext" 
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "NYSE closes for a few days : rare event with NYSE"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Stock market crash and financial crisis"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Relocating the building"
+			}
+		]
+	},
+	{		
+		"topic": 26,
+		"type": "entity",
+		"query": "Space Shuttle Columbia",
+		"description": "I want to know the history of Space Shuttle Columbia between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Launch of Columbia -- STS-93, launched on July 23, 1999, was the first U.S. space mission with a female commander, Lt. Col. Eileen Collins"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": " various space missions"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Shuttle disaster - February 1, 2003 and all seven astronauts on board killed."
+			}	
+		]
+	},
+	{		
+		"topic": 27,
+		"type": "acyclic event",
+		"query": "summer olympics doping scandals",
+		"description": "I want to know the history of the doping scandals in the olympics between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "1988 Seoul - doping mostly in wrestling and judo"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "1992 Barcelona - mostly athletics"
+			},{
+				"subtopic":3,
+				"type": "span",
+				"description": "1996 Atlanta - very few cases. only 2 in athletics."
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "2000 Sydney - quite a few in athletics and weight lifting. Marion Jones was the most popular one."
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "2004 Athens- Massive increase in doping compared to previous years"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "Measures being taken by the IOC"
+			}
+		]
+	},
+	{		
+		"topic": 28,
+		"type": "subject",
+		"query": "global warming",
+		"description": "I want to know the history of global warming between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "global warming starts becoming a serious issue. (James Hansen used the term in a testimony to Congress about global warming in 1988)"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Framework Convention was agreed in 1992"
+			},{
+				"subtopic":3,
+				"type": "span",
+				"description": "Kyoto protocol - 2005"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Scientific community on global warming"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "United States and other countries dealing with global warming"
+			}
+		]
+	},
+	{		
+		"topic": 29,
+		"type": "organization",
+		"query": "World Trade Organization",
+		"description": "I want to know the history of the World Trade Organization between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Precursor to the WTO - General Agreement on Tariffs and Trade (until 1995)"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "Formation of the WTO in 1994-1995 ( Uruguay Round )"
+			},{
+				"subtopic":3,
+				"type": "span",
+				"description": "The various conference rounds held in Singapore, Geneva, Doha, etc"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "The third conference in Seattle, Washington ended in failure, with massive demonstrations and police and National Guard crowd-control efforts drawing worldwide attention."
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "China joining the WTO"
+			},
+			{
+				"subtopic":6,
+				"type": "span",
+				"description": "Resistance of the G20 nations to the Singapore issues"
+			}
+		]
+	},
+	{		
+		"topic": 30,
+		"type": "person",
+		"query": "Charlie Sheen",
+		"description": "I want to know the history of Charlie Sheen the american actor between 1987-2007",
+		"subtopics": [
+			{
+				"subtopic":1,
+				"type": "acyclic bursts",
+				"description": "Film acting career"
+			},
+			{
+				"subtopic":2,
+				"type": "span",
+				"description": "TV acting career"
+			},
+			{
+				"subtopic":3,
+				"type": "span",
+				"description": "Highest paid TV actor for two and a half men"
+			},
+			{
+				"subtopic":4,
+				"type": "span",
+				"description": "Awards won"
+			},
+			{
+				"subtopic":5,
+				"type": "span",
+				"description": "Personal life - drug abuse & relationships"
+			}
+		]
+	}
+]

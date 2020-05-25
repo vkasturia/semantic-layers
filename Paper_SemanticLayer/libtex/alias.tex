@@ -1,0 +1,470 @@
+
+\newcommand{\abstrOfeq}[0]{
+     \sqsubseteq
+}
+\newcommand{\abstrOf}[0]{
+     \sqsubset
+}
+
+%\newcommand{\notisA}[0]{
+     %isA \hspace*{-0.6cm} \not  \hspace*{0.6cm}
+%}
+
+
+\newcommand{\mysignature}{
+    \parbox[t]{7cm}{
+        \begin{center}
+            {\normalsize Γιάννης Τ. Τζίτζικας} \\
+            {\small MSc Computer Science} \\
+            {\scriptsize τηλ: 093 47 13 11, (081) 256 561 }
+        \end{center}
+    }
+}
+
+
+% Frequently Used commands
+
+\newcommand{\bq}{\begin{quote}}
+\newcommand{\eq}{\end{quote}}
+\newcommand{\be}{\begin{enumerate}}
+\newcommand{\ee}{\end{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bie}{\begin{itemize}\begin{enumerate}}
+\newcommand{\eie}{\end{enumerate}\end{itemize}}
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\btbl}{\begin{tabular}}
+\newcommand{\etbl}{\end{tabular}}
+\newcommand{\bequ}{\begin{displaymath}}
+\newcommand{\eequ}{\end{displaymath}}
+\newcommand{\bequa}{\begin{eqnarray*}}
+\newcommand{\eequa}{\end{eqnarray*}}
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\btab}{\begin{tabbing}}
+\newcommand{\etab}{\end{tabbing}}
+\newcommand{\cl}{\centerline}
+
+\newcommand{\mysection}[1]{
+    \centerline{\LARGE \bf #1}
+    \godown
+}
+
+\newcommand{\goright}{\hspace*{0.5cm}}
+\newcommand{\goRight}{\goright \goright}
+\newcommand{\goRIGHT}{\goRight \goRight}
+
+\newcommand{\bul}{ $\bullet$ }
+\newcommand{\goup}{ \vspace*{-0.5cm}}
+\newcommand{\goUp}{ \goup \goup}
+%\newcommand{\goUP}{ \vspace*{-0.5cm}}
+
+
+\newcommand{\vparag}{ \vskip 5mm}
+\newcommand{\godown}{ \vspace*{0.3cm}}
+\newcommand{\goDown}{ \godown \godown}
+\newcommand{\goDOWN}{ \goDown \goDown }
+
+% set operator : not in
+\newcommand{\noin}{\in \hspace{-0.33cm} / \hspace{0.3cm} }
+
+%=========== MATH SYMBOLS ==============
+
+\newcommand{\FALL}{\;\forall \;}
+\newcommand{\mybox}[1]{\mbox{\letterspace #1 \letterspace }}
+\newcommand{\card}[1]{
+        \letterspace\mid
+         #1
+        \mid\letterspace
+}
+
+
+%=========== MDE WRITING ==============
+
+% mpr : prints its argument in math mode
+%       It can also be called from non math mode
+\def\mpr#1{\ifmmode #1 \else #1 \fi}
+
+\newcommand{\TB}        {\mpr{TB}}
+
+%\newcommand{\R}         {\mpr{R}}
+\newcommand{\RIN}       {\mpr{R^{in}}}
+\newcommand{\RINALL}    {\mpr{R^{in}_{impl}}}
+\newcommand{\RINB}      {\mpr{R^{in}_{sys}}}
+\newcommand{\RINU}      {\mpr{R^{in}_{u}}}
+\newcommand{\RINUtonos} {\mpr{R^{in'}_{u}}}
+\newcommand{\RISA}      {\mpr{R^{isA}}}
+\newcommand{\RISATR}    {\mpr{R^{isA}_{tr}}}
+\newcommand{\RISAB}     {\mpr{R^{isA}_{sys}}}
+\newcommand{\RISAU}     {\mpr{R^{isA}_{u}}}
+\newcommand{\RISAUtonos}{\mpr{R^{isA'}_{u}}}
+\newcommand{\RFROM}     {\mpr{R^{from}}}
+\newcommand{\RTO}       {\mpr{R^{to}}}
+
+%\newcommand{\TO}        {\mpr{O}}
+\newcommand{\TOB}       {\mpr{O_{sys}}}
+\newcommand{\TOU}       {\mpr{O_{u}}}
+\newcommand{\PV}        {\mpr{PV}}
+\newcommand{\Integer}   {\mpr{Integer}}
+\newcommand{\Real}      {\mpr{Real}}
+\newcommand{\String}    {\mpr{String}}
+\newcommand{\Nat}       {\mpr{N}}
+\newcommand{\LN}    {\mpr{L}}
+\newcommand{\LF}    {\mpr{{\cal L}}}
+
+\newcommand{\TI}        {\mpr{I}}
+\newcommand{\TIU}       {\mpr{I_{u}}}
+\newcommand{\TA}        {\mpr{A}}
+\newcommand{\TC}        {\mpr{C}}
+\newcommand{\TIC}       {\mpr{I_{c}}}
+\newcommand{\TAC}       {\mpr{A_{c}}}
+
+\newcommand{\type}      {\mpr{type}}
+\newcommand{\level}     {\mpr{level}}
+\newcommand{\typeb}     {\mpr{type_{sys}}}
+\newcommand{\levelb}    {\mpr{level_{sys}}}
+
+\newcommand{\SemT}      {\mpr{SemanticType}}
+\newcommand{\SynT}      {\mpr{SyntacticType}}
+
+\newcommand{\semT}      {\mpr{semType}}
+\newcommand{\synT}      {\mpr{synType}}
+\newcommand{\semTb}     {\mpr{semType_{sys}}}
+\newcommand{\synTb}     {\mpr{synType_{sys}}}
+
+\newcommand{\sem}       {\mpr{sem}}
+\newcommand{\syn}       {\mpr{syn}}
+
+\newcommand{\PBT}       {\mpr{PBT}}
+\newcommand{\TP}        {\mpr{TP}}
+
+
+%-- TELOS QUERIES
+
+% writting TELOS statements
+\newcommand{\telos}{Telos\letterspace}
+\newcommand{\clio}{
+    % $\cal{K}${\em Λ}$\cal{EI}${\em Ω} \letterspace
+    {\em ΚΛΕΙΩ}
+}
+\newcommand{\tellretell}{TELL/RETELL\letterspace}
+\newcommand{\export}{{\em Export} \letterspace}
+
+\newcommand{\letterspace}{\hspace*{1mm}}
+
+\newcommand{\ison}{\;=\;}
+\newcommand{\isA}{\mbox{\bf isA} \letterspace}
+\newcommand{\instOf}{\mbox{\bf instOf}}
+
+\newcommand{\Tell}{{\bf TELL Individual} \letterspace}
+\newcommand{\Retell}{{\bf RETELL Individual} \letterspace}
+\newcommand{\End}{{\bf end} \letterspace}
+\newcommand{\inT}{{\bf in} \letterspace}
+\newcommand{\scl}{{\bf S\_Class} \letterspace}
+\newcommand{\tok}{{\bf Token} \letterspace}
+
+\newcommand{\printPQI}[1]{ \mbox{\bf #1} \letterspace }
+
+\newcommand{\sysclass}{ \printPQI{sysclass}}
+\newcommand{\scn}{      \printPQI{scn}}
+\newcommand{\gfv}{      \printPQI{gfv}}
+\newcommand{\gtv}{      \printPQI{gtv}}
+\newcommand{\glf}{      \printPQI{glf}}
+\newcommand{\gilf}{     \printPQI{gilf}}
+\newcommand{\gilt}{     \printPQI{gilt}}
+\newcommand{\glt}{      \printPQI{glt}}
+\newcommand{\glfc}{     \printPQI{glfc}}
+\newcommand{\gfnc}{     \printPQI{gfnc}}
+\newcommand{\gtnc}{     \printPQI{gtnc}}
+\newcommand{\gasb}{     \printPQI{gasb}}
+\newcommand{\gsb}{      \printPQI{gsb}}
+\newcommand{\gasc}{     \printPQI{gasc}}
+\newcommand{\gc}{       \printPQI{gc}}
+\newcommand{\gac}{      \printPQI{gac}}
+\newcommand{\gai}{      \printPQI{gai}}
+\newcommand{\gi}{       \printPQI{gi}}
+\newcommand{\gsc}{      \printPQI{gsc}}
+\newcommand{\gSc}{      \printPQI{gSc}}
+\newcommand{\gaSc}{     \printPQI{gaSc}}
+\newcommand{\gSi}{      \printPQI{gSi}}
+\newcommand{\attrs}{    \printPQI{attrs}}
+\newcommand{\focus}     {{\em s \letterspace}}
+
+%---------- CHAPTER 4 -------------------
+\newcommand{\BPE}[1]{ \mbox{\bf #1 \letterspace} }
+
+\newcommand{\CreateNode}        {\BPE{CreateIndividual}}
+\newcommand{\DeleteNode}        {\BPE{DeleteIndividual}}
+\newcommand{\CreateAttribute}   {\BPE{CreateAttribute}}
+\newcommand{\DeleteAttribute}   {\BPE{DeleteAttribute}}
+\newcommand{\AddInstance}       {\BPE{AddInstance}}
+\newcommand{\DeleteInstance}    {\BPE{DeleteInstance}}
+\newcommand{\Rename}            {\BPE{Rename}}
+\newcommand{\AddSubClass}       {\BPE{AddSubClass}}
+\newcommand{\DelSubClass}       {\BPE{DeleteSubClass}}
+\newcommand{\makecopy}          {\BPE{MakeCopy}}
+
+%---tmpmaybe
+\newcommand{\CreateNodeSet}     {{\em CreateNodeSet}}
+\newcommand{\DeleteNodeSet}     {{\em DeleteNodeSet}}
+\newcommand{\CreateAttributeSet}{{\em CreateAttributeSet}}
+\newcommand{\DeleteAttributeSet}{{\em DeleteAttributeSet}}
+\newcommand{\AddInstanceSet}    {{\em AddInstanceSet}}
+\newcommand{\DeleteInstanceSet} {{\em DeleteInstanceSet}}
+\newcommand{\RenameSet}         {{\em RenameSet}}
+\newcommand{\AddSubClassSet}    {{\em AddSubClassSet}}
+\newcommand{\DelSubClassSet}    {{\em DelSubClassSet}}
+
+%---------- CHAPTER 5 -------------------
+\newcommand{\EFID}[1]{ \mbox{\em \scriptsize #1 } }
+
+\newcommand{\obj}{ \letterspace
+                    \mbox{\em o}\letterspace
+}
+\newcommand{\aobj}{ \mbox{\em a}\letterspace}
+\newcommand{\bobj}{ \mbox{\em b}\letterspace}
+\newcommand{\fobj}{ \mbox{\em from}\letterspace}
+\newcommand{\tobj}{ \mbox{\em to}\letterspace}
+\newcommand{\sobj}{ \mbox{\em s}\letterspace}
+\newcommand{\cobj}{ \mbox{\em c}\letterspace}
+\newcommand{\iobj}{ \mbox{\em i}\letterspace}
+\newcommand{\ObjectSet}{ \mybox{\em ObjectSet}}
+\newcommand{\SysClass}{ \mbox{\em SysClass}\letterspace}
+
+\newcommand{\CREATENODE}    {\EFID{CREATE\_INDIVIDUAL}}
+\newcommand{\DELETENODE}    {\EFID{DELETE\_INDIVIDUAL}}
+\newcommand{\RENAMENODE}    {\EFID{RENAME\_INDIVIDUAL}}
+\newcommand{\CHANGECLASSES} {\EFID{CHANGE\_CLASSES}}
+\newcommand{\CHANGESUPERCLASSES}{\EFID{CHANGE\_SUPERCLASSES}}
+\newcommand{\CHANGEATTRIBUTES}  {\EFID{CHANGE\_ATTRIBUTES}}
+\newcommand{\nullset}   {-\hspace*{-0.1cm}-}
+%%\newcommand{\emptyset}    {0\hspace*{-0.1cm}\/}
+%\newcommand{\concat}   {\letterspace\#\letterspace}
+\newcommand{\concat}    {\letterspace\circ\letterspace}
+
+\newcommand{\DC}{
+        \letterspace {\bf DC}\letterspace
+}
+\newcommand{\DO}{
+        \letterspace {\bf DO}\letterspace
+}
+\newcommand{\RC}{${\cal R}\;$}
+\newcommand{\calA}{${\cal A}\;$}
+\newcommand{\calB}{${\cal B}\;$}
+\newcommand{\calE}{${\cal E}\;$}
+
+%---------- CHAPTER 6 -------------------
+
+\newcommand{\mmName}{ ΜΜΟΕ }
+
+\newcommand{\sneg}   { \mbox{\={$\! \! \! s$}} }
+
+\newcommand{\Users}      {Users}
+\newcommand{\SystemUsers}{SystemUsers}
+\newcommand{\UserTypes}  {UserTypes}
+
+\newcommand{\Ustx}       {U_{stx}}
+\newcommand{\Usem}       {U_{sem}}
+\newcommand{\Tasks}      {Tasks}
+\newcommand{\tsem}      {t_{sem}}
+\newcommand{\apon}          {applyon}
+\newcommand{\aponsem}       {applyon_{sem}}
+\newcommand{\aponsemt}      {applyon^{t}_{sem}}
+
+\newcommand{\SetIds}    {ID}
+\newcommand{\tids}      {S_{id}}
+\newcommand{\tidsR}     {S^{-1}_{id}}
+
+\newcommand{\pids}      {P^{expl}_{id}}
+\newcommand{\nids}      {N^{expl}_{id}}
+\newcommand{\pimids}    {P^{impl}_{id}}
+\newcommand{\nimids}    {N^{impl}_{id}}
+
+\newcommand{\ti}        {S_{i}}
+\newcommand{\tiR}       {S^{-1}_{i}}
+\newcommand{\tj}        {S_{j}}
+
+\newcommand{\cro}       {CrObj}
+\newcommand{\delo}      {DelObj}
+\newcommand{\ren}       {REN}
+\newcommand{\del}       {DEL}
+\newcommand{\addaf}     {AddAF}
+\newcommand{\addat}     {AddAT}
+\newcommand{\delaf}     {DelAF}
+\newcommand{\delat}     {DelAT}
+\newcommand{\addin}     {AddIn}
+\newcommand{\delin}     {DelIn}
+\newcommand{\addsub}    {AddSub}
+\newcommand{\delsub}    {DelSub}
+\newcommand{\addsup}    {AddSup}
+\newcommand{\delsup}    {DelSup}
+\newcommand{\addclass}  {AddClass}
+\newcommand{\delclass}  {DelClass}
+
+\newcommand{\tcro}      {S_{\cro}}
+\newcommand{\tcroR}     {S^-1_{\cro}}
+\newcommand{\tdelo}     {S_{\delo}}
+\newcommand{\tdeloR}    {S^-1_{\delo}}
+\newcommand{\tren}      {S_{\ren}}
+\newcommand{\tdel}      {S_{\del}}
+\newcommand{\taddaf}    {S_{\addaf}}
+\newcommand{\tdelaf}    {S_{\delaf}}
+\newcommand{\taddat}    {S_{\addat}}
+\newcommand{\tdelat}    {S_{\delat}}
+\newcommand{\taddin}    {S_{\addin}}
+\newcommand{\tdelin}    {S_{\delin}}
+\newcommand{\taddsub}   {S_{\addsub}}
+\newcommand{\tdelsub}   {S_{\delsub}}
+
+
+\newcommand{\negS}      {{\scriptsize NEG}}
+\newcommand{\posS}      {{\scriptsize POS}}
+\newcommand{\noneS}     {{\scriptsize NONE}}
+
+\newcommand{\QT}    {{\cal QT}}
+
+\newcommand{\symboleq}  {\stackrel{συμβ}{=}}
+
+\newcommand{\qlevel}        {level}
+\newcommand{\qlevelsub}     {levelsub}
+\newcommand{\qsubs}         {subs}
+\newcommand{\qgai}      {gai}
+\newcommand{\qglf}      {glf}
+\newcommand{\qglfgasb}  {glfgasb}
+
+\newcommand{\Rules}     {{\cal R}}
+\newcommand{\ARules}    {{\cal A}}
+\newcommand{\Preds}     {{\cal PR}}
+\newcommand{\PredTypes} {{\cal PRT}}
+\newcommand{\PredSys}   {{\cal PR}_{sys}}
+\newcommand{\PredIN}    {{\cal PR}_{in}}
+\newcommand{\PredAIN}   {{\cal PR}_{ain}}
+\newcommand{\PredASUB}  {{\cal PR}_{asub}}
+\newcommand{\PredL}     {{\cal PR}_{links}}
+\newcommand{\PredASUBL} {{\cal PR}_{sublinks}}
+
+%\newcommand{\TRUE}  {{\small \mbox{TRUE}}}
+
+%---------- CHAPTER 6  <OLDVERSION> ---------
+%----- S Q L ---------
+
+    \newcommand{\sql}[1]{{\bf #1}}
+
+    \newcommand{\SELVIEW}[1]{
+        \sql{SELECTION VIEW} {\em #1}
+    }
+    \newcommand{\SELVIEWslite}[1]{
+        \sql{SELECTION VIEW} #1
+    }
+
+    \newcommand{\FROM}[2]{
+        \hspace*{1cm} \sql{FROM} {\em #1} \sql{IN} {\em #2}
+    }
+    \newcommand{\FROMslite}[2]{
+        \hspace*{1cm} \sql{FROM} #1 \sql{IN} #2
+    }
+
+    \newcommand{\WHERE}[1]{
+        \hspace*{1cm} \sql{WHERE} {\em #1}
+    }
+    \newcommand{\WHEREslite}[1]{
+        \hspace*{1cm} \sql{WHERE} #1
+    }
+
+%---------------
+
+\newcommand{\oos}[1]{ \mbox{\bf #1} }
+
+%--- UIDS
+\newcommand{\printUID}[1]{ \mbox{\em #1} }
+
+
+\newcommand{\SCuid}[0]      { \printUID{Schema} }
+
+\newcommand{\INuid}[0]      { \printUID{IN} }
+\newcommand{\IDuid}[0]      { \printUID{ID} }
+\newcommand{\ISAuid}[0]     { \printUID{ISA} }
+\newcommand{\NAMEuid}[0]    { \printUID{NAME} }
+\newcommand{\ATTRSuid}[0]   { \printUID{ATTR} }
+\newcommand{\INSTATTRSuid}[0]{\printUID{INST\_ATTRS} }
+
+
+%---- Update Sets
+
+\newcommand{\UT}{ UpdateTypes}
+\newcommand{\US}{ UpdateState}
+\newcommand{\UID}{ UpdateIDs}
+
+\newcommand{\where}[0]{
+    \mbox{ \letterspace όπου  \letterspace}
+}
+\newcommand{\an}[0]{
+    \mbox{ \letterspace άν  \letterspace}
+}
+\newcommand{\then}[0]{
+    \mbox{ \letterspace τότε  \letterspace}
+}
+\newcommand{\kai}[0]{
+    \mbox{ \letterspace και  \letterspace}
+}
+\newcommand{\whereT}[0]{
+    \mbox{t $\in$ \UT}
+}
+\newcommand{\Change}{ \mbox{ Changable} }
+\newcommand{\Invariant}{ \mbox{ Invariant} }
+
+\newcommand{\Inv}[1]{ \mbox{ Inv[#1]} }
+\newcommand{\Ch}[1]{ \mbox{ Ch[#1]} }
+
+\newcommand{\Invv}[2]{ \mbox{ Inv[#1][#2]} }
+\newcommand{\Chh}[2]{ \mbox{ Ch[#1][#2]} }
+
+\newcommand{\InvExpl}[1]{ \Invv{Expl}{#1} }
+\newcommand{\ChExpl}[1]{ \Chh{Expl}{#1} }
+
+\newcommand{\InvSub}[1]{ \Invv{onSubs}{#1} }
+\newcommand{\ChSub}[1]{ \Chh{onSubs}{#1} }
+
+\newcommand{\InvAttr}[1]{ \Invv{onAttrsFrom}{#1} }
+\newcommand{\ChAttr}[1]{ \Chh{onAttrsFrom}{#1} }
+
+\newcommand{\InvAttrSub}[1]{ \Invv{onAttrsSubFrom}{#1} }
+\newcommand{\ChAttrSub}[1]{ \Chh{onAttrsSubFrom}{#1} }
+
+\newcommand{\Existencial}{\mbox{Existencial}}
+
+
+
+
+\newtheorem{telos_rule}{Περιορισμός}
+\newtheorem{my_rule}{Κανόνας}
+
+\newcommand{\subjectCondition} {{\em Συνθήκη στο \obj :}}
+\newcommand{\argumentCondition}{{\em Συνθήκη στα ορίσματα :} }
+
+\newcommand{\argset}[1]{{\em Σύνολο πιθανών #1 :} }
+
+%\newcommand{\DPATTRNAME}{{\large{{\bf ΔΠ}$_{attr}$}}}
+%\newcommand{\DPISANAME}{{\large{{\bf ΔΠ}$_{isA}$}}}
+%\newcommand{\DPINNAME}{{\large{{\bf ΔΠ}$_{in}$}}}
+\newcommand{\DPATTRNAME}{{\large{{\bf SC}$_{attr}$}}}
+\newcommand{\DPISANAME}{{\large{{\bf SC}$_{isA}$}}}
+\newcommand{\DPINNAME}{{\large{{\bf SC}$_{in}$}}}
+
+\newtheorem{DP_ATTR}{\DPATTRNAME}
+\newtheorem{DP_ISA} {\DPISANAME}
+\newtheorem{DP_IN}  {\DPINNAME}
+
+
+%--- FOR SOURCE CODE
+
+\newcommand{\printKey}[1]{\mbox{\bf #1}}
+\newcommand{\mfunction} { \printKey{function} }
+\newcommand{\mvar}      { \printKey{var} }
+\newcommand{\mset}      { \printKey{SET} }
+\newcommand{\mbegin}    { \printKey{begin} }
+\newcommand{\mif}       { \printKey{if} }
+\newcommand{\melse}     { \printKey{else} }
+\newcommand{\mend}      { \printKey{end} }
+\newcommand{\mreturn}   { \printKey{return} }

@@ -1,0 +1,247 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix owa: <http://l3s.de/owa/> .
+@prefix nyt: <http://query.nytimes.com/gst/fullpage.html?res=> .
+@prefix schema: <http://schema.org/> .
+@prefix oae: <http://www.ics.forth.gr/isl/oae/core#> .
+
+nyt:article1	rdf:type	owa:ArchivedDocument ;
+	dc:title	"Article1"@en ;
+	dc:date	"1990-03-01"^^xsd:date .
+
+nyt:article1	schema:mentions	_:e1 .
+_:e1	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article1	schema:mentions	_:e2 .
+_:e2	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article1	schema:mentions	_:e3 .
+_:e3	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article1	schema:mentions	_:e4 .
+_:e4	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article1	schema:mentions	_:e5 .
+_:e5	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article1	schema:mentions	_:e6 .
+_:e6	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article1	schema:mentions	_:e7 .
+_:e7	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article1	schema:mentions	_:e8 .
+_:e8	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article1	schema:mentions	_:e9 .
+_:e9	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article1	schema:mentions	_:e10 .
+_:e10	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+
+nyt:article2	rdf:type	owa:ArchivedDocument ;
+	dc:title	"Article2"@en ;
+	dc:date	"1990-01-01"^^xsd:date .
+	
+nyt:article2	schema:mentions	_:e11 .
+_:e11	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article2	schema:mentions	_:e12 .
+_:e12	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e13 .
+_:e13	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article2	schema:mentions	_:e14 .
+_:e14	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e15 .
+_:e15	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article2	schema:mentions	_:e16 .
+_:e16	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e17 .
+_:e17	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article2	schema:mentions	_:e18 .
+_:e18	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e19 .
+_:e19	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article2	schema:mentions	_:e20 .
+_:e20	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e21 .
+_:e21	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e22 .
+_:e22	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e23 .
+_:e23	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e24 .
+_:e24	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article2	schema:mentions	_:e25 .
+_:e25	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+	
+nyt:article3	rdf:type	owa:ArchivedDocument ;
+	dc:title	"Article3"@en ;
+	dc:date	"1991-01-01"^^xsd:date .
+	
+nyt:article3	schema:mentions	_:e26 .
+_:e26	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article3	schema:mentions	_:e27 .
+_:e27	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article3	schema:mentions	_:e28 .
+_:e28	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"FW Klerk" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/FW_Klerk> .
+nyt:article3	schema:mentions	_:e29 .
+_:e29	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article3	schema:mentions	_:e30 .
+_:e30	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"South Africa" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/South_Africa> .
+nyt:article3	schema:mentions	_:e31 .
+_:e31	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article3	schema:mentions	_:e32 .
+_:e32	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"FW Klerk" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/FW_Klerk> .
+nyt:article3	schema:mentions	_:e33 .
+_:e33	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article3	schema:mentions	_:e34 .
+_:e34	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"FW Klerk" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/FW_Klerk> .
+nyt:article3	schema:mentions	_:e35 .
+_:e35	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article3	schema:mentions	_:e36 .
+_:e36	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+
+nyt:article4	rdf:type	owa:ArchivedDocument ;
+	dc:title	"Article4"@en ;
+	dc:date	"1990-02-01"^^xsd:date .
+	
+nyt:article4	schema:mentions	_:e37 .
+_:e37	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article4	schema:mentions	_:e38 .
+_:e38	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"FW Klerk" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/FW_Klerk> .
+nyt:article4	schema:mentions	_:e39 .
+_:e39	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Apartheid" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Apartheid> .
+nyt:article4	schema:mentions	_:e40 .
+_:e40	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article4	schema:mentions	_:e41 .
+_:e41	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"FW Klerk" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/FW_Klerk> .
+nyt:article4	schema:mentions	_:e42 .
+_:e42	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+nyt:article4	schema:mentions	_:e43 .
+_:e43	rdf:type	oae:Entity ;
+	oae:confidence	"1.0"^^xsd:double ;
+	oae:detectedAs	"Nelson Mandela" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Nelson_Mandela> .
+
+
+
+
+

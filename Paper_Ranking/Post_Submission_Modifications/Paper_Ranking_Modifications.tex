@@ -1,0 +1,417 @@
+% article example for classicthesis.sty
+\documentclass[10pt,a4paper]{article} % KOMA-Script article scrartcl
+\usepackage{lipsum}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{makecell}
+\usepackage[nochapters]{classicthesis} % nochapters
+\usepackage{graphicx}
+\graphicspath{ {Figures/} }   
+
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\setlength{\parskip}{1em}
+ 
+\begin{document}
+    \title{\rmfamily\normalfont{Modifications made in Ranking Formulae}}
+    \author{\spacedlowsmallcaps{Vaibhav Kasturia}}
+    \date{\vspace{-5ex}}
+    
+    \maketitle
+    
+    \section{Relativeness}
+    
+    A document should be considered more important than another document if query entities in the document
+    are more at the beginning of the document compared to the other document.
+    We consider the position of entities in the documents and modify the relativeness 
+    score of the documents (for {\tt AND} and {\tt OR} semantics) as follows: 
+    
+    \begin{equation}
+    \label{frml:relative_and}
+    score^{f}_{\wedge}(d, E_Q) = \frac{\sum_{e \in E_Q}{(count(e, d) \cdot \sum\limits_{x=1}^n{}{\exp(-ax)})}}{\sum_{e' \in ents(d)}{(count(e', d) \cdot \sum\limits_{x=1}^n{}{}{\exp(-ax)})}}
+    \end{equation}
+
+    \begin{equation}
+    \label{frml:relative_or}
+    score^{f}_{\vee}(d, E_Q) = \frac{\sum_{e \in E_Q}{(count(e, d) \cdot \sum\limits_{x=1}^n{}{\exp(-ax)})}}{\sum_{e' \in ents(d)}{(count(e', d) \cdot \sum\limits_{x=1}^n{}{\exp(-ax)})}} \cdot \frac{|ents(d) \cap E_Q|}{|E_Q|}
+    \end{equation}
+
+    \noindent In \ref{frml:relative_and} and \ref{frml:relative_or}, $a$ denotes the rate factor of the negative 
+    exponential function, $x$ denotes position and $n$ denotes the number of positions of the entity in the article. 
+    The user attention tends to decrease rapidly as he moves across the document. 
+    For example, a historian looking for an important document related to an entity may not read the complete document if he doesn't find the entity and the content he is looking for at the beginning. 
+    For this reason, we modelled the importance as negative exponential 
+    function rather than a linearly decreasing function.
+    Sum of the negative exponential function for all positions of the query entities and related entities is performed
+    keeping the rate factor values as $10^{-3}$, $5 \times 10^{-4}$ and $10^{-5}$. 
+    The smaller we keep the decay factor, the slower will be the exponential decay. 
+    So, while setting the values of decay factor, we keep in mind the average length of the NYT articles. 
+    We observe that the negative exponential function converges to nearly zero at 5000 keeping rate factor as $10^{-3}$ and 7000 keeping rate factor as $5 \times 10^{-4}$ and these numbers where the convergence nears zero nearly equal to the average number of words in a NYT article. 
+    
+    \section{Relatedness}
+    
+    When we define the relatedness score of a document, we should also keep in mind the difference in position 
+    between the query entities and the related entities. We define a measure called {\em proximity} score for 
+    each related entity which is based on the position difference of the related entity to the query entity.
+    
+    \noindent Consider a document in which the red lines denote the positions of a query entity and 
+    blue lines denote the positions of a related entity along the length of the document
+    as shown in Figure.
+    
+    \begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.95\textwidth]{entity_positions_in_doc.jpg}
+	\caption{Positions of a query entity and a related entity inside a document d visualized across its length.}
+	\label{fig:entity_positions_in_doc}
+    \end{figure}
+
+    \noindent Define $Dist(e,e')$ and $avgDist(e,e')$ as the average distance of a related entity $e$ w.r.t a query entity $e'$ in a document $d$. 
+    The average distance is calculated by checking each red line(position of the query entity) 
+    in the document. If the red line that we are currently at, is preceded by a blue line and succeeded by a red line (or no line), or preceded by a another red line (or no line) and succeeded by a blue line, then we take $Dist(e,e')$ as the the absolute difference in position between current red line and the blue line. 
+    However, if the red line that we are currently at is preceded and succeeded by blue lines, then we take $Dist(e,e')$ as the average of the absolute difference in position between the current red line and the each blue line.
+    Also, if we are currently at a red line which is preceded and succeeded by red lines as well, we do nothing and 
+    move to check the next red line.
+    The $avgDist(e,e')$ obtained at the end is just an average of all the $Dist(e,e')$ in the document $d$. 
+    
+    \noindent We then define the {\em proximity} score of a related entity $e$ w.r.t. a query entity $e'$ in a document d as the inverse of the average distance between the related entity $e$ and a query entity $e'$, as in \ref{frml:ent_proximity} :
+    
+    \begin{equation}
+    \label{frml:ent_proximity}
+    proximityScore(e, e') = \frac{1}{avgDist(e,e')}
+    \end{equation}
+
+    \noindent The {\em proximity} score of a related entity $e$ for a document $d$ for {\tt AND} and {\tt OR} Semantics is defined as follows:
+    
+    \begin{equation}
+    \label{frml:doc_proximity_and}
+    proximityScore_{\wedge}(e,d) = \frac{\sum_{e' \in E_Q}{proximityScore(e,e')}}{|E_Q|}
+    \end{equation}
+
+    \begin{equation}
+    \label{frml:doc_proximity_or}
+    proximityScore_{\vee}(e,d) = {\sum_{e' \in E_Q \cap ents(d)}{proximityScore(e,e')}} \cdot \frac{|ents(d) \cap E_Q|}{|E_Q|}
+    \end{equation}
+
+    \noindent Consequently, \ref{frml:time_proximity_and} and \ref{frml:time_proximity_or} describe the {\em proximity} 
+    score of a related entity $e$ for a time period $t$ for {\tt AND} and {\tt OR} Semantics. 
+    
+    \begin{equation}
+    \label{frml:time_proximity_and}
+    proximityScore_{\wedge}(e,t) = \frac{\sum_{d \in docs(t) \cap D_Q}{proximityScore_{\wedge}(e,d)}}{|docs(t) \cap D_Q|}
+    \end{equation}
+
+    \begin{equation}
+    \label{frml:time_proximity_or}
+    proximityScore_{\vee}(e,t) = \frac{\sum_{d \in docs(t) \cap D_Q}{proximityScore_{\vee}(e,d)}}{|docs(t) \cap D_Q|}
+    \end{equation}
+    
+    \noindent Finally, we incorporate \ref{frml:time_proximity_and} and \ref{frml:time_proximity_or} into our relatedness score for an entity $e \in E_D \setminus E_Q$ {\tt AND} and {\tt OR} Semantics as below. 
+    
+    \begin{equation}
+    \begin{split}
+     score^{r}_\wedge(e) = & ~ idf_\wedge(e) \cdot \sum_{t \in T_Q}{(score^{t}_\wedge(t) \cdot proximityScore_{\wedge}(e,t) \cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|docs(t) \cap D_Q|})}\\
+    = & ~ idf_\wedge(e) \cdot \sum_{t \in T_Q}{(proximityScore_{\wedge}(e,t) \cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|D_Q|})}
+    \end{split}
+    \end{equation}
+
+    \begin{equation}
+    \begin{split}
+     score^{r}_\vee(e) =  & ~ idf_\vee(e)~N(E_Q, e) \sum_{t \in T_Q}{(score^{t}_\vee(t) \cdot proximityScore_{\vee}(e, t) \cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|docs(t) \cap D_Q|})} \\
+    = & ~ idf_\vee(e)~N(E_Q, e) \sum_{t \in T_Q}{(N(E_Q, t) \cdot proximityScore_{\vee}(e, t) \cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|D_Q|})}
+    \end{split}
+    \label{eq:relatednessScore}
+    \end{equation}
+
+    \noindent We now take the new relatedness scores for an entity $e \in E_D \setminus E_Q$ when calculating the 
+    relatedness score of a document $d$. 
+    
+    \section{Evaluation}
+    Observe the Tables \ref{tab:ndcg_1}, \ref{tab:ndcg_2}, \ref{tab:ndcg_3}, \ref{tab:ndcg_4} and 
+    \ref{tab:ndcg_5} for the NDCG and Precision values. 
+    The description of the different rankings is as follows: 
+    \begin{itemize}
+        \item {[}A{]} : Relativeness Score keeping rate factor {\em a} as $10^{-5}$
+        \item {[}B{]} : Timeliness Score
+        \item {[}C{]} : Relatedness Score considering position of entities
+        \item {[}A'{]} : Relativeness Score keeping rate factor {\em a} as $5 \times 10^{-4}$
+        \item {[}A''{]} : Relativeness Score keeping rate factor {\em a} as $10^{-3}$
+    \end{itemize}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \caption{Average NDCG and Precision of the probabilistic models for all queries (Q1-Q24).}
+    \vspace{3mm}
+    \label{tab:ndcg_1}
+      \begin{tabular}{c|ccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A{]}} &
+      \makecell{{[}B{]}} &
+      \makecell{{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}} &
+      \makecell{{[}A{]}{[}C{]}} &
+      \makecell{{[}B{]}{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & 0.47 & 0.27 & 0.31 & 0.50 & 0.41 & 0.34 & 0.42 \\
+      NDCG@10  & 0.51 & 0.36 & 0.40 & 0.53 & 0.45 & 0.40 & 0.44 \\
+      NDCG@all  & 0.78 & 0.69 & 0.72 & 0.79 & 0.76 & 0.73 & 0.76 \\
+      \midrule
+      P@5 & \textbf{0.48} & 0.28 & 0.34 & \textbf{0.51} & 0.37 & 0.34 & 0.38  \\
+      P@10 & 0.38 & 0.30 & 0.34 & \textbf{0.38} & 0.30 & 0.30 & 0.29 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \vspace{3mm}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A'{]}} &
+      \makecell{{[}A'{]}{[}B{]}} &
+      \makecell{{[}A'{]}{[}C{]}} &
+      \makecell{{[}A'{]}{[}B{]}{[}C{]}} &
+      \makecell{{[}A''{]}} &
+      \makecell{{[}A''{]}{[}B{]}} &
+      \makecell{{[}A''{]}{[}C{]}} &
+      \makecell{{[}A''{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & \textbf{0.49} & 0.51 & 0.41 & 0.41 & 0.48 & 0.50 & 0.43 & 0.43\\
+      NDCG@10  & \textbf{0.54} & \textbf{0.56} & 0.44 & 0.45 & \textbf{0.55} & \textbf{0.56} & 0.46 & 0.47\\
+      NDCG@all  & \textbf{0.80} & 0.80 & 0.76 & 0.76 & 0.79 & 0.80 & 0.76 & 0.76\\
+      \midrule
+      P@5 & \textbf{0.51} & \textbf{0.53} & 0.38 & 0.39 & \textbf{0.49} & \textbf{0.52} & 0.39 & 0.39 \\
+      P@10 & \textbf{0.41} & \textbf{0.40} & 0.29 & 0.30 & \textbf{0.41} & \textbf{0.41} & 0.31 & 0.31 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \caption{Average NDCG and Precision of the probabilistic models for single-entity queries (Q1-Q6).}
+    \vspace{3mm}
+    \label{tab:ndcg_2}
+      \begin{tabular}{c|ccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A{]}} &
+      \makecell{{[}B{]}} &
+      \makecell{{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}} &
+      \makecell{{[}A{]}{[}C{]}} &
+      \makecell{{[}B{]}{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & \textbf{0.73} & 0.30 & 0.14 & \textbf{0.73} & 0.49 & 0.24 & 0.52 \\
+      NDCG@10  & \textbf{0.73} & 0.38 & 0.32 & \textbf{0.74} & 0.52 & 0.30 & 0.52 \\
+      NDCG@all  & \textbf{0.88} & 0.67 & 0.66 & \textbf{0.88} & 0.80 & 0.67 & 0.79 \\
+      \midrule
+      P@5 & \textbf{0.67} & 0.23 & 0.13 & \textbf{0.63} & 0.33 & 0.23 & 0.37  \\
+      P@10 & \textbf{0.43} & 0.27 & 0.25 & \textbf{0.43} & 0.25 & 0.22 & 0.25 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \vspace{3mm}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A'{]}} &
+      \makecell{{[}A'{]}{[}B{]}} &
+      \makecell{{[}A'{]}{[}C{]}} &
+      \makecell{{[}A'{]}{[}B{]}{[}C{]}} &
+      \makecell{{[}A''{]}} &
+      \makecell{{[}A''{]}{[}B{]}} &
+      \makecell{{[}A''{]}{[}C{]}} &
+      \makecell{{[}A''{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & 0\textbf{.73} & \textbf{0.76} & 0.49 & 0.52 & \textbf{0.72} & \textbf{0.76} & 0.52 & 0.53\\
+      NDCG@10  & \textbf{0.77} & \textbf{0.78} & 0.52 & 0.53 & \textbf{0.77} & \textbf{0.78} & 0.54 & 0.55\\
+      NDCG@all  & \textbf{0.89} & \textbf{0.90} & 0.80 & 0.80 & \textbf{0.89} & \textbf{0.90} & 0.80 & 0.80\\
+      \midrule
+      P@5 & \textbf{0.67} & \textbf{0.67} & 0.33 & 0.37 & \textbf{0.63} & \textbf{0.67} & 0.37 & 0.37 \\
+      P@10 & \textbf{0.48} & \textbf{0.48} & 0.25 & 0.27 & \textbf{0.48} & \textbf{0.48} & 0.27 & 0.28 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \caption{Average NDCG and Precision of the probabilistic models for multiple-entity AND queries (Q7-Q12).}
+    \vspace{3mm}
+    \label{tab:ndcg_3}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A{]}} &
+      \makecell{{[}B{]}} &
+      \makecell{{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}} &
+      \makecell{{[}A{]}{[}C{]}} &
+      \makecell{{[}B{]}{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}{[}C{]}}\\
+      \midrule
+      NDCG@5 & \textbf{0.35} & 0.28 & 0.19 & 0.39 & 0.22 & 0.19 & 0.22 \\
+      NDCG@10  & 0.43 & 0.33 & 0.22 & 0.44 & 0.23 & 0.22 & 0.23 \\
+      NDCG@all  & 0.76 & 0.72 & 0.67 & 0.77 & 0.68 & 0.67 & 0.68 \\
+      \midrule
+      P@5 & \textbf{0.47} & 0.33 & 0.17 &  \textbf{0.53} &  0.23 & 0.17 & 0.23  \\
+      P@10 & 0.48 & 0.32 & 0.20 & 0.47 & 0.23 & 0.20 & 0.23 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \vspace{3mm}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A'{]}} &
+      \makecell{{[}A'{]}{[}B{]}} &
+      \makecell{{[}A'{]}{[}C{]}} &
+      \makecell{{[}A'{]}{[}B{]}{[}C{]}} &
+      \makecell{{[}A''{]}} &
+      \makecell{{[}A''{]}{[}B{]}} &
+      \makecell{{[}A''{]}{[}C{]}} &
+      \makecell{{[}A''{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & \textbf{0.37} & 0.39 & 0.19 & 0.19 & 0.34 & 0.33 & 0.20 & 0.20\\
+      NDCG@10  & \textbf{0.47} & 0.46 & 0.23 & 0.23 & \textbf{0.45} & 0.45 & 0.23 & 0.23\\
+      NDCG@all  & \textbf{0.77} & 0.77 & 0.67 & 0.67 & 0.76 & 0.76 & 0.67 & 0.67\\
+      \midrule
+      P@5 & \textbf{0.50} & \textbf{0.53} & 0.20 & 0.20 & \textbf{0.47} & 0.47 & 0.20 & 0.20 \\
+      P@10 & \textbf{0.52} & \textbf{0.50} & 0.23 & 0.23 & 0.48 & 0.47 & 0.23 & 0.23 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \caption{Average NDCG and Precision of the probabilistic models for multiple-entity OR queries (Q13-Q18).}
+    \vspace{3mm}
+    \label{tab:ndcg_4}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A{]}} &
+      \makecell{{[}B{]}} &
+      \makecell{{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}} &
+      \makecell{{[}A{]}{[}C{]}} &
+      \makecell{{[}B{]}{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}{[}C{]}}\\
+      \midrule
+      NDCG@5 & 0.64 & 0.24 & \textbf{0.45} & 0.65 & 0.67 & 0.46 & 0.66 \\
+      NDCG@10  & 0.65 & 0.36 & \textbf{0.56} & 0.66 & 0.68 & 0.54 & 0.66 \\
+      NDCG@all  & 0.85 & 0.69 & 0.79 & 0.85 & 0.86 & 0.79 & 0.85  \\
+      \midrule
+      P@5 & 0.57 & 0.27 & 0.57 & 0.60 & 0.60 & \textbf{0.47} & 0.60  \\
+      P@10 & 0.38 & 0.30 & 0.38 & \textbf{0.42} & 0.40 & 0.42 & 0.40 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \vspace{3mm}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A'{]}} &
+      \makecell{{[}A'{]}{[}B{]}} &
+      \makecell{{[}A'{]}{[}C{]}} &
+      \makecell{{[}A'{]}{[}B{]}{[}C{]}} &
+      \makecell{{[}A''{]}} &
+      \makecell{{[}A''{]}{[}B{]}} &
+      \makecell{{[}A''{]}{[}C{]}} &
+      \makecell{{[}A''{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & 0.65 & 0.64 & 0.67 & 0.66 & 0.65 & 0.64 & 0.66 & 0.64\\
+      NDCG@10  & 0.64 & 0.62 & 0.65 & 0.63 & 0.65 & 0.63 & 0.65 & 0.64\\
+      NDCG@all  & 0.85 & 0.85 & 0.85 & 0.85 & 0.84 & 0.84 & 0.84 & 0.83\\
+      \midrule
+      P@5 & 0.60 & 0.60 & 0.63 & 0.63 & \textbf{0.63} & 0.63 & 0.63 & 0.63\\
+      P@10 & 0.38 & 0.35 & 0.38 & 0.37 & 0.40 & 0.38 & 0.40 & 0.40\\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \caption{Average NDCG and Precision of the probabilistic models for category queries (Q19-Q24).}
+    \vspace{3mm}
+    \label{tab:ndcg_5}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A{]}} &
+      \makecell{{[}B{]}} &
+      \makecell{{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}} &
+      \makecell{{[}A{]}{[}C{]}} &
+      \makecell{{[}B{]}{[}C{]}} &
+      \makecell{{[}A{]}{[}B{]}{[}C{]}}\\
+      \midrule
+      NDCG@5 & 0.18 & 0.26 & 0.46 & 0.22 & 0.24 & 0.48 & 0.27 \\
+      NDCG@10  & 0.25 & 0.36 & 0.48 & 0.27 & 0.35 & 0.54 & 0.35 \\
+      NDCG@all  & 0.64 & 0.69 & 0.77 & 0.66 & 0.69 & 0.77 & 0.70  \\
+      \midrule
+      P@5 & \textbf{0.20} & 0.27 & 0.50 & \textbf{0.27} & 0.30 & 0.50 & 0.33 \\
+      P@10 & \textbf{0.22} & 0.30 & 0.40 & \textbf{0.22} & \textbf{0.30} & 0.38 & 0.27 \\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \begin{table}[!ht]
+    \setlength\tabcolsep{2.8pt}
+    \vspace{3mm}
+      \begin{tabular}{c|cccccccc}
+      \toprule
+      \makecell{Measure} & 
+      \makecell{{[}A'{]}} &
+      \makecell{{[}A'{]}{[}B{]}} &
+      \makecell{{[}A'{]}{[}C{]}} &
+      \makecell{{[}A'{]}{[}B{]}{[}C{]}} &
+      \makecell{{[}A''{]}} &
+      \makecell{{[}A''{]}{[}B{]}} &
+      \makecell{{[}A''{]}{[}C{]}} &
+      \makecell{{[}A''{]}{[}B{]}{[}C{]}} \\
+      \midrule
+      NDCG@5 & \textbf{0.23} & 0.27 & 0.27 & 0.29 & \textbf{0.23} & 0.27 & 0.33 & 0.34\\
+      NDCG@10  & \textbf{0.31} & 0.36 & 0.35 & 0.41 & \textbf{0.34} & \textbf{0.37} & \textbf{0.41} & \textbf{0.45}\\
+      NDCG@all  & \textbf{0.67} & 0.68 & 0.70 & 0.70 & \textbf{0.68} & 0.69 & \textbf{0.72} & 0.73\\
+      \midrule
+      P@5 & \textbf{0.27} & \textbf{0.33} & \textbf{0.33} & 0.37 & \textbf{0.23} & \textbf{0.30} & \textbf{0.37} & \textbf{0.37}\\
+      P@10 & \textbf{0.27} & \textbf{0.28} & \textbf{0.30} & 0.33 & \textbf{0.28} & \textbf{0.30} & \textbf{0.33} & \textbf{0.33}\\
+      \bottomrule
+    \end{tabular}
+    \end{table}
+    
+    \noindent We notice that there is a good improvement in the new relativeness score over the previous relativeness score for single entity queries and categorical queries. 
+    There is also a nice improvement for combination of timeliness and relativeness score for single entity queries. 
+    Further, the improvement is higher for rate factors of $10^{-3}$ and $5 \times 10^{-4}$ where convergence to zero
+    is faster than for a rate factor of $10^{-5}$ where convergence to zero is comparatively slower.
+    
+    \noindent The relatedness score, however, becomes worse considering position of entities than before. 
+    The reason to why the new method fails to give improvement could be attributed to the disambiguation error or 
+    multiple detection of a word by the entity linking system as both a query entity and a related entity. 
+    As an example, consider the query entity as {\tt President\_of\_Colombia} and the following snippet inside a document: ``{\em ...the President of Colombia C\'esar Gaviria today declared ...}". 
+    Suppose that the entity system links the word {\em President of Columbia} to the entity {\tt 
+    President\_of\_Colombia} and 
+    the word {\em President} to the entity {\tt President\_of\_the\_United\_States} due to the high popularity of the 
+    word President associated with the US President. In such a case, the average distance between for the related entity
+    {\tt President\_of\_the\_United\_States} w.r.t the query entity {\tt President\_of\_Colombia} for a document 
+    containing both these entities just once becomes zero since position is same for both these words and hence the 
+    proximity score for the related entity {\tt President\_of\_the\_United\_States} w.r.t the query entity {\tt 
+    President\_of\_Colombia} in the document becomes infinity. 
+    We tackled this problem by changing proximity score as zero wherever it becomes infinity. 
+    However, even after such a change, such a detection by the entity linking system causes our relatedness score to not improve.
+\end{document}

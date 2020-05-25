@@ -1,0 +1,12 @@
+URL	TITLE	RELEVANT?	EXPLANATION
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE2DF123AF931A25754C0A964958260	Results Plus	YES	Article mentions Nigel Mansell	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE0DE163EF934A15754C0A964958260	RESULTS PLUS	YES	Article mentions Nigel Mansell	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE1DE113FF935A15754C0A964958260	Results Plus	YES	Article mentions Nigel Mansell
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE2DA123EF93AA3575BC0A964958260	Emotional Toll of the Family That Heals Together	YES	Article mentions Mario Andretti	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE5D61031F935A3575BC0A964958260	370th Start for Andretti	YES	Article mentions Mario Andretti	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CEED7163FF93BA3575BC0A964958260	A Field Day for the New Champions of Track	YES	Article mentions Mario Andretti
+http://query.nytimes.com/gst/fullpage.html?res=9E0CEED91F3FF932A1575BC0A964958260	Vigilante Slaying Shocks Serene Area of the Bronx	NO	Article has incorrect mapping of a man named Pedro Rodriguez to the Ferrari Formula One driver Pedro Rodriguez.	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE0D8163AF933A0575BC0A964958260	There&apos;s Only Vroom For One of Them	YES	Article mentions Ayrton Senna	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE7DC113EF932A0575BC0A964958260	RESULTS PLUS	YES	Article mentions Michael Schumacher	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE7DD1631F935A3575AC0A964958260	When Looking for the Best Division, Make a Sharp Turn to N.F.C. East	NO	Article mentions Tony Brooks who is NFC American footballer but has been incorrectly mapped to Formula One driver of the same name.	
+http://query.nytimes.com/gst/fullpage.html?res=9E0CE7DE1138F935A2575AC0A964958260	Hawaii All-Star Lineup Ready to Roll	YES	Article mentions Mario Andretti	

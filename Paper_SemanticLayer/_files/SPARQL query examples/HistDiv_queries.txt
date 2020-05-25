@@ -1,0 +1,957 @@
+#Number of articles mentioning Silicon Valley
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Silicon_Valley> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Silicon Valley
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Silicon_Valley> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning German reunification
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/German_reunification> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning German reunification
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/German_reunification> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Sony Playstation
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/PlayStation> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Sony Playstation
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/PlayStation> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Team USA Soccer World Cup
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/United_States_men's_national_soccer_team> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Team USA Soccer World Cup
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/United_States_men's_national_soccer_team> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Middle East Elections
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Democracy_in_the_Middle_East> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Middle East Elections
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Democracy_in_the_Middle_East> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Apple vs Microsoft
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Apple_Computer,_Inc._v._Microsoft_Corp.> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Apple vs Microsoft
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Apple_Computer,_Inc._v._Microsoft_Corp.> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Enron Energy Company
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Enron> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Enron Energy Company
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Enron> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Islamic Terrorist Attacks
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Islamic_terrorism> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Islamic Terrorist Attacks
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Islamic_terrorism> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Mad Cow Disease
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Bovine_spongiform_encephalopathy> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Mad Cow Disease
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Bovine_spongiform_encephalopathy> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Web Browser Wars
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Browser_wars> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Web Browser Wars
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Browser_wars> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Landon Donovan
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Landon_Donovan> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Landon Donovan
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Landon_Donovan> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Bob Dole
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Bob_Dole> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Bob Dole
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Bob_Dole> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Al Gore
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Al_Gore> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Al Gore
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Al_Gore> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Oklahoma City
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Oklahoma_City> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Oklahoma City
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Oklahoma_City> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning World Trade Center
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/World_Trade_Center_(1973–2001)> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning World Trade Center
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/World_Trade_Center_(1973–2001)> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Gay Marriage
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Same-sex_marriage> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Gay Marriage
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Same-sex_marriage> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning India Pakistan Kargil War
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Kargil_War> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning India Pakistan Kargil War 
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Kargil_War> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Sarin Gas
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Sarin> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Sarin Gas
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Sarin> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Arab Israeli Wars
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Arab–Israeli_conflict> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Arab Israeli Wars
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Arab–Israeli_conflict> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Atlantic City
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Atlantic_City,_New_Jersey> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Atlantic City
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Atlantic_City,_New_Jersey> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Human Genome Project
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Human_Genome_Project> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Human Genome Project
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Human_Genome_Project> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Rise of Google
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Google> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Rise of Google
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Google> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning War on Terror
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/War_on_Terror> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning War on Terror
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/War_on_Terror> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning New York Stock Exchange
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/New_York_Stock_Exchange> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning New York Stock Exchange
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/New_York_Stock_Exchange> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Space Shuttle Columbia
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Space_Shuttle_Columbia> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Space Shuttle Columbia
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Space_Shuttle_Columbia> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Summer Olympics Doping Scandals
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Doping_at_the_Olympic_Games> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Summer Olympics Doping Scandals
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Doping_at_the_Olympic_Games> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Global Warming
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Global_warming> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Global Warming
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Global_warming> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning World Trade Organization
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/World_Trade_Organization> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning World Trade Organization
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/World_Trade_Organization> .
+ ?article dc:title ?title
+}
+
+#Number of articles mentioning Charlie Sheen
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT distinct ?year count(?article) as ?num_article
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Charlie_Sheen> .
+ ?article dc:title ?title
+}GROUP BY(year(?date) as ?year)
+ORDER BY DESC(?num_article)
+
+#Articles mentioning Charlie Sheen
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1987-06-01"^^xsd:date && 
+                               ?date <= "1998-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Charlie_Sheen> .
+ ?article dc:title ?title
+}
+

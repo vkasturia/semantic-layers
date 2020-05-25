@@ -1,0 +1,79 @@
+
+\subsection{Setup}
+Our objective is to measure the ranking quality of the results
+returned by our system and check the usefulness or importance
+of a document based on its position in the result list and
+to analyze the ranking models and their combinations.
+
+\vskip 0.15in
+\noindent Due to the absence of a ground truth, we created our own ground truth consisting of 28 queries. The queries comprise of:
+\begin{compactitem}
+\item   \textbf{Query 1-7:} Single-entity queries
+\item   \textbf{Query 8-14:} Contain two(or more) entities with AND Semantics
+\item   \textbf{Query 15-21:} Contain two(or more) entities with OR Semantics
+\item   \textbf{Query 22-28:} Contain entities belonging to a category (OR Semantics)
+\end{compactitem}
+\vspace{0.5mm}
+The queries 1-14 and 15-28 can be broadly grouped as AND Semantics and OR Semantics 
+respectively. The queries were selected from a period of 5 years and many of them are 
+about significant events or prominent entities during that time. 
+For ease of evaluation, we try to restrict the number of results returned
+to the range of 20 to 60 documents by varying the query time period and for evaluation 
+set granularity to day.
+
+\vskip 0.15in
+\noindent To measure the ranking quality of our ranking system
+we decided to manually evaluate the results returned
+by these queries.
+We built a graded relevance scale of documents using
+scoring scale of 0 to 3 with the score description as follows:
+\begin{compactitem}
+\item   \textbf{Score 0}: The document has almost nothing to do with the query entities
+\item   \textbf{Score 1}: The topic of the document is \textbf{not} about the query entities, however the query entities are related to the document context
+\item   \textbf{Score 2}: The topic of the document is \textbf{not} about the query entities, however the query entities are important for the document context
+\item   \textbf{Score 3}: The topic of the document is about the query entities 
+\end{compactitem}
+\vspace{0.5mm}
+
+
+\noindent For measuring Precision, we consider only the documents with manually
+graded score of 2 or 3 as relevant.
+
+\noindent The categorical queries (queries 22-28) use the {\tt SERVICE} operator for
+querying DBpedia's SPARQL endpoint but not any {\tt OPTIONAL} {\tt FILTER} operator.
+The semantic layer was hosted in a Virtuoso server installed
+in a modest personal computer (MacBook Pro, Intel Core i5, 8GB main memory)
+and we run the queries in Java 1.8 using Apache Jena 3.1.
+
+
+\subsection{Results}
+
+\begin{table}[]
+\centering
+\caption{NDCG for different ranking models and their combination.}
+\label{tbl_ndcg}
+\begin{tabular}{|
+>{\columncolor[HTML]{FFFFC7}}c |c|c|c|c|c|c|c|c|}
+\hline
+\cellcolor[HTML]{F8FF00}                               & \multicolumn{8}{c|}{\cellcolor[HTML]{FFCB2F}{\color[HTML]{333333} Normalized Discounted Cumulative Gain (NDCG)}}                                                                                                                            \\ \cline{2-9} 
+\cellcolor[HTML]{F8FF00}                               & \multicolumn{4}{c|}{\cellcolor[HTML]{FFFC9E}AND Semantics}                                                           & \multicolumn{4}{c|}{\cellcolor[HTML]{FFFC9E}OR Semantics}                                                            \\ \cline{2-9} 
+\multirow{-3}{*}{\cellcolor[HTML]{F8FF00}Ranking Model} & \cellcolor[HTML]{FFCE93}@5 & \cellcolor[HTML]{FFCE93}@10 & \cellcolor[HTML]{FFCE93}@20 & \cellcolor[HTML]{FFCE93}end & \cellcolor[HTML]{FFCE93}@5 & \cellcolor[HTML]{FFCE93}@10 & \cellcolor[HTML]{FFCE93}@20 & \cellcolor[HTML]{FFCE93}end \\ \hline
+Random Ranking                                            & 0.264                       & 0.352                      & 0.435                      & 0.681                       & 0.271                      & 0.345                      & 0.473                       & 0.676                       
+\\ \hline
+Relativeness [A]              & 0.437                     & 0.490                       & 0.595                       & 0.786                     & 0.399                       & 0.434                       & 0.572                     & 0.732                       \\ \hline
+Timeliness [B]                                            & 0.274                       & 0.335                       & 0.445                     & 0.685                       & 0.242                       & 0.352                     & 0.488                       & 0.682                       
+\\ \hline
+Relatedness [C]                                           & 0.352                       & 0.434                       & 0.574                     & 0.743                       & 0.457                       & \textbf{0.527}            & \textbf{0.671}                       & \textbf{0.775}
+\\ \hline
+[A]*[B]                                                   & 0.490                       & 0.518                       & 0.611                     & 0.796                       & 0.456                       & 0.470                     & 0.601                       & 0.753                       
+\\ \hline
+[A]*[C]                                                   & 0.466                       & 0.518                       & 0.618                     & 0.794                       & 0.469                       & 0.497                     & 0.620                       & 0.760                       
+\\ \hline
+[B]*[C]                                                   & 0.403                        & 0.471                       & 0.559                     & 0.743                       & 0.486                       & 0.517                     & 0.665                       & 0.772                       
+\\ \hline
+[A]*[B]*[C]                                               & \textbf{0.501}  
+& \textbf{0.527}              & \textbf{0.622}            & \textbf{0.800}                       & \textbf{0.493}              & 0.520                     & 0.624                       & 0.771                       
+\\ \hline
+\end{tabular}
+\end{table}
+\end{document}

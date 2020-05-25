@@ -1,0 +1,3 @@
+hdfs dfs -get /data/nyt_collection/nyt_corpus_1996.har /home/fafalios/test
+
+hdfs dfs -ls /data/nyt_collection

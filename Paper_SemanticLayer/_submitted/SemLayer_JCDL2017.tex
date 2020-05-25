@@ -1,0 +1,1369 @@
+\documentclass{libtex/sig-alternate-05-2015}
+
+\usepackage{url}
+\usepackage{color}
+\usepackage{paralist}
+\usepackage{fancyvrb}
+\usepackage{epsfig}
+\usepackage{subfig}
+\usepackage[nomove]{cite}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage{epstopdf}
+\usepackage{multirow}
+
+\input{libtex/procs}
+
+\newcommand{\q}[1]{\lq\lq{}{}#1\rq\rq{}{}}
+\newcommand{\new}[1]{{\color{blue}#1}}
+\newcommand{\tocheck}[1]{{\color{red}#1}}
+\newcommand{\internal}[1]{\footnote{\fbox{{\tiny InternalNote:}}{\tt\em #1}}}
+\newcommand{\draft}[1]{\underline{{\bf (Draft)}}{\bf\em #1}}
+
+\newcommand{\tool}[0]{{\tt ArchiveSpark2Triples}}
+
+\begin{document}
+
+\setcopyright{acmcopyright}
+%\doi{10.475/123_4}
+%\isbn{123-4567-24-567/08/06}
+%\conferenceinfo{PLDI '13}{June 16--19, 2013, Seattle, WA, USA}
+%\acmPrice{\$15.00}
+
+
+
+\title{Building and Querying Semantic Layers for Web Archives}
+
+\author{
+Pavlos Fafalios, Helge Holzmann, Vaibhav Kasturia, Wolfgang Nejdl\\
+\affaddr{L3S Research Center, Hannover, Germany}\\
+\email{\{fafalios, holzmann, kasturia, nejdl\}@l3s.de}
+}
+
+\maketitle
+
+
+\begin{abstract}
+Web archiving is the process of collecting portions of the Web
+to ensure that the information is preserved
+for future exploitation.
+However, despite the increasing number of web archives worldwide,
+the absence of efficient and meaningful exploration methods still remains a major
+hurdle in the way of turning them into a usable and useful information source.
+In this paper, we elaborate on this problem and
+propose an RDF/S model and a distributed framework for
+building semantic profiles (\q{layers}) that describe
+semantic information about the contents of web archives.
+A semantic layer allows
+describing metadata information about the archived documents,
+annotating them with useful semantic information (like entities, concepts and events), and
+publishing all this data on the Web as Linked Data.
+Such structured repositories
+offer advanced query and integration capabilities
+and make web archives directly exploitable by other systems and tools.
+To demonstrate their query capabilities,
+we build and query semantic layers for three different types of
+web archives.
+An experimental evaluation showed that a semantic layer
+can answer information needs that existing keyword-based systems
+are not able to sufficiently satisfy.
+\end{abstract}
+
+%\keywords{Web Archives; Semantic Layer; Profiling; Linked Data}
+
+\section{Introduction}
+Significant parts of our cultural heritage are produced and consumed on the Web.
+However, the ephemeral nature of the Web makes most of its information
+unavailable and lost after a short period of time.
+Aiming to avoid losing important historical information,
+a web archive captures portions of the Web to ensure the information
+is preserved for future researchers, historians,
+and interested parties in general.
+
+Despite the increasing number of web archives worldwide,
+the absence of efficient and meaningful exploration methods
+still remains a major hurdle in the
+way of turning web archives into a usable and useful source of information.
+The main functionalities offered by existing systems are to find
+older versions of a specific web page,
+to search on specific collections,
+or to search using keywords
+and filter the retrieved results by
+selecting some basic metadata values.
+However,
+for a bit more complex information needs,
+which is usually the case when exploring web archives \cite{whitelaw2012towards},
+keyword-based search
+leads to ineffective interactions and poor results\cite{johnson2008users}.
+This is true especially for {\em exploratory search} needs
+where searchers
+are often unfamiliar with the domain of their goals,
+unsure about the ways to achieve their goals,
+or need to learn about the topic in order to understand how to
+achieve their goals \cite{marchionini2006exploratory}.
+Thus, for exploring web archives,
+there is the need to go beyond keyword-based search and
+support more advanced information seeking
+strategies \cite{johnson2008users,whitelaw2012towards,whitelaw2015generous}.
+
+To cope with this problem,
+we propose building semantic profiles (\q{layers}) that describe semantic information about
+the contents of archived documents.
+Specifically, we base upon Semantic Web technologies and
+propose an RDF/S \cite{brickley2014rdf} data model that allows:
+a) describing useful metadata information about each archived document,
+b) annotating each document with entities, concepts and events
+extracted from its textual contents,
+c) enriching the extracted entities\footnote{For simplicity,
+when we say {\em entity} we refer to {\em entity}, {\em concept} (e.g., Democracy) or {\em event}.}
+with more semantic information (like properties and related entities coming from
+other knowledge bases), and
+d) publishing all this data on the Web in the standard RDF format,
+thereby making all this information directly accessible and exploitable by other systems and tools.
+Then, we can use that model for creating and maintaining a semantic repository
+of structured data about a web archive.
+Note that the actual contents of the web archive are not
+stored in the repository.
+The proposed approach only stores metadata information
+that allows identifying interesting documents and information based on
+several aspects (time, entity, category or property of entities, etc.).
+Thus, such a repository acts as a {\em semantic layer} over the archived documents.
+
+By exploiting the expressive power of SPARQL \cite{prud2008sparql}
+and its federated features \cite{prud2013sparql},
+we can run advanced queries over a semantic layer.
+For example, in case we have constructed a semantic layer
+for a {\em news archive}, we can run queries like:
+\begin{compactitem}
+\item find articles of 1995 discussing about New York lawyers
+\item find medicine-related articles published during 1995
+\item find out the most discussed politician during 1995
+\item find out politicians discussed in articles of 1990 together with {\em Nelson Mandela}
+\end{compactitem}
+Note that for all these queries we can directly (at query-execution time)
+integrate information coming from online knowledge bases like DBpedia \cite{lehmann2015dbpedia}.
+For instance, regarding the first query, for each lawyer
+we can directly access DBpedia and
+retrieve his/her birth date,
+a photo and a description in a specific language.
+Thus, semantic layers enable connecting
+web archives with existing knowledge bases.
+
+In a nutshell, in this paper we make the following contributions:
+\begin{compactitem}
+\item   We introduce a simple but flexible RDF/S data model,
+        called {\em Open Web Archive},
+        which allows describing and publishing metadata and semantic information about
+        the contents of a web archive.
+\item   We detail the process
+        of constructing semantic layers and
+        we present an open source and distributed framework,
+        called \tool, that
+        facilitates their efficient construction.
+\item   We present (and make publicly available)
+        three semantic layers for three different types of web archives:
+        one for a {\em  versioned web archive},
+        one for a {\em non-versioned news archive},
+        and one for a {\em social-media archive}.
+\item   We present the results of a comparative evaluation using a set
+        of 20 information needs of exploratory nature
+        (providing also their relevance judgements).
+        The results showed that a semantic layer can satisfy information
+        needs that existing key\-word-based systems
+        are not able to sufficiently satisfy, and also enabled
+        us to identify problems that can affect the effectiveness of
+        query answering.
+\end{compactitem}
+
+\vspace{1mm}
+The rest of this paper is organized as follows:
+Section \ref{sec:motivAndRW} motivates our work and presents
+related literature.
+Section \ref{sec:constrSemLayers} introduces the
+{\em Open Web Archive} data model and describes
+the process and a framework for constructing semantic layers.
+Section \ref{sec:casestudies} presents three semantic layers
+for three different types of web archives, as well as
+their query capabilities.
+Section \ref{sec:eval} presents evaluation results.
+Finally, Section \ref{sec:concl} concludes the paper and
+discusses directions
+for future research.
+
+
+\section{Motivation and Related Work}
+\label{sec:motivAndRW}
+
+In this section, we first
+motivate our work by discussing information needs that our approach intends to
+satisfy for enabling more sophisticated search and exploration of web archives (\S \ref{motivation}).
+Then we review related works by discussing also the difference of our approach (\S \ref{rw}).
+
+\subsection{Motivating questions}
+\label{motivation}
+
+Working with large web archives in the context of the
+Alexandria project\footnote{ERC (European Research Council)
+Advance Grant, Nr. 339233, \url{http://alexandria-project.eu/}.},
+we have identified the following information needs
+that an advanced exploration system for web archives should satisfy:
+
+\begin{compactitem}
+\item[Q1]   {\em Information Exploration.}
+            How to explore documents about entities from the past in a
+            more advanced and \q{exploratory} way,
+            e.g., even if we do not know the entity names
+            related to our information need?
+            For example, how can we find articles of a specific time period
+            discussing about a specific category of entities (e.g., {\em philanthropists})
+            or about entities sharing some characteristics (e.g., {\em born in Germany before 1960})?
+\item[Q2]   {\em Information Integration.}
+            How to explore web archives by also integrating
+            information from existing kno\-wledge bases?
+            For example, how can we find articles discussing about
+            some entities and for each entity to also retrieve
+            and show some characteristics (e.g., an image or a description in a specific language)?
+            Cross-domain knowledge bases like DBpedia contain such properties for almost every popular entity.
+            Moreover, how to directly integrate information coming from
+            multiple web archives?
+            For example, how can we combine information
+            from a news archive and a social media archive?
+\item[Q3]   {\em Information Inference.}
+            How to infer knowledge by exploiting the contents of a web archive? For example,
+            can we identify important time periods related to one or more entities?
+            Vice-versa, can we find out the most popular entities of a specific type
+            in a specific time period (e.g., most discussed {\em politicians} in articles of {\em 2000})?
+            Or how can we understand the topic of a web page (e.g., find news articles related to {\em medicine})?
+\item[Q4]   {\em Robustness (in information change).} How to explore a web archive by automatically taking into account the change
+            of entities over time? For example, the company {\em Accenture} was formerly known
+            as {\em Andersen Consulting}, or
+            the city {\em Saint Petersburg} was previously named {\em Leningrad}.
+            Such temporal reference variants are common in the case of high impact events,
+            new technologies, role changes, etc. How can we find
+            documents from the past about such entities without having to worry about their correct reference?
+\item[Q5]   {\em Multilinguality.} How to explore documents about
+            entities from the past
+            independently of the document language (and thus of the language
+            of the entity name)? For instance,
+            {\em abortion} is {\em Avortement} in French and
+            {\em Sch\-wan\-ger\-schaftsabbruch} in German.
+            How can we find documents about entities without having to worry
+            about the document and entity language?
+\item[Q6]   {\em Interoperability.}
+            How to facilitate exploitation of web archives by other systems?
+            How to expose information about web archives
+            in a standard and machine understandable format,
+            that will always be available on the Web,
+            and that will allow for easy information integration?
+            How to avoid downloading and parsing the entire web archive for
+            identifying an interesting part of it related both to a time period
+            and to some entities. For example, how can we gather a corpus
+            of articles of {\em 2004} discussing about {\em Greek politicians}?
+\end{compactitem}
+
+
+
+\subsection{Related Work}
+\label{rw}
+
+\subsubsection{Profiling Web Archives}
+The proposed semantic layer can be considered as a way to {\em profile}
+the contents of a web archive.
+AlSum et al. \cite{alsum2014profiling} exploit the age of the archived copies
+and their supported domains,
+to avoid sending queries to archives that likely do not hold the archived page.
+Sawood et al. \cite{alam2015web} examine the size and precision
+trade-offs in different policies for producing profiles of web archives
+(ranging between using full URIs and only top-level domains).
+Bornand et al.\cite{bornand2016routing}
+explore the use of binary, archive-specific classifiers
+to determine whether or not to query an archive for a given URI.
+Alam et al.\cite{alam2016web}
+introduce a random searcher model to randomly explore the holdings of an archive
+(by exploiting co-occurring terms).
+The aim of all these works is to improve the effectiveness of
+query routing strategies in distributed archive search.
+
+\vspace{0.9mm} \noindent
+{\bf Difference of our approach.}
+Such profiling approaches do not allow expressing semantic information about the
+{\em contents} of the archived documents and thus cannot be exploited for satisfying more sophisticated
+information needs like those discussed in \S \ref{motivation}.
+
+
+\subsubsection{Exploring Web Archives}
+
+The Wayback Machine is a digital archive
+of the Web
+created by the Internet Archive (\url{https://archive.org/}).
+It currently contains more than
+450 billion web pages, making it the biggest web archive in the world.
+With the Wayback Machine, the user can retrieve and access older versions of a web page.
+The results are displayed in a calendar view
+showing also the number of times the URL was crawled.
+Wayback Machine also offers faceted exploration of archived collections,
+thus allowing the user to filter the displayed results by media type, subject,
+collection, creator, and language.
+Recently, it also started offering keyword-based searching. %(currently in beta version).
+
+The Portuguese Web Archive (PWA) (\url{http://archive.pt})
+is a research infrastructure that enables search and access to files archived from the Web since 1996.
+PWA provides comprehensive crawls of the Portuguese Web
+and supports both keyword and URL based searching.
+
+Memento's {\em Time Travel} service (\url{http://mementoweb.org})
+makes it easier for users
+to browse the archived version of a web page
+by redirecting them to the archive hosting the page.
+The user provides the URL of the web page and a date of interest
+and Time Travel checks various web archives for finding
+an older version of the web page closest to the time indicated by the user.
+
+Archive-It (\url{https://archive-it.org}) is a
+web archiving service from the Internet Archive that helps
+harvesting, building and preserving collections of digital content.
+It currently supports keyword-based searching
+while the user can also filter the displayed results based on several
+metadata values like creator, subject, and language.
+Padia et al.\cite{padia2012visualizing} present an alternate interface for
+exploring an Archive-It collection
+consisting of multiple visualizations (image plot with histogram, wordle,
+bubble chart and timeline).
+
+\comment{====
+    EverLast\cite{anand2009everlast}
+    is a web archiving framework built over a peer-to-peer architecture.
+    It supports human-assisted archive gathering and
+    allows for time-based search and analysis.
+    It indexes the documents by term and time
+    where each term is assigned to a peer responsible for managing
+    its index.
+====}
+
+Regarding research works,
+Tempas \cite{holzmann2016tempas}
+is a keyword-based search system that exploits a social bookmarking service for
+temporally searching a web archive by indexing tags and time.
+It allows temporal selections
+for search terms, ranks documents based on their
+popularity and also provides query recommendations.
+%
+Kanhabua et al. \cite{kanhabua2016search}
+propose a search system that uses Bing for searching the current Web
+and retrieving a ranked list of results.
+The results are then linked to the WayBack Machine
+thereby allowing keyword search on the Internet Archive without processing
+and indexing its raw contents.
+%
+Vo et al. \cite{vo2016can}
+study the usefulness of non-content evidences
+for searching web archives,
+where the evidences are mined only from metadata of the web pages,
+their links and the URLs.
+%
+ArchiveWeb \cite{fernando2016archiveweb}
+is a search system that supports collaborative search
+of archived collections.
+It allows searching across multiple collections
+in conjunction with the live web,
+grouping of resources,
+and enrichment using comments and tags.
+%
+Jackson et al.\cite{jackson2016desiderata} present two prototype
+search interfaces for web archives.
+The first provides facets to filter the displayed results by several metadata values
+(like content type and year of crawl), while
+the other is a trend visualization inspired by Google's Ngram Viewer.
+%
+\comment{
+    Matthews et al. \cite{matthews2010searching} propose Time Explorer,
+    an application designed to help users see how topics and entities associated
+    with a free-text query change over time.
+    By searching on time expressions
+    extracted automatically from text, Time Explorer
+    allows users to explore how topics evolved in the
+    past and how they will continue to evolve in the future.
+}
+Finally, Singh et al.\cite{singh2016history}
+introduce the notion of {\em Historical Query Intents}
+and model it as a search result diversification task
+which intends to present the most relevant results (for free text queries) from a
+topic-temporal space.
+For retrieving and ranking historical documents (e.g., news articles),
+the authors propose a novel retrieval algorithm, called HistDiv,
+which jointly considers the aspect and time dimensions.
+
+\comment{====
+    Expedition \cite{singh2016expedition} is a time-aware search system for scholars.
+    It allows users to search articles in a news collection
+    by entering free-text queries and choosing from four retrieval models:
+    Temporal Relevance,
+    Temporal Diversity,
+    Topical Diversity, and
+    Historical Diversity.
+    The results are presented in a
+    newspaper-style interface, while entity filters allows users refine
+    the results.
+====}
+
+\vspace{0.5mm} \noindent
+{\bf Difference of our approach.}
+Although existing systems offer user-friendly interfaces,
+they cannot satisfy more complex (but common) information needs
+like those described in \S \ref{motivation}.
+By basing upon semantic technologies, a semantic layer
+allows to {\em semantically} describe the contents of a web archive
+and to directly \q{connect} them with existing information available
+on online knowledge bases (like DBpedia).
+In that way, we can not only explore archived documents in a more advanced way,
+but also integrate information, infer new knowledge and quickly
+identify interesting parts of a web archive for further analysis.
+
+The main drawback of our approach is its user-friendliness since,
+currently, for querying a semantic layer one has to write structured (SPARQL) queries.
+However, user-friendly interfaces can be developed on top of semantic layers
+that will allow end-users to easily explore them.
+Moreover, we can directly exploit
+systems like Sparklis \cite{ferre2014sparklis} %and SemFacet \cite{arenas2014semfacet}
+that allow to explore the contents of semantic repositories through
+a Faceted Search-like interface \cite{sacco2009dynamic,tzitzikas2016faceted}.
+There are also approaches that translate free-text que\-ries to SPARQL
+(like \cite{unger2012template}).
+Providing such user-friendly interfaces on top of semantic layers
+is out of the scope of this paper but
+an important direction for future research.
+
+
+
+\subsubsection{Analyzing Web Archives}
+
+Lin et. al. \cite{lin2014infrastructure} propose a platform
+for analyzing web archives, called Warcbase,
+which is built on Apache HBase,
+a distributed data store.
+Storing the data using HBase allows the use of tools in the
+Hadoop ecosystem for efficient analytics and data processing.
+Warcbase also provides  browsing capabilities similar to the Wayback Machine
+allowing users to access historical versions of captured web pages.
+
+ArchiveSpark \cite{holzmann2016archivespark} is a programming framework
+for efficient and distributed web archive processing.
+It is based on the Apache Spark
+cluster computing framework \cite{spark2015apache}
+and makes use of standardized data formats
+for analyzing web archives.
+\tool\ is
+an extension of ArchiveSpark for efficiently creating
+semantic layers for web archives (more in \S \ref{subsec:framework}).
+
+
+
+\section{Building Semantic Layers}
+\label{sec:constrSemLayers}
+
+\subsection{The \q{Open Web Archive} Data Model}
+\label{subsec:semanticmodel}
+
+We first introduce an RDF/S data model
+for describing metadata and semantic information about the documents of a web archive.
+Figure \ref{fig:owa} depicts the proposed model,
+which we call {\em Open Web Archive} data model.\footnote{The specification
+ is available at: \url{http://l3s.de/owa/}}
+We have defined 2 new classes and 3 new properties,
+while we exploit elements from many other data models.
+The class {\tt owa:Archi\-ved\-Do\-cu\-ment} represents a document that has been archived.
+An archived document may be linked or may not be linked with some versions
+(i.e., instances of {\tt owa:Ve\-rsio\-ned\-Do\-cu\-ment}).
+For example, an archi\-ved article from the
+New York Times corpus \cite{sandhaus2008new} does not contain versions.
+On the contrary,
+Internet Archive
+contains versions for billions of web sites.
+In case the archived document contains versions,
+it can be associated with some metadata information
+like the date of its first capture (using the property {\tt owa:firstCapture}),
+the date of its last capture (using the property {\tt owa:lastCapture}) as well as
+its total number of captures (using the property {\tt owa:numOfCaptures}).
+
+An archived or versioned document
+can be associated with three main kinds of elements:
+i) with metadata information like date of publication/capture,
+title of document, and format (mime type),
+ii) with other archived or not documents (i.e., links to other web pages), and
+iii) with a set of annotations.
+For describing some of the metadata we exploit terms of the
+Dublin Core Metadata Initiative\footnote{\url{http://dublincore.org/}}.
+For describing an annotation, we exploit
+the Open Annotation Data Model \cite{sanderson2013open}
+and the Open Named Entity Extraction (NEE) Model \cite{fafalios2015ijait}. % \footnote{\url{http://www.ics.forth.gr/isl/oae/}}
+The Open Annotation Data Model specifies an RDF-based framework for creating associations (annotations)
+between related resources, while the Open NEE Model is an extension
+that allows describing the result of an entity extraction process.
+An annotation has a {\em target}, which in our case is an archived or versioned document, and
+a {\em body} which is a concept, entity or event
+mentioned in the document.
+We can also directly relate an archived or versioned document with an
+entity, concept or event by exploiting the property \q{{\tt mentions}}
+of schema.org\footnote{\url{http://schema.org/mentions}}.
+This can highly reduce the number of derived triples.
+A concept, entity or event can be associated with information like
+its name, a confidence score, its position in the document, and a resource (URI).
+The URI enables to retrieve additional information from the Linked Open Data (LOD)
+cloud \cite{heath2011linked} (like properties, relations with other entities, etc.).
+
+\begin{figure*}
+\vspace{-2mm}
+\centering
+\fbox{\includegraphics[width=5.7in]{figures/owa.eps}}
+\vspace{-2mm}
+\caption{The {\em Open Web Archive} data model.}
+\label{fig:owa}
+
+\vspace{5mm}
+
+\centering
+\fbox{\includegraphics[width=5.7in]{figures/owa_inst_nonvers.eps}}
+\vspace{-2mm}
+\caption{Describing an archived article (non-versioned) using the {\em Open Web Archive} data model.}
+\label{fig:owa_instNonVers}
+
+\vspace{5mm}
+
+\centering
+\fbox{\includegraphics[width=6.9in]{figures/owa_inst_vers.eps}}
+\vspace{-4mm}
+\caption{Describing an archived web page (versioned) using the {\em Open Web Archive} data model.}
+\label{fig:owa_inst}
+\end{figure*}
+
+Figure \ref{fig:owa_instNonVers} depicts an example of an archived non-versioned article.
+We can see some of its metadata values (date, format, title),
+its references to other web pages, and its annotations.
+We notice that the entity name \q{Federer} was identified
+in that document.
+We can also see that this entity has been linked with the DBpedia resource
+corresponding to the tennis player {\em Roger Federer}.
+By accessing DBpedia, we can now retrieve more information about this entity
+like its birth date, an image, a description in a specific language, etc.
+
+Figure \ref{fig:owa_inst} depicts an example of an archived web page containing versions.
+Now, each version has its own metadata, annotations and references to other web pages.
+We notice that the event name \q{Euro 2008} was identified in the first version of the archived document
+and was linked to the DBpedia resource corresponding to the soccer tournament {\em UEFA Euro 2008}.
+The archived document is also associated with metadata information related to its versions.
+Specifically we can see the date of its first capture, the date of its last capture and
+its total number of captures.
+In addition, by exploiting the {\tt same-as} property of OWL Web ontology language \cite{bechhofer2009owl},
+we can define that a specific version of a URL is the same as another version
+(e.g., versions 2 and 3 in our example).
+Thereby, we can avoid storing exactly the same data for two identical versions
+(as we stated in introduction, redundancy is a common problem in web archives).
+
+
+\vspace{0.5mm} \noindent
+{\bf Extensibility and Update.}
+The proposed model is highly extensible.
+For instance, we can
+exploit the VoID Vocabulary \cite{alexander2011describing}
+and express dataset-related information like
+statistics (number of triples, number of entities, etc.),
+creation or last modification date,
+the subject of the dataset,
+collection from which the dataset was derived, etc.
+Likewise, one may exploit the PROV data model \cite{moreau2013prov}
+and store provenance-related information
+(e.g., which tool was used for crawling the documents or for annotating them,
+what organizations or people were involved in the crawling or annotation process,
+etc.).
+In addition, since the contents of the archived documents never change,
+we can easily update a semantic layer by just
+adding triples in the RDF repository,
+e.g., for describing more metadata about the archived documents
+or for including new versions.
+In the latter case only, we should also
+update the date of last capture
+and the total number of captures of the corresponding
+archived document.
+
+
+\subsection{The Construction Process}
+\label{subsec:theprocess}
+
+For constructing a semantic layer we follow
+the following process:
+
+\vspace{0.5mm} \noindent
+{\em - Read/Extraction of main content and metadata}.
+We first extract the main content (full text) from
+each archived document (for annotating it with entities) and
+we also read its metadata.
+This, of course, depends on the format used for
+storing the archive. For example,
+WARC (ISO 28500:2009) is the standard format for storing web crawls, %\footnote{\url{https://iipc.github.io/warc-specifications/}}
+CDX is widely used for describing metadata of web documents,
+while NITF (News Industry Text Format) is a standard %\footnote{\url{https://iptc.org/standards/nitf/}}
+XML-based format for storing and sharing news articles.
+For extracting the main content from HTML web pages,
+we should also remove the surplus
+around the main textual content of a web page (boilerplate, templates, etc.).
+We can also extract any other information related to an archived document
+that we may want to semantically describe, like the title of the web page or
+links to other web pages.
+
+\vspace{0.5mm} \noindent
+{\em - Entity extraction and linking}.
+We apply entity extraction and linking in the full text of each
+archived document for detecting entities, events and concepts
+mentioned in the document and associating them with web resources
+(like DBpedia/Wikipedia URIs).
+TagMe \cite{ferragina2010tagme},
+AIDA \cite{hoffart2011robust} and
+BabelFy \cite{moro2014entity} are
+well-known entity extraction and linking tools with
+ satisfactory performance in entity disambiguation.
+
+\vspace{0.5mm} \noindent
+{\em - Schema-based generation of RDF triples}.
+Now, we exploit the {\em Open Web Archive} data model, as well
+as any other needed vo\-ca\-bu\-la\-ry/onto\-lo\-gy, for
+generating the RDF triples that
+describe all the desired data related
+to the archived documents (metadata, entities, etc.).
+For representing the extracted entities (instances of {\tt oa:Annotation},
+ {\tt oae:\-Entity}, {\tt dc:\-Event}, and {\tt dc:\-Concept}),
+we can use blank nodes \cite{beckett2004rdf}
+(since such information is not needed to be assigned a unique URI).
+We can use blank nodes for also naming the
+archived or versioned documents (instances of {\tt owa:Archi\-ved\-Do\-cu\-ment} or
+{\tt owa:\-Ve\-rsionedDo\-cu\-ment}) in case no URLs are given by the archive provider
+and no other URLs can be used (e.g., links to the Wayback Machine).
+Moreover,
+for the case of versioned documents,
+if a specific version of a document is the
+same as an older version of the same document
+(e.g., in case they have the same checksum),
+we can add a {\tt same-as} link
+starting from the newer document and pointing to
+the older one (thereby avoiding storing identical information).
+
+
+\vspace{0.5mm} \noindent
+{\em - Entity enrichment (optionally)}.
+We can enrich the extracted entities with more
+information coming from other knowledge bases
+(like properties, characteristics and relations with other entities).
+The LOD cloud contains hundreds of knowledge bases covering many domains.
+With this the semantic layer can directly offer more data about the extracted entities,
+allowing for more sophisticated query capabilities
+and faster query answering, without requiring
+to access external knowledge bases.
+This step can be also performed after the construction
+of the semantic layer, at any time, since we
+just have to add triples describing information about
+the entities in the repository.
+
+\vspace{0.5mm} \noindent
+{\em - Storage}.
+The derived RDF triples are stored in a triplestore
+(e.g., OpenLink Virtuoso\footnote{https://virtuoso.openlinksw.com/}).
+Now, we can access the triplestore and query the semantic layer
+through SPARQL.
+
+\vspace{0.5mm} \noindent
+{\em - Publication (optionally)}.
+We can make the triplestore publicly available through
+a SPARQL endpoint and/or as Linked Data.
+This will allow other applications to directly access and query
+the semantic layer.
+
+
+
+\subsection{The \q{ArchiveSpark2Triples} Framework}
+\label{subsec:framework}
+
+ArchiveSpark \cite{holzmann2016archivespark}
+is a programming framework for efficiently analyzing
+web archives stored in the standard WARC/ CDX format.
+The core of ArchiveSpark is its unified data model
+which stores records in an hierarchical way,
+starting with the most essential metadata of a webpage like its URL, timestamp, etc.
+Based on this metadata, ArchiveSpark can run basic operations
+such as filtering, grouping and sorting very efficiently.
+In a step-wise approach the records can be enriched
+with more information by applying external modules,
+called \textit{enrich functions}.
+An \textit{enrich function} can call any third-party tool
+to extract or generate new information from the contents of a web page.
+These functions can be fully customized and shared among researchers and tasks.
+
+\tool\footnote{\url{https://github.com/helgeho/ArchiveSpark2Triples}}
+is an extension of ArchiveSpark that automates the
+construction of a semantic layer.
+It reads a web archive and outputs information about
+its resources as well as derived information in the Notation3 (N3) RDF format
+based on the {\em Open Web Archive} data model.
+Internally, \tool\ defines three types of documents:
+\textit{archived document} (instance of {\tt owa:Archi\-ved\-Do\-cu\-ment}),
+\textit{versioned document} (instance of {\tt owa:Ve\-rsi\-oned\-Do\-cu\-ment}), and
+\textit{same-as versioned document} (instance of {\tt owa:Ve\-rsi\-oned\-Do\-cu\-ment}
+which constitutes a \textit{revisit-record} (duplicate of a previous capture).
+In more detail:
+\begin{compactitem}
+\item
+An \textit{archived document} represents all versions of the same web page,
+i.e., all records with the same URL.
+Its triples reflect the web page as one unit, %properties
+including the number of captures in the web archive,
+the timestamps of the first and last capture as well as pointers to
+the corresponding \textit{versioned documents}.
+
+\item A \textit{versioned document} represents each capture of a web page,
+i.e., every record of a web page in the archive.
+The assignment of URLs to the versioned documents is customizable and thus can be defined by the user.
+By default, the triples of such a document only include the date of the capture
+and its mime type (e.g., text, image, etc.).
+However, the framework supports to extend this easily
+by accessing and transforming into triples any property of ArchiveSpark's data model.
+If this step involves \textit{enrich functions},
+the required content of the
+web page is seamlessly integrated by ArchiveSpark's en\-ri\-ch\-ment me\-cha\-nisms.
+In our case, we can use enrich functions to extract the title of a page, its
+links to other pages, and its entities.
+The extraction of entities requires an additional module
+which uses the entity extraction and linking system Yahoo FEL \cite{BlancoWSDM2015}. %(\textit{Fast Entity Linker})
+The corresponding enrich function is available
+under \texttt{FEL4\-Archi\-ve\-Spark}\footnote{\url{https://github.com/helgeho/FEL4ArchiveSpark}}.
+
+\item A \textit{same-as versioned document} represents
+an already archived web page whose content has not been changed.
+In this case, a {\tt same-as} property pointing to the previous record
+is only created. The way in which duplicates are identified
+is not part of the framework and can be defined as part of the generation workflow.
+\end{compactitem}
+\vspace{0.8mm}
+
+Finally, defining the vocabularies to use for producing the triples is part of the
+generation workflow and thus can be customized by the user.
+A Jupyter Notebook with an example of a workflow is
+publicly available\footnote{\url{https://github.com/helgeho/ArchiveSpark2Triples/blob/master/notebooks/Triples.ipynb}}.
+
+
+\vspace{1mm} \noindent
+{\bf Efficiency.}
+\tool\ gains its efficiency from the efficiency of ArchiveSpark,
+which is mainly a result of the two-way approach
+that is used for data loading and access \cite{holzmann2016archivespark}.
+An archived collection to be used with ArchiveSpark always consists of two parts,
+the WARC files containing the data records with headers and payloads, % of the archived documents,
+and the CDX files containing only basic metadata
+such as URLs, timestamps and datatype (which are considerably smaller in size).
+Hence, operations that rely exclusively on information contained in the metadata
+can be performed very efficiently,
+e.g., filtering out items of a certain type.
+Eventually, if operations need to be performed on the actual contents,
+only the required records are accessed using location pointers in the CDX files.
+\tool\ benefits from this approach,
+since records of a datatype other than \texttt{text/html},
+such as images and videos, can be filtered out very fast.
+In addition,
+all properties of the {\em archived documents} and the majority of properties
+of the {\em versioned documents} can be generated purely on metadata and thus, very efficiently.
+In fact, the payload is accessed only for applying {\em enrich functions},
+e.g., for extracting the title of a web page, its entities, etc.
+However, these are only part of the {\em same-as versioned documents}
+that do not constitute duplicates.
+
+The most expensive task in our pipeline is the entity extraction process,
+performed by {\tt FEL4ArchiveSpark} using Yahoo FEL \cite{BlancoWSDM2015}
+(a lightweight and very efficient entity extraction and linking system).
+To avoid extraordinarily long runtimes,
+{\tt FEL4ArchiveSpark} supports to define a timeout
+(e.g., set to 10 seconds per record in our experiments).
+Additionally, we consider only web pages with a compressed size of less than 100 KB,
+as larger file sizes are unlikely to constitute a web page and may indicate a malformed record.
+Although the described steps are considered quite efficient,
+the actual time for the entire workflow depends on the dataset size,
+the nature of the data as well as the used computing infrastructure.
+Indicatively, the Hadoop cluster used in our experiments for
+producing a semantic layer for a web archive
+of about 9 millions web pages (see \S \ref{webArch}),
+consisted of 25 compute nodes
+with a total of 268 CPU cores and 2,688 GB RAM.
+While the available resources strongly depend on
+the load of the cluster and vary,
+we worked with 110 executors in parallel most of the time,
+which resulted in a runtime of 24 hours for
+processing the entire collection of 474.6 GB of compressed WARC and CDX files.
+
+
+
+\section{Case Studies}
+\label{sec:casestudies}
+
+In this section, we first briefly present three semantic layers:
+one for a versioned archive of web pages (\S \ref{webArch}),
+one for a non-versioned archive of news articles (\S \ref{newsArch}), and
+one for an archive of tweets (\S \ref{tweetsArch}).
+Then (in \S \ref{queryCapabilities}), we showcase their query capabilities by discussing
+how they can satisfy the motivating questions
+described in \S \ref{motivation}.
+
+The semantic layers are publicly
+available for experimentation and further research\footnote{\url{http://l3s.de/owa/semanticlayers/}}.
+
+\subsection{A Semantic Layer for a Web Archive}
+\label{webArch}
+Using \tool, we created a semantic layer
+for the
+\textit{Occupy Movement 2011/2012} collection\footnote{{https://archive-it.org/collections/2950}},
+which has been generously provided to us by Archive-It.
+The collection contains 9,094,573 captures of 3,036,326 web pages related to
+protests and demonstrations around the world calling for social and economic equality.
+For each version, we stored its {\em capture date},
+its {\em title}, its {\em mime type} and its {\em extracted entities}
+(using a confidence score of -4),
+while for each distinct URL we stored its total number of captures,
+the date of its first capture, and the date of its last capture.
+For assigning URLs to the versioned web pages,
+we used links to the Wayback Machine.
+In that way one can have direct online access to a specific version
+of an archived web page.
+
+The semantic layer contains 1,344,450 {\tt same-as} properties,
+which means that we avoided annotating and storing identical information
+for a very big number of versioned web pages.
+Moreover, 939,960 distinct entities (including concepts and events)
+were extracted from the archived web pages.
+For each entity, we stored its name (surface form),
+its URI, its position in the text, and its confidence score.
+The constructed semantic layer contains totally
+more than 10 billion triples (10,884,509,868).
+
+
+\subsection{A Semantic Layer for a News Archive}
+\label{newsArch}
+We created a semantic layer for the
+New York Times (NYT) Annotated Corpus \cite{sandhaus2008new}
+(a non-versioned news archive).
+The corpus contains over 1.8 million articles published by
+the NYT between 1987 and 2007.
+We filtered out articles like memorial notices, corrections,
+letters, captions, etc. which actually are not articles.
+This reduced their number to 1,456,896.
+For each article in the corpus,
+a big number of metadata is provided.
+In this case study, we exploited only the article's {\em URL},
+{\em title} and {\em publication date}.
+Of course, one can exploit any other
+of the provided metadata (like {\em author},
+{\em taxonomic classifiers}, etc.) and extend the
+semantic layer with more triples describing these metadata fields.
+
+We used TagMe \cite{ferragina2010tagme} for extracting
+entities from each article using a
+confidence score of 0.2.
+For each extracted entity, we stored its name (surface form),
+its URI and its confidence score.
+In total, 856,283 distinct entities
+(including concepts and events)
+were extracted from the NYT articles.
+The constructed semantic layer contains totally
+195,958,390 triples.
+
+
+
+\subsection{A Semantic Layer for a Social Media Archive}
+\label{tweetsArch}
+We also created a semantic layer for a collection of tweets.
+The collection comprises 1,363,487 tweets
+posted in 2016 by 469 twitter accounts of USA newspapers.
+For each tweet we exploit its {\em text}, {\em creation date},
+{\em favorite count}, {\em retweet count}, and
+the {\em screen name} of the account that posted the tweet.
+For representing an instance of a tweet,
+as well as its favorite and retweet count,
+we used the OpenLink Twitter Ontology\footnote{\url{http://www.openlinksw.com/schemas/twitter}}
+(its class {\tt Tweet} corresponds to an {\em archived document} in our model).
+
+For extracting entities from the tweets,
+we used Yahoo FEL (with confidence score -4).
+For each extracted entity, we stored its name (surface form),
+its URI and its confidence score.
+In total, 146,854 distinct entities (including concepts and events)
+were extracted from the collection.
+The constructed semantic layer contains totally 19,242,761 triples.
+
+
+
+\subsection{Query capabilities}
+\label{queryCapabilities}
+By exploiting the expressive power of SPARQL and its federated features,
+we can offer advanced query capabilities over
+the semantic layers.
+Below we discuss how a semantic layer can satisfy the motivating questions
+described in \S \ref{motivation} by also presenting interesting
+query examples.
+
+\vspace{1mm} \noindent
+{\bf Information Exploration (Q1) and Integration (Q2)}.
+A semantic layer allows running sophisticated que\-ries
+that can also directly integrate information from external knowledge bases.
+For example, Figure \ref{fig:queryExampleIntegrate} shows a SPARQL query
+that can be answered by the semantic layer of the NYT corpus.
+The query asks for articles of June 1989
+discussing about New York lawyers born in Brooklyn.
+By directly accessing DBpedia, the query retrieves the
+entities that satisfy the query
+as well as additional information (in our example the birth date
+and a description in French of each lawyer).
+The query returns  47 articles mentioning 5 different
+New York lawyers born in Brooklyn.
+
+\begin{figure}[th]
+\vspace{-2mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT ?article ?title ?date ?nylawyer ?birthDate ?abstr WHERE {
+ SERVICE <http://dbpedia.org/sparql> {
+  ?nylawyer dc:subject dbc:New_York_lawyers ;
+              dbo:birthPlace dbr:Brooklyn .
+  OPTIONAL {
+   ?nylawyer dbo:birthDate ?birthDate ;
+             dbo:abstract ?abstr FILTER(lang(?abstr)="fr") } }
+ ?article dc:date ?date FILTER (?date>="1989-06-01"^^xsd:date &&
+                                ?date<="1989-06-30"^^xsd:date)
+ ?article schema:mentions ?entity .
+ ?entity oae:hasMatchedURI  ?nylawyer .
+ ?article dc:title ?title } ORDER BY ?nylawyer
+\end{Verbatim}
+\vspace{-6mm}
+\caption{SPARQL query for retrieving articles of June 1989
+discussing about New York lawyers born in Brooklyn.}
+\label{fig:queryExampleIntegrate}
+\vspace{-2mm}
+\end{figure}
+
+Figure \ref{fig:queryExampleTweet} shows a query that can be answered
+by the semantic layer of the tweets collection.
+The query requests the most popular tweets (having more than 50 retweets)
+posted during the summer of 2016, mentioning
+basketball players of the NBA team {\em Los Angeles Lakers}.
+The query returns 14 tweets mentioning 7 different players.
+
+\begin{figure}[th]
+\vspace{-2mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?tweet ?count ?date ?entityUri WHERE {
+ SERVICE <http://dbpedia.org/sparql> {
+    ?entityUri dc:subject dbc:Los_Angeles_Lakers_players  }
+ ?t a tw:Tweet ;
+    dc:date ?date FILTER(?date >= "2016-06-01"^^xsd:dateTime &&
+                         ?date <= "2016-08-31"^^xsd:dateTime)
+ ?t tw:retweetCount ?count FILTER (?count > 50) .
+ ?t schema:text ?tweet ; schema:mentions ?entity .
+ ?entity oae:hasMatchedURI ?entityUri }
+ \end{Verbatim}
+\vspace{-6mm}
+\caption{SPARQL query for retrieving popular tweets
+about basketball players of Los Angeles Lakers.}
+\label{fig:queryExampleTweet}
+\vspace{-2mm}
+\end{figure}
+
+We can also combine information coming from
+different semantic layers.
+As an example, one could run a query
+requesting tweets of 2016 mentioning
+basketball players discussed in articles of the
+same time period.
+
+\vspace{1mm} \noindent
+{\bf Information Inference (Q2)}.
+By querying a semantic layer we can infer
+useful knowledge related to the archived documents
+that is very laborious to derive otherwise.
+For example,
+Figure \ref{fig:queryExampleInfer} shows a query that can be answered by the semantic layer
+of the {\em Occupy Movement} collection.
+The query asks for the most discussed journalists in the
+web pages of this collection.
+Notice that the query counts the archived documents, not the versions.
+In that way we avoid counting multiple times exactly the same pages
+captured in different time periods.
+The query returns {\em Ralph Nader},
+{\em Chris Hedges} and {\em Dylan Ratigan},
+as three of the most discussed journalists.
+
+\begin{figure}[th]
+\vspace{-2mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?journ (COUNT(DISTINCT ?page) AS ?num) WHERE {
+ SERVICE <http://dbpedia.org/sparql> {
+   ?journ a yago:Journalist110224578 }
+ ?page a owa:ArchivedDocument ; dc:hasVersion ?version .
+ ?version schema:mentions ?entity .
+ ?entity oae:hasMatchedURI  ?journ .
+} GROUP BY ?journ ORDER BY DESC(?num)
+\end{Verbatim}
+\vspace{-6mm}
+\caption{SPARQL query for retrieving the most discussed
+journalists in web pages of the {\em Occupy Movement} collection.}
+\label{fig:queryExampleInfer}
+\vspace{-2mm}
+\end{figure}
+
+Likewise, by running a query at the semantic layer of the NYT corpus
+requesting the number of articles per year discussing
+about {\em Nelson Mandela} (Figure \ref{fig:queryExampleInferMand}),
+we can see that in 1990 the number of articles is much higher compared
+to the previous years, meaning that this year was probably important
+for {\em Nelson Mandela} (indeed, as in
+1990 {\em Nelson Mandela} was released from prison).
+\begin{figure}[th]
+\vspace{-2mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?year (COUNT(DISTINCT ?article) AS ?num) WHERE {
+  ?article dc:date ?date ; schema:mentions ?entity .
+  ?entity oae:hasMatchedURI dbr:Nelson_Mandela
+} GROUP BY (year(?date) AS ?year) order by ?year
+\end{Verbatim}
+\vspace{-6mm}
+\caption{SPARQL query for retrieving the number of articles per
+year mentioning {\em Nelson Mandela}.}
+\label{fig:queryExampleInferMand}
+\vspace{-2mm}
+\end{figure}
+
+
+\vspace{1mm} \noindent
+{\bf Robustness (Q4) and Multilinguality (Q5)}.
+Each entity extracted from the archived documents
+is assigned a unique URI (together with a confidence score)
+which can be used for retrieving documents and information related to that entity.
+This means that all different mentions of an entity
+(e.g., name variants or names in different languages) are assigned the
+same unique URI.
+Thereby, we can query a semantic layer and retrieve information
+related to one or more entities without having to worry
+about the names of the entities (like in the queries
+of Figures \ref{fig:queryExampleIntegrate}-\ref{fig:queryExampleInfer}).
+Of course, this also depends on the entity linking
+system used for extracting the entities, specifically
+on its \q{time-awareness} and correct disambiguation
+(e.g., for understanding that {\em Leningrad} corresponds to the DBpedia URI
+\url{http://dbpedia.org/resource/Saint_Petersburg}), as well as on
+whether it supports
+the identification of entities in different languages
+(e.g., for assigning the same URI \url{http://dbpedia.org/resource/Abortion} to
+both \q{abortion} and \q{Sch\-wa\-nger\-schaft\-sabbruch}).
+
+\vspace{1mm} \noindent
+{\bf Interoperability (Q6)}.
+RDF is a standard model for data interchange on the Web
+and has features that facilitate data integration. %(even if the underlying schemas differ).
+Describing metadata and content-based information about web archives in RDF
+makes their contents machine {\em understandable}, and
+allows their direct exploitation by other systems and tools.
+Moreover, following the LOD principles for publishing a semantic layer
+enables other systems to directly access it,
+while the advanced query capabilities that it offers
+allow the easy identification of an interesting part of a web archive
+(related to a time period and some entities)
+by just writing and submitting a SPARQL query.
+
+
+
+
+\section{Evaluation}
+\label{sec:eval}
+
+Our objective is to show that
+for a bit more complex information needs (e.g., of exploratory nature),
+keyword-based search systems return poor results and thus
+there is the need for more advanced information seeking strategies.
+This corresponds to our first motivating questions ({\bf Q1}).
+We also study the quality of the results returned by a semantic layer
+for identifying possible problems and limitations.
+
+\vspace{1mm} \noindent
+{\bf Setup.}
+We have defined a set of 20 information needs of
+exploratory nature.
+Each information need requests documents
+of a specific time period, related to some entities of interest.
+We used the NYT corpus as the underlying archived collection.
+For example, {\em \q{find articles of June 2010 discussing about African-American film producers}}
+is such an {\em exploratory} information need.
+
+Each of the information needs corresponds to a SPARQL query
+and to a free-text query that better describes the information need
+(in our evaluation we consider one interaction step,
+i.e., one submitted query).
+As an example, for the information need
+{\em \q{find articles of June 2010 discussing about African-American film producers}},
+the free-text query that is used is {\em \q{African-American film producer}}
+(we manually specify the date range to each system).
+We evaluated and compared the results returned by the SPARQL query over the semantic layer
+with the results returned by the following two keyword-based search systems operating over the NYT corpus:
+a) Google News (adding at the end of the query the string \q{site:nytimes.com} for
+returning only results from this domain),
+b) HistDiv \cite{singh2016history} (which uses a different, diversity-oriented approach
+for searching news archives).
+Moreover, in the reported results we did not
+consider 23 articles (out of totally 356 articles)
+returned by the SPARQL queries because they do not
+exist in Google News.
+
+For each information need, we measure:
+\begin{compactitem}
+\item   The number of hits returned by the SPARQL query (denoted as $S$).
+\item   The number of {\em relevant} hits returned by the SPARQL query (denoted as $S_R$).
+\item   The number of hits returned by each search system (denoted as $K$).
+\item   The number of {\em relevant} hits returned by each search system,
+        existing in the set of relevant hits returned by the SPARQL query (denoted as $K_{R} \in S_R$).
+\item   The number of {\em relevant} hits returned by each search system,
+         \underline{not} existing in the set of relevant hits returned by the SPARQL query (denoted as $K_{R} \notin S_R$).
+\end{compactitem}
+\vspace{0.5mm}
+The set of information needs (together with the corresponding SPARQL and free-text queries),
+as well as the full results and the relevance judgements,
+are publicly available\footnote{\url{http://l3s.de/owa/semanticlayers/SemLayerEval.zip}}.
+
+
+\vspace{1mm} \noindent
+{\bf Results.}
+Table \ref{tbl:eval} shows the results.
+We notice that the keyword-based search systems
+cannot retrieve many relevant hits, while for many cases
+the number of returned results is zero.
+This illustrates that their effectiveness is
+poor for more advanced information needs like those in our experiments
+(considering however that we allow one interaction step).
+The reason for this poor performance is the fact that each information
+need describes a category of entities which refers to a number of
+(possibly unknown) entities,
+while the corresponding free-text query does not contain the entity names.
+For example, the query {\em \q{African-American film producer}}
+does not contain the actual names of any of these film producers.
+Note that during an exploratory search process,
+users may be unfamiliar with the domain of their goal
+(e.g., they may not know the names of the entities of interest),
+may be unsure about the ways to achieve their goal (e.g., not sure about the query to submit
+to a search system),
+or may need to learn about the topic in order to understand how to achieve their
+goal (e.g., learn facts about some entities of interest) \cite{marchionini2006exploratory}.
+For achieving a better performance, the user should probably
+first find entities belonging to the corresponding information need and
+then submit queries using the entity names in the query terms.
+Thus, multiple interaction and exploration steps may be needed.
+However this can be infeasible, for example in case
+of a big number of entities of interest.
+
+\begin{table}
+\centering
+\caption{Comparative evaluation results on effectiveness.
+\label{tbl:eval}}{
+\vspace{-3mm}
+{\small
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0}
+\multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}} &
+\multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}} &
+\multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}} &
+\multicolumn{3}{c|}{\cellcolor[HTML]{C0C0C0}Google} &
+\multicolumn{3}{c|}{\cellcolor[HTML]{C0C0C0}HistDiv} \\ \cline{4-9}
+\rowcolor[HTML]{EFEFEF}
+\multicolumn{1}{|c|}{\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\#}} &
+\multicolumn{1}{c|}{\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}$S$}} &
+\multicolumn{1}{c|}{\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}$S_R$}} &
+\multicolumn{1}{>{\centering\arraybackslash}m{0.3cm}|}{\cellcolor[HTML]{EFEFEF}$K$} &
+\multicolumn{1}{>{\centering\arraybackslash}m{0.8cm}|}{\cellcolor[HTML]{EFEFEF}$K_{R} \in S_R$} &
+\multicolumn{1}{>{\centering\arraybackslash}m{0.8cm}|}{\cellcolor[HTML]{EFEFEF}$K_{R} \notin S_R$} &
+\multicolumn{1}{>{\centering\arraybackslash}m{0.3cm}|}{\cellcolor[HTML]{EFEFEF}$K$} &
+\multicolumn{1}{>{\centering\arraybackslash}m{0.8cm}|}{\cellcolor[HTML]{EFEFEF}$K_{R} \in S_R$} &
+\multicolumn{1}{>{\centering\arraybackslash}m{0.8cm}|}{\cellcolor[HTML]{EFEFEF}$K_{R} \notin S_R$} \\ \hline
+1 & 27 & 27 & 8 & 0 & 0 & 0 & 0 & 0\\
+\hline
+2 & 34 & 27 & 1 & 0 & 1 & 3 & 2 & 1\\
+\hline
+3  & 37 & 33 & 0 & 0 & 0 & 1 & 0 & 0\\
+\hline
+4 & 16  & 16  & 0  & 0  & 0  & 0  &  0 & 0 \\
+\hline
+5 & 11  & 9  & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+6 & 14  & 14  & 1  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+7 & 18  & 2  & 1  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+8 & 8  & 8  & 1  & 0  & 0  & 4  & 0  & 3 \\
+\hline
+9 & 11  & 1 & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+10 & 15  & 14  & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+11 & 15  & 1  & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+12 & 12  & 8  & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+13 & 13  & 13  & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+14 & 16  & 15  & 2  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+15 & 15  & 9  & 0  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+16 & 12  & 10  & 6  & 0  & 0  & 25  & 3  & 3 \\
+\hline
+17 & 15  & 13  & 1  & 1  & 0  & 2  & 1  & 0 \\
+\hline
+18 & 13  & 11  & 1  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+19 & 16  & 15  & 1  & 0  & 0  & 0  & 0  & 0 \\
+\hline
+20 & 15  & 15  &  1 &  0 & 1  & 0  & 0  & 0 \\
+\hline
+\end{tabular}}}
+\vspace{-5mm}
+\end{table}
+
+Nevertheless, the results also show that in a few cases
+the search system returns relevant hits that
+are not returned by the SPARQL query
+(e.g., \#2 and \#20 for Google, \#2, \#8 and \#16 for HistDiv).
+In addition, some of the hits returned by the SPARQL query
+are not relevant (e.g., 7 results of \#2),
+while especially in three cases (\#7, \#9, and \#11),
+this number is very big.
+This is due to disambiguation error
+of the entity linking system.
+For example, for the information need \#9
+({\em \q{Find articles discussing about Australian Cricketers
+who played One Day Internationals}}),
+the entity extraction system wrongly linked the name \q{John Dyson}
+to the former international cricketer John Dyson,
+instead of the deputy mayor John Dyson (at the time of Rudolph Giuliani's mayoralty)
+discussed in the articles.
+Therefore, the performance of the entity extraction system as well as
+the confidence threshold used for entity disambiguation can
+affect the quality  of the retrieved results.
+Applying a low confidence threshold can increase recall, however
+many irrelevant hits may also be returned.
+On the contrary, by applying a high confidence threshold,
+the returned results are less but the probability that they are correct is higher.
+
+To sum up, we have identified the following problems
+that can affect the quality of the results: \\
+$-$ {\em False positive:} A SPARQL query may return a
+result which is not relevant, due to disambiguation error
+of the underlying entity extraction system.\\
+$-$ {\em False negative:} A SPARQL query may not return a relevant result because:
+i) the entity extraction system did not manage to recognize one of the entities of interest,
+ii) the entity extraction system did not disambiguate correctly
+an extracted entity of interest,
+iii) the confidence score of the extracted entity of interest
+is under the threshold used for entity disambiguation.\\
+$-$ {\em Temporal inconsistency:}
+A SPARQL query may return an irrelevant hit
+or may not return a relevant hit,
+because a property of an entity of interest has changed value.
+For example,
+the query of Figure \ref{fig:queryExampleTweet}
+may return a tweet for a basketball player who was playing
+in a different team at the time the tweet was posted
+(although this also depends on user's intention, since
+he/she may be interested in also such players).
+Likewise, a query may not return a hit because
+the knowledge base (from which we retrieve the list of players)
+may not contain information about the team's old players.
+Thus, the contents of the knowledge base, its \q{freshness}
+and its completeness, affect the quality
+of the retrieved results.
+
+
+
+\subsubsection*{Efficiency of Query Answering}
+The execution time of a SPARQL query over a semantic layer mainly depends on:
+a) the efficiency of the triplestore hosting the semantic layer
+   (e.g., in-memory triplestores are more efficient),
+b) the efficiency of the server hosting the triplestore (available main memory, etc.), and
+c) the query itself since some SPARQL operators are costly (like the operators {\tt FILTER}
+and {\tt OPTIONAL}). Moreover, if the query contains
+one or more {\tt SERVICE} operators (like the queries of
+Figures \ref{fig:queryExampleIntegrate}-\ref{fig:queryExampleInfer}),
+then its execution time is also affected by the efficiency of
+the remote endpoints at the time of the request.
+
+Indicatively,
+the average execution time of
+the 20 queries used in our evaluation
+was about 400 ms, with minimum 56 ms for \#16 and maximum 2.4 sec for \#15
+(we run the queries 10 times within 3 days and here we report the average values).
+All these queries use the {\tt SERVICE} operator for
+querying DBpedia's SPARQL endpoint but not any {\tt FILTER} or {\tt OPTIONAL} operator,
+while the semantic layer was hosted in a Virtuoso server installed
+in a modest personal computer (MacBook Pro, Intel Core i5, 8GB main memory)
+and we run the queries in Java 1.8 using Apache Jena 3.1.
+
+
+
+
+
+
+\section{Conclusion}
+\label{sec:concl}
+
+We have introduced a model and a framework
+for describing and publishing metadata and
+semantic information about web archives.
+The constructed {\em semantic layers} allow:
+i) exploring web archives in a more advanced way
+based on entities, events and concepts extracted
+from the archived documents and linked with web resources;
+ii) integrating information (even at query-execution time)
+coming from multiple knowledge bases and semantic layers;
+iii) inferring new knowledge that is very laborious to derive otherwise;
+iv) coping with common problems when exploring web archives like
+temporal reference variants and multilinguality; and
+v) making the contents of web archives machine understandable,
+thereby enabling their direct exploitation by other systems and tools.
+The results of a comparative evaluation showed that semantic layers
+can answer complex information needs that keyword-based search systems
+fail to satisfy. The evaluation also enabled us to identify problems that can
+affect the effectiveness of query answering.
+
+We believe that constructing semantic layers is
+the first step towards more advanced and meaningful
+exploration of web archives.
+Our vision is to enrich the LOD cloud\footnote{\url{http://lod-cloud.net/}}
+with semantic layers, i.e., with knowledge bases describing metadata
+and semantic information about archived collections.
+
+Regarding future work and research,
+user-friendly interfaces should be
+developed on top of semantic layers for allowing
+end-users to easily and efficiently explore web archives.
+Another interesting direction is to study approaches
+for ranking the results returned by SPARQL queries.
+
+
+\subsection*{Acknowledgements}
+\vspace{-1mm}
+The work was partially funded by the
+European Commission for the ERC Advanced Grant ALEXANDRIA (No. 339233).
+
+
+\fontsize{8.5pt}{9pt}\selectfont
+%\small
+
+\bibliographystyle{abbrv}
+\bibliography{bib/semlayer}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,43 @@
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX tw: <http://www.openlinksw.com/schemas/twitter#>
+PREFIX schema: <http://schema.org/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?text ?date ?author ?entityUri
+WHERE {
+ SERVICE <http://dbpedia.org/sparql> {
+    ?entityUri dc:subject dbc:Los_Angeles_Lakers_players  } 
+ ?tweet a tw:Tweet .
+ ?tweet dc:date ?date FILTER(?date >= "2016-06-01"^^xsd:dateTime && 
+                                ?date <= "2016-06-30"^^xsd:dateTime) 
+ ?tweet schema:text ?text ; dc:creator ?author .
+ ?tweet schema:mentions ?entity .
+ ?entity oae:hasMatchedURI ?entityUri .
+} LIMIT 100
+
+
+// post popular tweets (with more than 20 retweets) 
+dic
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX tw: <http://www.openlinksw.com/schemas/twitter#>
+PREFIX schema: <http://schema.org/>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+
+SELECT DISTINCT ?text ?count ?date ?entityUri
+WHERE {
+ SERVICE <http://dbpedia.org/sparql> {
+    ?entityUri dc:subject dbc:Los_Angeles_Lakers_players  } 
+ ?tweet a tw:Tweet .
+ ?tweet dc:date ?date FILTER(?date >= "2016-06-01"^^xsd:dateTime && 
+                                ?date <= "2016-06-30"^^xsd:dateTime) 
+ ?tweet tw:retweetCount ?count FILTER (?count > 20) .
+ ?tweet schema:text ?text .
+ ?tweet schema:mentions ?entity .
+ ?entity oae:hasMatchedURI ?entityUri .
+} LIMIT 100

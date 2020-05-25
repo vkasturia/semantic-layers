@@ -1,0 +1,326 @@
+\documentclass{libtex/llncs}
+
+\usepackage{url}
+\usepackage{color}
+\usepackage{paralist}
+\usepackage{fancyvrb}
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage[nomove]{cite}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{mdframed}
+\usepackage{multirow}
+%\usepackage[table,xcdraw]{xcolor}
+
+
+\graphicspath{ {figures/} }
+
+
+\newcommand{\new}[1]{{\color{blue}#1}}
+\newcommand{\draft}[1]{{\color{red}#1}}
+\long\def\comment#1{}
+\newcommand{\q}[1]{\lq\lq{}{}#1\rq\rq{}{}}
+
+\begin{document}
+
+\title{
+    Ranking Archived Documents for Structured Queries on Semantic Layers% and Time
+    %Capturing Implicit User Search Preferences through Ranking Algorithms on Structured Data
+}
+
+\author{
+    Vaibhav Kasturia \and
+    Pavlos Fafalios \and
+    Wolfgang Nejdl }
+
+\institute{
+    L3S Research Center, University of Hannover, Germany\\
+    \email{\{kasturia, fafalios, nejdl\}@l3s.de} }
+
+
+
+\maketitle
+
+
+\begin{abstract}
+Archived collections of documents (like newspaper and web archives)
+serve as important information sources
+in a variety disciplines, including Digital Humanities, Historical Science, and Journalism.
+%for a variety of interested parties, such as historians, journalists and sociologists.
+However, the absence of efficient and meaningful exploration methods
+still remains a major hurdle in the way of turning them into usable sources of information.
+Semantic Layers allow describing
+and publishing metadata and semantic information about the archived documents in a standard format (RDF),
+which in turn can be queried through a semantic query language (SPARQL).
+This allows running advanced queries by combining
+metadata of the documents (like publication date) and
+content-based semantic information (like entities mentioned in the documents).
+However, the results returned by structured queries
+can be numerous and also they all equally match the query.
+There is thus the need to rank the returned results in order to identify and promote the most important ones.
+In this paper,
+we formalize the problem of {\em ranking archived documents for structured queries},
+we distinguish two main types of queries for this problem,
+and we propose a baseline ranking model that jointly considers the following aspects:
+i) the relativeness of documents to entities,
+ii) the timeliness of documents, and
+iii) the relations among the entities.
+The results of an extensive experimental evaluation on a news archive are promising.
+\end{abstract}
+
+
+
+\section{Introduction}
+%Digital archiving is the long-term electronic preservation and management
+%of historical documents and assets in general.
+
+Despite the increasing number of digital archives worldwide
+(like newspaper and web archives), the absence of efficient and meaningful
+exploration methods still remains the major bottleneck in the way of
+turning them into usable information sources \cite{calhoun2014exploring}.
+Semantic models try to solve this problem by offering the means
+to describe metadata and semantic information
+about a collection of archived documents in the standard RDF format.
+A repository of such data, called Semantic Layer \cite{fafalios2017SemLayer},
+allows running advanced queries which
+combine metadata of the documents (like publication date) and
+content-based semantic information (like entities mentioned in the documents).
+As an example, we can access a Semantic Layer over a newspaper archive and
+find articles of a specific time period discussing about a specific category of entities
+(e.g., {\em philanthropists}) or about entities sharing some characteristics
+(e.g., {\em lawyers born in Germany}).
+Such advanced information needs can be directly expressed through structured (SPARQL) queries
+or through user-friendly interactive interfaces
+which transparently transform user interactions to SPARQL queries
+(e.g., a faceted browsing interface \cite{tzitzikas2016faceted}).
+
+However, the results returned by such queries can be numerous and
+moreover they all equally match the query.
+Thus, there arises the need for an effective method to rank the returned results
+for discovering and promoting the most important ones.
+As an example, when requesting articles from a news archive mentioning a specific entity,
+some of the returned articles may be about that entity
+while other articles may just mention the entity without it being their main topic.
+Thus, an effective ranking method should
+consider the different factors that affect the importance of documents to the information need,
+relying at the same time only on the data
+available in the semantic layer (without accessing documents' full contents).
+
+Although there is a plethora of works on both
+ranking archived documents for keyword-based queries
+and ranking structured data (subjects and objects) in knowledge graphs,
+the problem of ranking archived documents for structured queries in knowledge graphs
+has not yet been recognized and studied.
+In this paper, we address this gap by first introducing and formalizing this task
+and then proposing a ranking model for the problem at hand.
+The proposed model jointly considers the following aspects:
+i) the {\em relativeness} of a document with respect to the entities of interest,
+ii) the {\em timeliness} of document's publication date,
+iii) the temporal {\em relatedness} of the entities of interest with other entities
+mentioned in the document.
+The idea is to promote documents that
+mention the entities of interest many times,
+that have been published in important (for the entities of interest) time periods, and that
+mention many other entities co-occurring frequently
+with the entities of interest in important time periods.
+For example, in case we want to rank articles of 1990
+discussing about {\em Nelson Mandela},
+we want to favor articles that
+i) mention {\em Nelson Mandela} multiple times in their text,
+ii) have been published in important time periods for {\em Nelson Mandela}
+(e.g., February 1990 since during that period he was released from prison), and
+iii) mention other entities that seem to be important for {\em Nelson Mandela}
+during important time periods
+(e.g., {\em Frederik Willem de Klerk} who was
+South Africa's State President in February 1990).
+
+In a nutshell, in this paper we make the following contributions:
+\begin{compactitem}
+\item   We formulate and formalize the problem of ranking archived documents
+        for structured queries over semantic layers.
+\item   \draft{We proposed a ranking model for the problem at hand that ... ...}
+\item   Due to lack of evaluation datasets for our problem, we have created
+        a new ground truth dataset for a news archive which we make publicly available.
+\item   \draft{The evaluation results show that the proposed ranking model ...}
+\end{compactitem}
+%For this problem, we should consider the different factors
+%that affect the importance of a document to the information need,
+%relying at the same time only on the data
+%available in the semantic layer (without accessing documents' full contents).
+
+\comment{====
+    Archiving is the process of preservation of records
+    permanently or for long-terms on grounds of their
+    enduring cultural, evidentiary or historical value.
+    As the web continues to grow we have records holding
+    significant value being constantly produced
+    and consumed every day. However, due to transient
+    nature of the Web, most of these records produced
+    become either lost or unavailable after a short period
+    of time. Archives capture portions of these record
+    collections for sociologists, historians and other interested
+    parties for whom these collections are immensely valuable.
+
+    Just as Archives contain historical records,
+    in the same way Web Archives capture portions of the Web
+    in order to preserve it for
+    sociologists, historians, and other interested parties.
+    For them, these collections form immensely valuable
+    information sources for their work.
+    These Web Archives contain snapshots of the Web sites
+    at different points of time and are created by regularly
+    crawling (parts of) the Web.
+
+    With the number of archives increasing worldwide models,
+    tools and techniques necessary to archive and index relevant
+    parts of the web in order to create, retrieve and
+    explore them in a meaningful way are being constantly suggested and developed.
+    In our previous work\cite{fafalios2017SemLayer}, we proposed
+    building semantic profiles/layers that describe information about
+    the contents of the archived documents and could be used as a method to
+    to solve the problem of archive exploration.
+    Specifically, we used Semantic Web technologies as a base and
+    constructed an RDF/S vocabulary that allowed for:
+    a) describing useful metadata information about each archived
+    document
+    b) annotating each document with entities and events detected in its textual contents,
+    c) enriching the detected entities/events\footnote{From now on,
+        when we say \q{entities} we refer to both entities, events and concepts.} with more semantic information
+    (like properties and related entities coming from the LOD), and
+    d) publishing all this data on the Web in the standard RDF format
+    (making thereby all this information directly accessible and exploitable by other systems and tools).
+    The results showed that such semantic profiles/layers could meet complex information needs, especially {\em
+    exploratory search} needs \cite{marchionini2006exploratory}.
+
+
+    Even though {\em entity-centric} SPARQL queries on such structured data layers
+    return relevant results, a shortcoming is sometimes the
+    large number of results that we get for the
+    queries that we submit. Moreover, all the
+    results are equally relevant to the submitted query.
+    This leads to the problem of the user judging which results he
+    would want to consider to be \q{more} important than other results.
+    For example, in the case of a user querying a {\em
+    news archive} asking for \q{articles of 1988 asking about members of the German Parliament}, an implicit preference of
+    the user would be to get those articles which might:
+    a) have mentions of several members in the same article,
+    b) have
+    mentions of more prominent members to that time period rather than less prominent ones, and/or,
+    c) contain members involved in significant events which happened during the time period.
+    Thus, having algorithms to judge articles and return
+    them in a ranked order would be useful for the user.
+
+
+    To rank results, we propose ranking algorithms
+    that take into account temporal aspects of entities, inter-relations
+    between entities and relatedness of documents to entities.
+    Our approach only exploits the data of the semantic repository
+    (triples in RDF format) and thus
+    can produce ranking at query-execution time.
+    We based these algorithms by modelling the solutions of the
+    following three problems:
+    a) how to rank {\em documents} related to a time
+    period and one or more entities,
+    for example, articles mentioning former US President
+    Barack Obama announcing a Nuclear Deal with Iran would be considered
+    more important than him addressing the
+    116th National Convention of the Veterans of Foreign Wars in Pittsburgh, PA,
+    with both events having occurred in July 2015;
+    b) how to rank {\em entities} related to a time period and one or more other
+    entities, for example,
+    Brexit is a more important entity related to former British Prime Minister David Cameron than American Intervention in Syria in 2016
+    as he had to tender his resignation
+    following the results of the Brexit polls;
+    c) how to rank {\em time periods} related to one or more entities,
+    for example, the period of September 2015 was a more
+    significant period for the EU Chancellor Angela Merkel
+    than July 2015 as the decision she made on letting trains filled with migrants enter Germany in during that time period led to a significant drop in her approval ratings\cite{merkel_rating}.
+
+
+    We then evaluate whether our algorithms effectively solve these problems
+    by running 20 {\em entity-centric} queries on a semantic layer of the {\em New York Times}
+    archive and checking the result ranking against human relevance judgements to see which
+    combination of the modelled factors leads to the best ranking.
+====}
+
+The rest of the paper is organized as follows:
+Section \ref{sec:motivAndRW} motivates our work and presents related literature.
+Section \ref{sec:queryingSemLayer} presents \new{basic} algorithms for ranking documents, entities, and time periods.
+\new{Section \ref{sec:pagerank} tries to describe a probabilistic approach for the problem at hand.}
+Section \ref{sec:eval} evaluates the algorithms and their combinations.
+Finally, Section \ref{sec:concl} concludes the paper and
+presents interesting directions for future research.
+
+
+
+
+%=====================================================
+
+\section{Background and Related Works (DRAFT)}
+\label{sec:motivAndRW}
+
+\input{semlayer_ranking_rw}
+
+%=====================================================
+
+\section{Ranking Documents for Structured Queries}
+\label{sec:queryingSemLayer}
+
+\input{semlayer_ranking_approach}
+
+%=====================================================
+
+\section{Stochastic Processing}
+\label{sec:pagerank}
+
+\input{semlayer_ranking_approach_pagerank}
+
+%=====================================================
+
+\section{Evaluation}
+\label{sec:eval}
+
+\input{semlayer_ranking_evaluation}
+
+%=====================================================
+
+
+\section{Conclusion}
+\label{sec:concl}
+
+We have introduced a model for ranking articles returned by running advanced
+queries over semantic layers built by annotating an archived collection of
+records. This approach has the important characteristic
+that it can be directly applied at query-execution time since
+it only exploits the data of the semantic layer(i.e., its RDF triples).
+The defined model can be used to rank documents mentioning all(or some)
+of the entities requested in the and takes the factors of inter-relations between entities,
+document relatedness to the entities and temporal aspects of the entities into account.
+The evaluation of the rankings produced by the model against human relevance judgements
+show that by effectively combining the above mentioned factors our model can yield a good
+ranking of the documents thus saving the user time in judging important results among
+a collection of (nearly all) relevant results.
+
+Regarding future work and research, extensions of our ranking approach
+for semantic layers over versioned archives or over social media archives
+could be developed. Another interesting direction would be to build
+a user-friendly interactive interface which transparently transforms user
+interactions to SPARQL queries(e.g., a faceted browsing interface)
+allowing users to easily and effectively explore digital archives.
+
+
+\subsection*{Acknowledgements}
+The work was partially funded by the European Commission
+for the ERC Advanced Grant ALEXANDRIA under grant No. 339233.
+
+
+\bibliographystyle{abbrv}
+\bibliography{bib/semlayerRanking}
+
+
+\end{document}

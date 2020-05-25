@@ -1,0 +1,397 @@
+
+In this section, we formalize the problem of ranking documents returned by
+structured (SPARQL) queries and define a probabilistic ranking model.
+First we introduce the required notions and notations.
+
+\subsection{Notions and Notations}
+
+\subsubsection{Entities.}
+In our problem, an {\em entity} is anything with a separate and meaningful existence
+that also has an identity expressed through a reference in a knowledge base (e.g., a Wikipedia/DBpedia URI).
+This does not only include persons, locations, organizations, etc., but also
+events (e.g., {\em US 2016 presidential election})
+and more abstract concepts such as {\em democracy} or {\em apartheid}.
+Let $E$ be a finite set of entities, e.g., all Wikipedia entities,
+where each entity $e \in E$ is associated with a unique URI in the reference knowledge base.
+
+\comment{====
+    \vspace{2mm} \noindent
+    {\bf Documents and extracted entities}.
+    Let $D$ be a set of documents, e.g., a set of news articles.
+    For a document $d \in D$, let $publ(d)$ denote its publication date.
+    Let also  $ents(d) \subseteq E$ be all entities mentioned in $d$.
+    %(actually the URIs of these entities\footnote{From now on, when we say \q{entity} we mean \q{web entity URI}.}).
+    Inversely, for an entity $e \in E$, let $docs(e) \subseteq D$
+    be all documents that mention $e$, i.e., $docs(e) = \{d \in D ~|~ e \in ents(d)\}$.
+    For an entity $e \in E$ and a document $d \in D$,
+    let $count(e, d)$ be the number of occurrences of $e$ in $d$.
+    %Now, let $ef(e, d) = \frac{count(e, d)}{\sum_{e' \in ents(d)}{count(e', d)}}$ be the
+    %(normalized) frequency of $e$ in $d$.
+    Finally, let $E_D$ be all entities mentioned in documents of $D$,
+    i.e., $E_D = \cup_{d \in D}{ents(d)}$.
+
+    \vspace{2mm} \noindent
+    {\bf Time periods}.
+    Let $\Delta$ be a fixed time period granularity (e.g., {\em day}).
+    Based on a granularity $\Delta$,
+    let $T = (t_0, t_1, \dots, t_n)$ be an ordered list of consecutive time points
+    covering the publication dates of all documents in $D$.
+    Note that $t_i - t_{i-1} = \Delta$, for each $i \geq 1$.
+    Now, let $\delta_i = [t_i, t_{i+1})$ be the time period of size $\Delta$ between two consecutive time points.
+    We consider that a document $d$ is published in the period $\delta_i$, if $t_i \leq publ(d) < t_{i+1}$.
+    For a document $d \in D$, let $p_d$ be the time period in which $d$ was published.
+    Now, let $P_D$ denote the set of distinct time periods of all documents in $D$,
+    i.e., $P_D = \cup_{d \in D}{\{p_d\}}$.
+    For a time period $p \in P_D$, let $docs(p) \subseteq D$ be the set of all
+    documents published within $p$, i.e., $docs(p) = \{d \in D ~|~ p_d = p\}$,
+    and $ents(p) \subseteq E_D$ be the set of
+    entities discussed in documents of $D$ published within $p$,
+    i.e., $ents(p) = \cup_{d \in docs(p)}{ents(d)}$.
+====}
+
+\subsubsection{Documents and extracted entities.}
+Let $D$ be a set of documents (e.g., a set of news articles)
+published within a set of time periods $T_D$ of fixed granularity $\Delta$ (e.g., day).
+For a document $d \in D$, let $t_d \in T_D$ be the time period of granularity $\Delta$ in which $d$ was published,
+while for a time period $t \in T_D$, let $docs(t) \subseteq D$ be the set of all
+documents published within $t$, i.e., $docs(t) = \{d \in D ~|~ t_d = t\}$.
+
+Let now  $ents(d) \subseteq E$ be all entities mentioned in $d$.
+Inversely, for an entity $e \in E$, let $docs(e) \subseteq D$
+be all documents that mention $e$, i.e., $docs(e) = \{d \in D ~|~ e \in ents(d)\}$.
+
+
+%and $ents(p) \subseteq E_D$ be the set of
+%entities discussed in documents of $D$ published within $p$
+%(i.e., $ents(p) = \cup_{d \in docs(p)}{ents(d)}$).
+
+
+\subsection{Problem Definition}
+Given a corpus of documents $D$,
+a set of entities $E_D$ mentioned in documents of $D$,
+and a SPARQL query $Q$ requesting documents from $D$
+published within a {\em time period} $T_Q \subseteq T_D$ and
+related to one or more query entities $E_Q \subseteq E_D$
+with logical {\tt AND} (mentioning all the query entities) or {\tt OR} (mentioning at least one of the query entities) semantics,
+the problem is how to rank the documents $D_Q \subseteq D$ that (equally) match $Q$.
+
+Figure \ref{fig:modelingExampleQ1} shows an example SPARQL query
+requesting documents published in 1990
+discussing about the entities {\em Nelson Mandela} %(\url{http://dbpedia.org/resource/Nelson_Mandela})
+and {\em Frederik Willem de Klerk} %(\url{http://dbpedia.org/resource/F._W._de_Klerk}).
+({\tt AND} semantics),
+while the query in Figure \ref{fig:modelingExampleQ2} requests
+articles of 1990 discussing about {\em state presidents of South Africa}
+({\tt OR} semantics).
+Our objective is to rank the results returned by such SPARQL queries.
+
+
+\begin{figure}[th]
+\vspace{-4mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?article WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date) .
+  ?article oae:mentions ?entity1, ?entity2 .
+  ?entity1 oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> .
+  ?entity2 oae:hasMatchedURI  <http://dbpedia.org/resource/F._W._de_Klerk> }
+\end{Verbatim}
+\vspace{-5.5mm}
+\caption{SPARQL query for retrieving articles of 1990 discussing
+about {\em Nelson Mandela} and {\em Frederik Willem de Klerk} ({\tt AND} semantics).}
+\label{fig:modelingExampleQ1}
+
+%\vspace{-4mm}
+\centering \scriptsize
+\begin{Verbatim}[frame=lines,numbers=left,numbersep=1pt]
+SELECT DISTINCT ?article WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?p dc:subject <http://dbpedia.org/resource/Category:State_Presidents_of_South_Africa> }
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date)
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?p }
+\end{Verbatim}
+\vspace{-5.5mm}
+\caption{SPARQL query for retrieving articles of 1990 discussing
+about {\em state presidents of South Africa} ({\tt OR} semantics).}
+\label{fig:modelingExampleQ2}
+\vspace{-4mm}
+\end{figure}
+
+
+
+\subsection{Probabilistic Modeling}
+
+We model and estimate the probability to select a document $d \in D_Q$
+given the query entities $E_Q$, the time period of interest $T_Q$,
+and other entities $E_{D_Q}$ mentioned in the retrieved documents.
+Specifically, we model the following aspects:
+\begin{itemize}
+\item the {\em relativeness} of a document with respect to the query entities
+\item the {\em timeliness} of a document with respect to its publication date
+\item the {\em relatedness} of a document with respect to its reference to other entities related to the query entities
+\end{itemize}
+% iv) the {\em temporal closeness} of a document with respect to other documents.}
+The idea is to promote documents that
+mention the query entities many times in their contents,
+have been published in important (for the query entities) time periods, and
+mention many other entities that co-occur frequently with the query entities in important time periods.
+For example, in case we want to rank articles of 1990
+discussing about {\em Nelson Mandela},
+we want to favor articles that
+i) mention {\em Nelson Mandela} multiple times in their text,
+ii) have been published in important (for {\em Nelson Mandela}) time periods
+(e.g., February of 1990 since during that period he was released from prison), and
+iii) mention other entities that seem to be important for Nelson Mandela
+during important time periods
+(e.g., {\em Frederik Willem de Klerk} who was
+South Africa's State President in 1990).
+
+\subsection*{Relativeness}
+
+We consider that if the query entities are mentioned multiple times
+within a document, the document should receive a high score
+(since the document's topic may be about these entities).
+The term frequency (in our case entity frequency) is a classic numerical statistic
+that is intended to reflect how important
+a word is to a document in a collection or corpus \cite{leskovec2014mining}.
+
+We first define a {\em relativeness} score of a document $d \in D_Q$
+based on the {\em frequency} of the query entities in $d$.
+First, let $count(e, d)$ be the number of occurrences of $e$ in document $d$.
+For the case of {\tt AND} semantics (\q{$\wedge$}),
+the score is defined as follows:
+\begin{equation}
+\small
+score^{f}_{\wedge}(d, E_Q) = \frac{\sum_{e \in E_Q}{count(e, d)}}{\sum_{e' \in ents(d)}{count(e', d)}}
+\end{equation}
+Notice that the score of a document will be $1$ if it contains the query entities and no other entity.
+For the case of {\tt OR} semantics (\q{$\vee$}),
+we can also consider the number of query entities mentioned in the document
+(since a document does not probably contain all the query entities as in the case of {\tt AND} semantics).
+In that case, the {\em relativeness} score can be defined as follows:
+\begin{equation}
+\small
+score^{f}_{\vee}(d, E_Q) = \frac{\sum_{e \in E_Q}{count(e, d)}}{\sum_{e' \in ents(d)}{count(e', d)}} \cdot \frac{|ents(d) \cap E_Q|}{|E_Q|}
+\end{equation}
+where $\frac{|ents(d) \cap E_Q|}{|E_Q|}$ is the percentage of query entities discussed in the document.
+The score of a document will be 1 if it contains all the query entities and no other entity.
+This formula favors documents mentioning multiple times many of the query entities.
+
+Now, the probability of a retrieved document $d \in D_Q$ given only the query entities can be defined as:
+\begin{equation}
+\small
+P(d|E_Q) = \frac{score^{f}(d, E_Q)}{\sum_{d' \in D_Q}{score^{f}(d', E_Q)}}
+\end{equation}
+%Notice that the above formula is a probability distribution of all returned documents.
+
+
+\subsection*{Timeliness}
+
+We consider that a time period $t \in T_Q$ is important
+for the entities in $E_Q$, if there is a relatively big number of documents in $D_Q$
+discussing about these entities during $t$.
+For example, a big number of articles about {\em Nelson Mandela}
+was published the period 11-13 of February 1990 because
+in February 11 {\em Nelson Mandela} was released from prison.
+Thus, articles published during that period should be promoted since
+they are probably related to this important event of {\em Nelson Mandela}'s life.
+
+For the case of {\tt AND} semantics,
+we define the following importance score of a {\em time period} $t \in T_Q$:
+\begin{equation}
+score^{t}_\wedge(t) = \frac{|docs(t) \cap D_Q|}{|D_Q|}
+\end{equation}
+This scoring formula favors time periods in which there is a big number
+of documents discussing about the query entities.
+
+For the case of {\tt OR} semantics,
+in a time period $t$ there may be a
+big number of documents discussing only for one of the query entities,
+while in another time period $t'$ there may be a smaller number
+of documents discussing though for many of the query entities.
+For also taking into account the number of query entities discussed in documents
+of a specific time period, we consider the following formula:
+\begin{equation}
+\small
+score^{t}_\vee(t) = \frac{|docs(t) \cap D_Q|}{|D_Q|} \cdot N(E_Q,t)
+\end{equation}
+where, $N(E_Q,t)$ is the average percentage of query entities discussed in articles of $t$, i.e.:
+\begin{equation}
+\small
+N(E_Q,t) =  \frac{\sum_{d \in docs(t) \cap D_Q}{\frac{|ents(d) \cap E_Q|}{|E_Q|}}}{|docs(t) \cap D_Q|}
+\end{equation}
+
+Now, the probability of a retrieved document $d \in D_Q$ given only its publication date $t_d$ can be defined as:
+
+\begin{equation}
+\small
+P(d | t_d) = \frac{score^{t}(t_d)}{\sum_{d' \in D_Q}{score^{t}(t_{d'})}}
+\end{equation}
+
+
+
+\subsection*{Relatedness}
+
+Entities that are co-mentioned frequently with the query entities
+in important time periods are probably important.
+For example, {\em Apartheid} was an important concept
+related to {\em Nelson Mandela} %and {\em Frederik Willem de Klerk}
+during 1990,
+thus articles discussing for both {\em Apartheid} and {\em Nelson Mandela} %, and {\em Frederik Willem de Klerk}
+should be promoted.
+However, there may be also some general entities (e.g., {\em South Africa} in our example)
+that co-occur with the query entities in almost all documents (independently of the time period).
+Thus, we should also avoid over-emphasizing documents mentioning such \q{common} entities.
+%(in a similar way to the computation of {\em tf-idf} in IR).
+
+For the case of {\tt AND} semantics,
+we consider the following {\em relatedness} score
+for an entity $e \in E_D \setminus E_Q$:
+
+\begin{equation}
+\begin{split}
+\small
+score^{r}_\wedge(e) = & ~ idf_\wedge(e) \cdot \sum_{t \in T_Q}{(score^{t}_\wedge(t) \cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|docs(t) \cap D_Q|})}\\
+= & ~ idf_\wedge(e) \cdot \sum_{t \in T_Q}{\frac{|docs(t) \cap D_Q \cap docs(e)|}{|D_Q|}}
+\end{split}
+\end{equation}
+where $idf_\wedge(e)$ is the inverse document frequency
+of entity $e$ in the set of documents discussing about the query entities in the entire corpus,
+which can be defined as follows:
+\begin{equation}
+\label{frml:idf_and}
+\small
+idf_\wedge(e) = 1 - \frac{|docs(e) \cap (\cap_{e' \in E_Q}{docs(e')})|}{|\cap_{e' \in E_Q}{docs(e')}|}
+\end{equation}
+The formula considers the percentage of
+documents in which the entity
+co-occurs with the query entities in important time periods.
+
+For the case of {\tt OR} semantics,
+the above formula does not consider the
+number of different query entities discussed in documents together with the entity $e$.
+To also handle this aspect,
+we consider the following {\em relatedness} score for the case of {\tt OR} semantics:
+\begin{equation}
+\begin{split}
+\small
+score^{r}_\vee(e) =  & ~ idf_\vee(e) \cdot  N(E_Q, e) \cdot \sum_{t \in T_Q}{(score^{t}_\vee(t) \cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|docs(t) \cap D_Q|})} \\
+= & ~ idf_\vee(e) \cdot N(E_Q, e) \cdot  \sum_{t \in T_Q}{(N(E_Q, t)\cdot \frac{|docs(t) \cap D_Q \cap docs(e)|}{|D_Q|})}
+\end{split}
+\end{equation}
+where $N(E_Q, e)$ is
+the average percentage of query entities discussed in articles together with entity $e$, i.e.:
+\begin{equation}
+\small
+N(E_Q, e) =  \frac{\sum_{d \in docs(e) \cap D_Q}{\frac{|ents(d) \cap E_Q|}{|E_Q|}}}{|docs(e) \cap D_Q|}
+\end{equation}
+
+Now the inverse document frequency $idf_\vee(e)$
+includes documents mentioning at least one of the query entities, i.e.:
+\begin{equation}
+\label{frml:idf_or}
+\small
+idf_\vee(e) = 1 - \frac{|docs(e) \cap (\cup_{e' \in E_Q}{docs(e')})|}{|\cup_{e' \in E_Q}{docs(e')}|}
+\end{equation}
+
+
+This formula favors related entities that
+i)  co-occur frequently with many of the query entities,
+ii) are discussed in documents published in important (for the query entities) time periods.
+
+Now, the probability of a document $d \in D_Q$
+given only other entities mentioned in the retrieved documents ($E_{D_Q}$) can be defined as:
+\begin{equation}
+P(d | E_{D_Q}) = \frac{\sum_{e \in ents(d) \setminus E_Q}{score^{r}(e)}}
+                  {\sum_{d' \in D_Q}{\sum_{e' \in ents(d') \setminus E_Q}{score^{r}(e')}}}
+\end{equation}
+
+\comment{====
+I PUT THE FOLLOWING IN COMMENTS SINCE
+WE HAVE NOT EVALUATED IT.
+\new{
+\subsection*{Temporal Closeness}
+The archived documents form important information sources
+for mainly historians, journalists and sociologists.
+To a historian documenting an event in history
+or tracing the occurrence of the event,
+if she finds a document mentioning about the event,
+to get more detail she would more likely try to find documents published
+shortly before or after it.
+As an example, take a historian researching Nelson Mandela's release from prison and
+submitting a query to find articles of February 1990 mentioning him.
+She stumbles first upon an article of 11th February as that was the day Nelson Mandela
+was released.
+To get a complete overview of the event, she would more likely search for documents
+published in the close past or future to it, i.e., documents mentioning protests
+and announcements leading to his release
+and celebrations or political implications afterwards.
+Hence, documents published in closer
+date proximity to an important document gain more importance than other documents
+in this case.
+We try to capture this by defining temporal closeness of a document d' relative to a document d
+for the case of both {\tt AND} and {\tt OR} Semantics as follows:
+\begin{equation}
+\begin{split}
+\small
+ScoreD^c(d) = 1 - \frac{(|publ(d)-publ(d')|+1)}{\max_{d'' \in D_Q, d'' \neq d}(|publ(d)-publ(d'')|+1)}
+\end{split}
+\end{equation}
+where $|publ(d)-publ(d')|$ is defined as the absolute difference (in {\em days})
+of the publication dates of the documents $d$ and $d'$.
+}
+======}
+
+\subsection*{Joining the Models}
+
+We can now combine the different models in a single probability score:
+\begin{equation}
+\small
+P(d | E_Q, t_d, E_{D_Q}) = \frac{P(d | E_Q)P(d | T_Q)P(d | E_{D_Q})}{\sum_{d' \in D_Q}{P(d' | E_Q)P(d' | T_Q)P(d' | E_{D_Q})}}
+\end{equation}
+where the denominator can be ignored as it does not influence the ranking.
+
+\comment{====
+    By considering {\em relativeness} and {\em timeliness},
+    the score of a document $d \in D_Q$ can be defined as:
+    \begin{equation}
+    \small
+    ScoreD^{f,t}(d) =  ScoreD^{f}(d) \cdot ScoreD^{t}(d)
+    \end{equation}
+
+    \noindent
+    By considering {\em relativeness} and {\em relatedness},
+    the score of a document $d \in D_Q$ can be defined as:
+    \begin{equation}
+    \small
+    ScoreD^{f,r}(d) =  ScoreD^{f}(d) \cdot ScoreD^{r}(d)
+    \end{equation}
+
+
+    \noindent
+    By considering all aspects,
+    the score of a document $d \in D_Q$ can be defined as:
+    \begin{equation}
+    \small
+    ScoreD^{f,t,r}(d) =  ScoreD^{f}(d) \cdot  ScoreD^{t}(d) + \beta ~ ScoreD^{r}(d)
+    \end{equation}
+    where $\beta$ is a decay factor for limiting the
+    effect of relatedness.
+====}
+
+\comment{====
+    {\em Ranking of query entities}.
+    When we consider {\tt\em OR} semantics, a returned document $d \in D_Q$
+    contains at least one of the query entities,
+    while an entity $e \in E_Q$ can be discussed in zero, one or more documents.
+    We can identify the important query entities in the whole time period $P_Q$
+    by simply considering the percentage of documents in $D_Q$ discussing about each of the query entities,
+    i.e: for an entity $e \in E_Q$, the importance score $I(e)$ can be defined as:
+    $I(e) = \frac{|docs(e) \cap D_Q|}{|D_Q|}$.
+    Likewise, we can compute the importance of an entity $e \in E_Q$ in a specific time period
+    $p \in P_Q$ as:
+    $I(e, p) = \frac{|docs(e) \cap docs(p)|}{|D_Q|}$.
+====}

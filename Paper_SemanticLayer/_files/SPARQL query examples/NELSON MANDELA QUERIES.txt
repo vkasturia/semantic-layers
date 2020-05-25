@@ -1,0 +1,98 @@
+hon
+# TOTAL NUMBER OF ARTICLES
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT count(distinct ?article)  WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date) .
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+} 
+
+
+# NUMBER OF ARTICLES PER MONTH
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT  ?month (count(distinct ?article) as ?numOfArticles) WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date) .
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+} GROUP BY (month(?date) AS ?month) order by ?month
+
+
+
+# NUMBER OF ARTICLES PER DAY AND MONTH
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT  ?day ?month (count(distinct ?article) as ?numOfArticles) WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-02-28"^^xsd:date) .
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+} GROUP BY (day(?date) AS ?day) (month(?date) AS ?month) order by ?day
+
+
+# RELATED ENTITIES AND NUMBER OF CO-OCCURRENCES
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT  ?entityURI2 (count(distinct ?article) as ?numOfArticles) WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date) .
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> .
+  ?article oae:mentions ?entity2 .
+  ?entity2 oae:hasMatchedURI  ?entityURI2
+  FILTER(<http://dbpedia.org/resource/Nelson_Mandela> != ?entityURI2)
+} GROUP BY ?entityURI2 ORDER BY DESC(?numOfArticles)
+
+
+
+# RELATED ENTITIES PER MONTH, PER NUMBER OF CO-OCCURRENCES
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT DISTINCT  ?entityURI2 ?month (count(distinct ?article) as ?numOfArticles) WHERE {
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                ?date <= "1990-12-31"^^xsd:date) .
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> .
+  ?article oae:mentions ?entity2 .
+  ?entity2 oae:hasMatchedURI  ?entityURI2
+  FILTER(<http://dbpedia.org/resource/Nelson_Mandela> != ?entityURI2)
+} GROUP BY ?entityURI2 (month(?date) AS ?month) ORDER BY ?month DESC(?numOfArticles)
+
+
+# ARTICLES DISCUSSING ABOUT State_Presidents_of_South_Africa
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX yag: <http://dbpedia.org/class/yago/>
+SELECT DISTINCT ?e (count(distinct ?article) as ?numOfArtciles)  WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?e dc:subject <http://dbpedia.org/resource/Category:State_Presidents_of_South_Africa> } 
+  
+  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date && 
+                                ?date <= "1990-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?e .
+  ?article dc:title ?title } GROUP BY ?e ORDER BY DESC(?numOfArtciles)
+  
+  
+  

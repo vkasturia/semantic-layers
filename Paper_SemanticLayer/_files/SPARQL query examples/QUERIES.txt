@@ -1,0 +1,239 @@
+SELECT COUNT(*) 
+FROM <http://l3s.de/Alexandria>
+WHERE {
+?x ?y ?z
+}
+
+
+# Articles of 1988 mentioning Michail Gorbachev
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+ ?article dc:date ?date FILTER(?date >= "1988-06-01"^^xsd:date && 
+                               ?date <= "1988-08-31"^^xsd:date) .
+ ?article oae:mentions ?entity .
+ ?entity oae:hasMatchedURI <http://dbpedia.org/resource/Mikhail_Gorbachev> .
+ ?article dc:title ?title
+}
+
+
+# Articles of 1988 mentioning both Michail Gorbachev and Ronald Reagan
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?article ?title ?date 
+WHERE {
+  ?article dc:date ?date FILTER(?date >= "1988-06-01"^^xsd:date && 
+                                ?date <= "1988-08-31"^^xsd:date) .
+  ?article oae:mentions ?entity1 .
+  ?entity1 oae:hasMatchedURI <http://dbpedia.org/resource/Mikhail_Gorbachev> . 
+
+  ?article oae:mentions ?entity2 .
+  ?entity2 oae:hasMatchedURI <http://dbpedia.org/resource/Ronald_Reagan> .
+
+  ?article dc:title ?title
+}
+
+# Articles of 1989 mentioning politicians born in Hawaii (together with a description in French)
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+PREFIX yag: <http://dbpedia.org/class/yago/>
+SELECT DISTINCT ?politician (count(distinct ?article) as ?numOfArtciles)  WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?politician a yag:Politician110451263;
+	            dbo:birthPlace dbr:Hawaii ; 
+                dbo:abstract ?abstr FILTER(lang(?abstr)='fr') } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-01-01"^^xsd:date && 
+                                ?date <= "1989-12-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?politician .
+  ?article dc:title ?title } GROUP BY ?politician ORDER BY DESC(?numOfArtciles)
+
+  
+  
+  
+# Most dicussed politician the summer of 1989
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?politician (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?politician a yago:Politician110451263 } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?politician .
+} GROUP BY ?politician ORDER BY DESC(?numOfArticles)
+
+
+
+  
+# Most dicussed events in 1989
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+SELECT DISTINCT ?event (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?event a dbo:Event } 
+  
+  ?article oae:mentions ?eventName .
+  ?eventName oae:hasMatchedURI  ?event .
+
+  ?article dc:date ?date FILTER(?date >= "1989-01-01"^^xsd:date && 
+                                ?date <= "1989-12-31"^^xsd:date) .
+  ?article dc:title ?title } ORDER BY DESC(?numOfArticles)
+
+  
+  
+
+
+
+# Most dicussed european country the summer of 1989
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?country (count(distinct ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?country rdf:type <http://dbpedia.org/class/yago/EuropeanCountries> } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?country .
+} GROUP BY ?country ORDER BY DESC(?numOfArticles)
+
+
+# Most dicussed New York Lawers  during the summer of 1989
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?e (count(DISTINCT ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?e <http://purl.org/dc/terms/subject> dbc:New_York_lawyers } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?e .
+} GROUP BY ?e ORDER BY DESC(?numOfArticles)
+
+
+# Most dicussed drugs during the summer of 1989
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?e (count(DISTINCT ?article) as ?numOfArticles) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    ?e a dbo:Drug } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?e .
+} GROUP BY ?e ORDER BY DESC(?numOfArticles)
+
+
+
+# Most dicussed entity in General during the summer of 1989
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?entityURI (count(?article) as ?numOfArticles) WHERE {
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?entityURI.
+} GROUP BY ?entityURI ORDER BY DESC(?numOfArticles)
+
+
+
+
+# Medicine related articles of summer of 1989 (containing many entities of type drug and disease)
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT DISTINCT ?article (count(DISTINCT ?e) as ?numOfMedEntities) WHERE {
+  SERVICE <http://dbpedia.org/sparql> {
+    { ?e a dbo:Drug } UNION { ?e a dbo:Disease } } 
+  
+  ?article dc:date ?date FILTER(?date >= "1989-06-01"^^xsd:date && 
+                                ?date <= "1989-08-31"^^xsd:date) 
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  ?e .
+} GROUP BY ?article ORDER BY DESC(?numOfMedEntities)
+
+
+# Number of articles per year discussing about Bill Clinton
+
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dbc: <http://dbpedia.org/resource/Category:>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> 
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+
+SELECT ?year (count(distinct ?article) as ?numOfArticles) WHERE {
+  ?article oae:mentions ?entity .
+  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela>.
+  ?article dc:date ?date 
+} GROUP BY (year(?date) AS ?year) order by ?year
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?month ?numOfArticlesPerMonth ?totalNumOfArticles (xsd:double(?numOfArticlesPerMonth)/xsd:double(?totalNumOfArticles) as ?timelinessscore)
+WHERE{
+{
+  SELECT DISTINCT (count(distinct ?article) as ?totalNumOfArticles) 
+  WHERE {
+          ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                          ?date <= "1990-03-31"^^xsd:date) .
+          ?article oae:mentions ?entity .
+          ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+        }
+}
+{ 
+  SELECT (month(?date) as ?month) (count(distinct ?article) as ?numOfArticlesPerMonth) 
+  WHERE {
+          ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+                                        ?date <= "1990-03-31"^^xsd:date) .
+          ?article oae:mentions ?entity .
+          ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+         } GROUP BY month(?date) order by ?month
+}
+} 
+
+
+=========================
+RANKING OF ARTICLES:
+
+PREFIX oa: <http://www.w3.org/ns/oa#>
+PREFIX oae: <http://www.ics.forth.gr/isl/oae/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?article ?date ?timelinessscore
+WHERE {
+
+	?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date && ?date <= "1990-03-31"^^xsd:date) .
+	?article oae:mentions ?entity .
+			  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> FILTER (?month = month(?date))
+
+	{
+		SELECT ?month (xsd:double(?numOfArticlesPerMonth)/xsd:double(?totalNumOfArticles) as ?timelinessscore)
+		WHERE{
+			{
+			  SELECT DISTINCT (count(distinct ?article) as ?totalNumOfArticles) 
+			  WHERE {
+					  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date && ?date <= "1990-03-31"^^xsd:date) .
+					  ?article oae:mentions ?entity .
+					  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+					}
+			}
+			{ 
+			  SELECT (month(?date) as ?month) (count(distinct ?article) as ?numOfArticlesPerMonth) 
+			  WHERE {
+					  ?article dc:date ?date FILTER(?date >= "1990-01-01"^^xsd:date &&
+													?date <= "1990-03-31"^^xsd:date) .
+					  ?article oae:mentions ?entity .
+					  ?entity oae:hasMatchedURI  <http://dbpedia.org/resource/Nelson_Mandela> 
+					 } GROUP BY month(?date) order by ?month
+			}
+			} 
+	}
+} ORDER BY ?timelinessscore

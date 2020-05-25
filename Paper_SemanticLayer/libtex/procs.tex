@@ -1,0 +1,643 @@
+\long\def\comment#1{}
+
+
+\newlength{\figtblfootnotemargin}
+\newlength{\figtblfootnotewidth}
+
+\setlength{\figtblfootnotemargin}{15mm}
+\setlength{\figtblfootnotewidth}{\textwidth}
+\addtolength{\figtblfootnotewidth}{-\figtblfootnotemargin}
+
+
+%---------------------------------
+
+\newcommand{\db}[1]{
+    {\tt #1}
+}
+
+%---------------------------------
+\newcommand{\outcomment}[1]{
+    %\comment{
+    \begin{quote}
+       {\scriptsize
+       {\em OC:} #1
+%        #1
+       }
+    \end{quote}
+    %}
+}
+
+%---------------------------------
+
+\newcommand{\myheader}[1]{
+    \godown
+    $\bullet$ {\bf #1} \nn
+}
+
+%---------------------------------
+
+\newcommand{\SquareOfSize}[2]{
+ \fbox{\hsize #1cm \hbox to #1cm{\vbox{#2}}}
+}
+
+\newcommand{\figSquare}[1]{
+   \hfill
+        \SquareOfSize{13}
+            { \vparag \vparag #1 \vparag \vparag }
+    \hfill
+}
+
+\newcommand{\figSquareLarge}[1]{
+   \hfill
+        \SquareOfSize{16}
+            { \vparag \vparag #1 \parag \vparag }
+    \hfill
+}
+
+\newcommand{\SQUARE}[1]{
+        \SquareOfSize{15}{#1}
+}
+
+\newcommand{\SquareSlite}[1]{
+        \SquareOfSize{16}{#1}
+}
+
+
+\newcommand{\Syntax}[2]{ ``#1'', where #2 }
+
+\newcommand{\SYNTAX}[2]{
+    \SquareOfSize{14}{ \small
+        #1 \hfill #2
+    }
+}
+
+\newcommand{\UpdateProcess}[1]{
+    \SquareOfSize{14}{  \bf
+        #1
+    }
+}
+
+
+\newcommand{\mathdef}[1]
+{
+    {\small
+    \bq {\em Definition.}
+        #1
+    \eq
+    }
+}
+
+\newcommand{\pqiCom}[2]{
+    \parbox[t]{2cm}{#1} \ \parbox[t]{13.5cm}{ #2}
+}
+
+\newcommand{\KEYPOINT}[2]{
+\SQUARE{\parbox[t]{3cm}{\small \em  #1} \ \parbox[t]{10cm}{{\bf #2}}}}
+
+%\newcommand{\KEYPOINT}[2]{
+%\SQUARE{\small \em  #1: \ \ \parbox[t]{10cm}{{\bf #2}}}}
+
+%___________________________________________________________
+\newcommand{\conclusion}[3]{
+ \bc
+    $ \left.  \begin{array}{r}
+                    #1 \\
+                    #2
+                \end{array}
+                    \right\}  \rightarrow #3
+            $
+ \ec
+}
+%___________________________________________________________
+
+%-------- Update Operations --------------
+
+\newcommand{\BriefDescription}{$\bullet$
+    {\em Σύντομη Περιγραφή:} \\}
+
+\newcommand{\CheckedConstraint}
+   {$\bullet$ {\em Ελεγχταίοι Δομικοί Περιορισμοί :} \\}
+
+\newcommand{\ExecutionAnalysis}[1]{
+    $\bullet$ {\em Συνέπειες Εκτέλεσης :} \\
+    \parbox[t]{2cm}{\hspace{2cm}} \ \parbox[t]{12cm}{ {\small #1} }
+}
+
+\newcommand{\SemanticAnalysis}[1]{
+    $\bullet$ {\em Προϋποθέσεις Σημασιολογικής Ορθότητας :} \\
+    \parbox[t]{2cm}{\hspace{2cm}} \ \parbox[t]{12cm}{ {\small #1} }
+}
+
+\newcommand{\namecheck}{ Έλεγχος συνέπειας στην ονοματοδοσία }
+
+%--------  ---------------- --------------
+
+\newcommand{\EFupdate}[3]{
+    \item  {\scriptsize Τύπος}: #1 {\scriptsize Ορίσματα} : $#2$
+
+    \hspace*{1cm} \parbox[t]{12cm}{#3}
+}
+
+\newcommand{\visiblecomment}[1]{
+  \underline{\centerline{ \bf Σχόλιο}}\\
+     \vspace{0.3cm}
+     \bc
+      \parbox[t]{14cm}{
+            \small \em #1
+      } \\
+    \ec
+  \underline{\centerline{ \bf Τέλος Σχολίου}}
+}
+
+\newcommand{\slidefigure}[3]{
+% \slidefigure{#1 figure_text}
+%             {#2 figure_name}
+%             {#3 height_in_mm}
+
+    \begin{figure}[ht]
+                    \comment{\rule[0.2in]{\textwidth}{.01in}}
+        {\Large \mbox{#1}}
+        \centerline{
+            \psfig{figure=#2,height=#3}
+        }
+    \end{figure}
+}
+
+
+
+\newcommand{\putsinglefigureR}[2]{
+% \putsinglefigure{#1 figure_name}
+%                 {#2 height_in_mm}
+
+    \begin{figure}[htbp]
+        \psfig{figure=#1,height=#2}
+    \end{figure}
+}
+
+\newcommand{\putsinglefigure}[2]{
+% \putsinglefigure{#1 figure_name}
+%                 {#2 height_in_mm}
+
+%   \begin{figure}[htbp]            <- not supported in landscape !
+        \centerline{
+        \psfig{figure=#1,height=#2}
+        }
+%   \end{figure}
+}
+
+\newcommand{\putsfigure}[2]{
+        \psfig{figure=#1,height=#2}
+}
+
+\newcommand{\putfigure}[5]{
+% \putfigure{#1 figure_name}
+%           {#2 height_in_mm}
+%           {#3 figure_label}
+%           {#4 figure_title}
+%           {#5 figure_text}
+
+    \begin{figure}[htbp]
+        \centerline{ \psfig{figure=#1,height=#2}}
+        %\vspace*{-0.3cm} % added 4/5/2001 for EJM conf
+        \caption{#4}{\vspace*{0.01cm}  \centerline{ \parbox[t]{13cm}{\footnotesize #5}}}
+        \label{#3}
+        %\vspace*{-0.6cm} % added 4/5/2001 for EJM conf
+    \end{figure}
+}
+
+
+
+\newcommand{\putfigureVLDB}[5]{
+% \putfigure{#1 figure_name}
+%           {#2 height_in_mm}
+%           {#3 figure_label}
+%           {#4 figure_title}
+%           {#5 figure_text}
+
+    \begin{figure}[htbp]
+        \centerline{ \psfig{figure=#1,height=#2}}
+        \vspace*{-0.3cm} % added 4/5/2001 for EJM conf
+        \caption{#4}{\vspace*{0.01cm}  \centerline{ \parbox[t]{9cm}{\footnotesize #5}}}
+        \label{#3}
+        \vspace*{-0.6cm} % added 4/5/2001 for EJM conf
+    \end{figure}
+}
+
+
+\newcommand{\putfigureSV}[5]{
+% \putfigurSVe{#1 figure_name}  SV = for Springer-Verlag
+%           {#2 height_in_mm}
+%           {#3 figure_label}
+%           {#4 figure_title}
+%           {#5 figure_text}
+
+    \begin{figure}[htbp]
+        \vspace*{-0.2cm}
+        %\vspace*{-0.4cm}
+        \centerline{ \psfig{figure=#1,height=#2}}
+        \vspace*{-0.3cm}
+        \caption{#4}{\vspace*{0.02cm}  \centerline{ \parbox[t]{10cm}{ #5}}}
+        \label{#3}
+        \vspace*{-0.8cm}
+    \end{figure}
+}
+
+
+\newcommand{\putgeneralfigureNEW}[4]{
+%           {#1 figure body}
+%           {#2 figure_label}
+%           {#3 figure_title}
+%           {#4 figure_text}
+    \begin{figure}[htbp]
+        #1
+        \vspace*{-0.5cm} % added 4/5/2001 for EJM conf
+        \caption{#3}{\vspace*{0.001cm} \centerline{ \parbox[t]{13cm}{\footnotesize #4}}}
+        %\caption{#3}{\vspace*{0.1cm} \centerline{ \parbox[t]{\textwidth}{\footnotesize #4}}}
+        \label{#2}
+        \vspace*{-0.4cm} % added 4/5/2001 for EJM conf
+    \end{figure}
+}
+
+\newcommand{\putgeneralfigure}[4]{
+%           {#1 figure body}
+%           {#2 figure_label}
+%           {#3 figure_title}
+%           {#4 figure_text}
+
+    \begin{figure}[htbp]
+        #1
+        \vspace*{-0.5cm} % added 4/5/2001 for EJM conf
+        \caption{#3}{\vspace*{0.001cm} \centerline{ \parbox[t]{13cm}{\footnotesize #4}}}
+        %\caption{#3}{\vspace*{0.1cm} \centerline{ \parbox[t]{\textwidth}{\footnotesize #4}}}
+        \label{#2}
+        \vspace*{-0.4cm} % added 4/5/2001 for EJM conf
+    \end{figure}
+}
+
+
+\newcommand{\putTwoFiguresEngl}[6]{
+    \begin{center}
+    \begin{figure}
+        \begin{minipage}[b]{0.5\textwidth}  %{7cm}
+            \centerline{\putsfigure{#1}{#3}}
+            \vspace*{3mm} \centerline{(a)}
+        \end{minipage}
+        \hspace*{0.5cm}
+        \begin{minipage}[b]{0.5\textwidth}  %{7cm}
+            \centerline{\putsfigure{#2}{#3}}
+            \vspace*{3mm} \centerline{(b)}
+        \end{minipage}
+        \caption{#5}{\vspace*{0.1cm}
+            \centerline{ \parbox[t]{13cm}{\footnotesize #6}}}
+        \label{#4}
+        \vspace*{-5mm} % added 15/9/2004
+    \end{figure}
+    \end{center}
+}
+
+
+
+\newcommand{\putTwoFiguresEnglSquare}[6]{
+    %\begin{center}
+    \begin{figure}
+        \begin{minipage}[b]{85mm}
+            \centerline{\fbox{\putsfigure{#1}{#3}}}
+            \vspace*{3mm} \centerline{(a)}
+        \end{minipage}
+        \begin{minipage}[b]{85mm}
+            \centerline{\fbox{\putsfigure{#2}{#3}}}
+            \vspace*{3mm} \centerline{(b)}
+        \end{minipage}
+        \vspace*{-0.3cm}
+        \caption{#5}{\vspace*{0.1cm}
+            \centerline{ \parbox[t]{13cm}{\footnotesize #6}}}
+        \label{#4}
+        \vspace*{-8mm} % added 15/9/2004
+    \end{figure}
+    %\end{center}
+}
+
+\newcommand{\putFourFiguresEnglSquare}[8]{
+    %\begin{center}
+    \begin{figure}
+        \begin{minipage}[b]{40mm}
+            \centerline{\fbox{\putsfigure{#1}{#5}}}
+            \vspace*{3mm} \centerline{(a)}
+        \end{minipage}
+        \begin{minipage}[b]{40mm}
+            \centerline{\fbox{\putsfigure{#2}{#5}}}
+            \vspace*{3mm} \centerline{(b)}
+        \end{minipage}
+        \begin{minipage}[b]{40mm}
+            \centerline{\fbox{\putsfigure{#3}{#5}}}
+            \vspace*{3mm} \centerline{(c)}
+        \end{minipage}
+
+        \begin{minipage}[b]{40mm}
+            \centerline{\fbox{\putsfigure{#4}{#5}}}
+            \vspace*{3mm} \centerline{(d)}
+        \end{minipage}
+        \caption{#7}{\vspace*{0.1cm}
+            \centerline{ \parbox[t]{13cm}{\footnotesize #8}}}
+        \label{#6}
+        \vspace*{-1mm} % added 15/9/2004
+        %\vspace*{-8mm} % added 15/9/2004
+    \end{figure}
+    %\end{center}
+}
+
+\newcommand{\putFigureAndText}[6]{
+    \begin{figure}
+        \begin{minipage}[b]{7cm}
+            \centerline{\putsfigure{#1}{#2}}
+            \vspace*{1mm} \centerline{(a)}
+        \end{minipage}
+        \begin{minipage}[b]{7cm}
+            \bc
+                #6
+            \ec
+            \vspace*{1mm} \centerline{(b)}
+        \end{minipage}
+        \caption{#4}{\vspace*{-2mm}
+            \centerline{ \parbox[t]{13cm}{\footnotesize #5}}}
+        \label{#3}
+         %\vspace*{-10mm} % added 25/10/2001 for WISE conf
+         %\vspace*{-5mm} % added 25/10/2001 for SETNT conf
+    \end{figure}
+}
+
+% lala
+\newcommand{\putFigureAndTextSV}[6]{
+    \begin{figure}
+        \vspace*{-0.4cm}   % SV
+        \begin{minipage}[b]{6cm}
+            \centerline{\putsfigure{#1}{#2}}
+            \vspace*{1mm} \centerline{(a)}
+        \end{minipage}
+        \begin{minipage}[b]{6cm}
+            \bc
+                #6
+            \ec
+            \vspace*{1mm} \centerline{(b)}
+        \end{minipage}
+        \caption{#4}{\vspace*{-2mm}
+            \centerline{ \parbox[t]{13cm}{\footnotesize #5}}}
+        \label{#3}
+        \vspace*{-8mm} %
+    \end{figure}
+}
+
+\newcommand{\putFigureAndTextVLDB}[6]{
+    \begin{figure}[h]
+        \begin{minipage}[b]{7cm}
+            \centerline{\putsfigure{#1}{#2}}
+            \vspace*{1mm} \centerline{(a)}
+        \end{minipage}
+        \begin{minipage}[b]{7cm}
+            \bc
+                #6
+            \ec
+            \vspace*{1mm} \centerline{(b)}
+        \end{minipage}
+        \caption{#4}{%\vspace*{-2mm}
+            \centerline{ \parbox[t]{85mm}{\footnotesize #5}}}
+        \label{#3}
+         %\vspace*{-10mm} % added 25/10/2001 for WISE conf
+         %\vspace*{-5mm} % added 25/10/2001 for SETNT conf
+    \end{figure}
+}
+
+
+
+\newcommand{\putTwoFigures}[6]{
+    %\begin{center}
+    \begin{figure}
+        \begin{minipage}[b]{7cm}
+            \centerline{\putsfigure{#1}{#3}}
+            \vspace*{3mm} \centerline{(α)}
+        \end{minipage}
+        \begin{minipage}[b]{7cm}
+            \centerline{\putsfigure{#2}{#3}}
+            \vspace*{3mm} \centerline{(β)}
+        \end{minipage}
+        \caption{#5}{\vspace*{0.1cm}
+            \centerline{ \parbox[t]{13cm}{\footnotesize #6}}}
+        \label{#4}
+    \end{figure}
+    %\end{center}
+}
+
+
+\newcommand{\putTwoSliteFiguresB}[3]{
+    \parbox[b]{7cm}{
+            \centerline{\putsfigure{#1}{#3}}
+    } \
+    \parbox[b]{7cm}{
+            \centerline{\putsfigure{#2}{#3}}
+    }
+}
+
+\newcommand{\putTwoSliteFigures}[3]{
+    \begin{figure}[h]
+        \begin{minipage}[b]{7cm}
+            \centerline{\putsfigure{#1}{#3}}
+            %\vspace*{3mm} \centerline{(α)}
+        \end{minipage}
+        \begin{minipage}[b]{7cm}
+            \centerline{\putsfigure{#2}{#3}}
+            %\vspace*{3mm} \centerline{(β)}
+        \end{minipage}
+    \end{figure}
+}
+
+
+
+\newcommand{\putfigureSquare}[5]{
+% \putfigure{#1 figure_name}
+%           {#2 height_in_mm}
+%           {#3 figure_label}
+%           {#4 figure_title}
+%           {#5 figure_text}
+
+    \begin{figure}[htbp]
+        \centerline{ \fbox{\psfig{figure=#1,height=#2}}}
+        %\vspace*{-0.3cm} % added 4/5/2001 for EJM conf
+        \vspace*{-0.3cm}
+        \caption{#4}{\vspace*{0.01cm}  \centerline{ \parbox[t]{13cm}{\footnotesize #5}}}
+        \label{#3}
+        %\vspace*{-0.6cm} % added 4/5/2001 for EJM conf
+        \vspace*{-0.5cm}
+    \end{figure}
+}
+
+
+
+\newcommand{\puttable}[4]{
+% \puttable {#1 table_label}
+%           {#2 table_title}
+%           {#3 table_text}
+%           {#4 table_body}
+    \begin{table}[htbp]
+        \begin{center}
+            #4
+            \caption{#2}{\vspace*{0.1cm} \centerline{ \parbox[t]{13cm}{\footnotesize #3}}}
+            \label{#1}
+        \end{center}
+        \vspace*{-0.8cm} % added 25/10/2001 for WISE conf
+    \end{table}
+}
+
+\newcommand{\putwidetable}[4]{
+% \puttable {#1 table_label}
+%           {#2 table_title}
+%           {#3 table_text}
+%           {#4 table_body}
+    \begin{table}[htbp]
+        %\begin{center}
+            \hspace*{5mm}
+            #4
+            \caption{#2}{\vspace*{0.1cm} \centerline{ \parbox[t]{16cm}{\footnotesize #3}}}
+            \label{#1}
+        %\end{center}
+        %\vspace*{-0.8cm} % added 25/10/2001 for WISE conf
+    \end{table}
+}
+
+\newcommand{\puttableSV}[4]{  % caption on top
+% \puttableSV{#1 table_label}   SV = for Springer-Verlag format
+%           {#2 table_title}
+%           {#3 table_text}
+%           {#4 table_body}
+    \begin{table}[htbp]
+        \begin{center}
+            \vspace*{-3mm} % 8-3-04
+            \caption{#2}{\vspace*{-3mm} \centerline{ \parbox[t]{10cm}{ #3}}}
+            \vspace*{-3mm} % 7-11-05
+            \label{#1}
+            #4
+        \end{center}
+    \end{table}
+    \vspace*{-2mm} % 8-3-04
+}
+
+\newcommand{\puttableSVold}[4]{  //old version: caption at bottom
+% \puttableSV{#1 table_label}   SV = for Springer-Verlag format
+%           {#2 table_title}
+%           {#3 table_text}
+%           {#4 table_body}
+    \begin{table}[htbp]
+        \begin{center}
+            #4
+            \caption{#2}{\vspace*{0.01cm} \centerline{ \parbox[t]{10cm}{ #3}}}
+            \label{#1}
+        \end{center}
+    \end{table}
+}
+
+\newcommand{\puttableSIGMOD}[4]{  % caption on top
+% \puttableSV{#1 table_label}   SV = for Springer-Verlag format
+%           {#2 table_title}
+%           {#3 table_text}
+%           {#4 table_body}
+    \begin{table}[htbp]
+        \begin{center}
+            %\vspace*{-4mm} % 8-3-04
+            \caption{#2}{\centerline{ \parbox[t]{13cm}{ #3}}}
+            %\vspace*{-4mm} % 8-3-04
+            \label{#1}
+            #4
+        \end{center}
+    \end{table}
+    %\vspace*{-5mm} % 8-3-04
+}
+
+\newcommand{\putFourTables}[7]{
+% \puttable {#1 table_label}
+%           {#2 table_title}
+%           {#3 table_text}
+%           {#4 table_body1}
+%           {#5 table_body2}
+%           {#6 table_body3}
+%           {#7 table_body4}
+    \begin{table}[htbp]
+        \begin{center}
+            #4 #5 #6 #7
+            \caption{#2}{\vspace*{0.1cm} \centerline{ \parbox[t]{13cm}{\footnotesize #3}}}
+            \label{#1}
+        \end{center}
+    \end{table}
+}
+
+
+
+
+
+\newcommand{\putalgorithm}[2]{
+% \putalgorithm {#1 alg_label}^M
+%               {#2 alg_body}^M
+    \begin{figure}[htbp]
+        %\underline{\hspace*{16cm}}
+        {\bf Algorithm} \label{#1}.
+
+        #2
+
+        %\underline{\hspace*{16cm}}
+    \end{figure}
+}
+
+
+
+% Changes page margins :
+%   eg \begin{changemargin}{-1cm}{-1cm}  ( widens page )
+%   eg \begin{changemargin}{2cm}{2cm}    ( narrows page )
+%
+\newenvironment{changemargin}[2]{\begin{list}{}{
+         \setlength{\topsep}{0pt}
+          \setlength{\leftmargin}{0pt}
+         \setlength{\rightmargin}{0pt}
+         \setlength{\listparindent}{\parindent}
+         \setlength{\itemindent}{\parindent}
+         \setlength{\parsep}{0pt plus 1pt}
+         \addtolength{\leftmargin}{#1}\addtolength{\rightmargin}{#2}
+         }\item }{\end{list}
+}
+
+\newsavebox{\wholeWidthLine}
+\sbox{\wholeWidthLine} {\rule[0.1in]{\textwidth}{.01in}}
+
+\newcommand{\Figure}[5] {
+%           {#1 figure_body}
+%           {#2 figure_label}
+%           {#3 figure_title}
+%           {#4 figure_text}
+%           {#5 figure_placement}
+    \begin{figure}[#5]
+        %\usebox{\wholeWidthLine}
+        \vspace*{2mm}
+        #1
+        \caption{#3}{\
+            \cl{\parbox[t]{\figtblfootnotewidth}{\footnotesize #4}}}
+        \label{#2}
+        \vspace*{2mm}
+        %\usebox{\wholeWidthLine}
+    \end{figure}
+}
+
+
+\newcommand{\putAndPlaceGeneralFigure}[5]{
+%           {#1 figure body}
+%           {#2 figure_label}
+%           {#3 figure_title}
+%           {#4 figure_text}
+%           {#5 figure_placement}
+    \begin{figure}[#5]
+        %\usebox{\wholeWidthLine}
+        \bc
+            #1
+        \ec
+        \caption{#3}{\
+            \centerline{\parbox[t]{\figtblfootnotewidth}{\footnotesize #4}}}
+        \label{#2}
+        %\usebox{\wholeWidthLine}
+    \end{figure}
+}

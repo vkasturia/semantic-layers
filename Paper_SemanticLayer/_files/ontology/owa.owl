@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owa "http://l3s.de/owa/" >
+	<!ENTITY terms "http://purl.org/dc/terms/" >
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://l3s.de/owa/"
+     xml:base="http://l3s.de/owa/"
+     xmlns:terms="http://purl.org/dc/terms/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	 xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://l3s.de/owa/">
+        <rdfs:label xml:lang="en">Open Web Archive Data Model</rdfs:label>
+        <owl:versionInfo>1.0</owl:versionInfo>
+		<owl:versionIRI rdf:resource="http://l3s.de/owa/"/>
+		<terms:modified rdf:datatype="&xsd;date">2017-02-03</terms:modified>
+        <terms:issued rdf:datatype="&xsd;date">2017-02-03</terms:issued>
+		<terms:rights>Copyright © L3S Research Center, University of Hannover</terms:rights>
+		<terms:license rdf:resource="http://creativecommons.org/licenses/by/3.0/"/>
+		<terms:publisher rdf:resource="http://www.l3s.de/"/>
+        <terms:title xml:lang="en">Open Web Archive Data Model</terms:title>
+        <rdfs:comment xml:lang="en">The Open Web Archive Data Model defines a vocabulary that allows describing and publishing metadata and semantic information about the documents of a web archive.</rdfs:comment>
+        <terms:description xml:lang="en">The Open Web Archive Data Model defines a vocabulary that allows describing and publishing metadata and semantic information about the documents of a web archive.</terms:description>
+        <terms:creator rdf:resource="http://l3s.de/~fafalios"/>
+		<terms:contributor rdf:resource="http://l3s.de/~fafalios"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://l3s.de/owa/firstCapture -->
+
+    <owl:DatatypeProperty rdf:about="&owa;firstCapture">
+        <rdfs:label xml:lang="en">first capture</rdfs:label>
+        <terms:description xml:lang="en">The date of the firt capture of an archived document.</terms:description>
+        <rdfs:domain rdf:resource="&owa;ArchivedDocument"/>
+        <rdfs:range rdf:resource="&rdfs;Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://l3s.de/owa/lastCapture -->
+
+    <owl:DatatypeProperty rdf:about="&owa;lastCapture">
+        <rdfs:label xml:lang="en">last capture</rdfs:label>
+        <terms:description xml:lang="en">The date of the last capture of an archived document.</terms:description>
+        <rdfs:domain rdf:resource="&owa;ArchivedDocument"/>
+        <rdfs:range rdf:resource="&rdfs;Literal"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://l3s.de/owa/numOfCaptures -->
+
+    <owl:DatatypeProperty rdf:about="&owa;numOfCaptures">
+        <rdfs:label xml:lang="en">number of captures</rdfs:label>
+        <terms:description xml:lang="en">The total number of captures of an archived document.</terms:description>
+        <rdfs:domain rdf:resource="&owa;ArchivedDocument"/>
+        <rdfs:range rdf:resource="&rdfs;Literal"/>
+    </owl:DatatypeProperty>
+    
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://l3s.de/owa/ArchivedDocument -->
+
+    <owl:Class rdf:about="&owa;ArchivedDocument">
+        <rdfs:label xml:lang="en">archived document</rdfs:label>
+        <terms:description xml:lang="en">Represents a (web) document that has been archived.</terms:description>
+    </owl:Class>
+	
+	
+	<!-- http://l3s.de/owa/VersionedDocument -->
+
+    <owl:Class rdf:about="&owa;VersionedDocument">
+        <rdfs:label xml:lang="en">versioned document</rdfs:label>
+        <terms:description xml:lang="en">Represents a specific version of an archived document.</terms:description>
+    </owl:Class>
+  
+</rdf:RDF>
+  
