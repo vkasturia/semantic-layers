@@ -2,3 +2,17 @@
 Paper_Ranking/Eval_Ranking/.DS_Store
 
 .DS_Store
+
+Demonstration/*/.classpath
+Demonstration/*/.idea
+Demonstration/*/.gitignore
+Demonstration/*/.project
+Demonstration/*/.settings
+Demonstration/*/nbactions.xml
+Demonstration/*/*.iml
+
+
+
+
+
+
