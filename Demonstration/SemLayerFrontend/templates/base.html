@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <title>NYT Semantic Layer</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/materialize.css') }}" type="text/css" rel="stylesheet"
+    media="screen,projection" />
+  <link href="{{ url_for('static', filename='css/style.css') }}" type="text/css" rel="stylesheet"
+    media="screen,projection" />
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/themes/smoothness/jquery-ui.css" />
+
+  <style>
+    body {
+      background-image: url('static/img/nyt2.jpeg');
+      background-color: rgba(255, 255, 255, 0.8);
+      background-size: cover;
+      background-blend-mode: lighten;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h2 class="header center indigo-text">Semantic Layer for The New York Times</h2>
+      <div class="row center">
+        <h5 class="header col s12 light">Search for articles in the NYT Corpus (1987-2007)</h5>
+      </div>
+      <br><br>
+      {% block query %}{% endblock %}
+    </div>
+  </div>
+
+  {% if flag=='home' %}
+
+  <div class="container">
+    <form action="/query" method="GET" enctype="multipart/form-data">
+      <div class="row center">
+        <div class="input-field col s4 offset-m1 m2">
+          <select name='queryType' id='queryType' class="validate" required>
+            <option value="SINGLE" selected>SINGLE</option>
+            <option value="AND">AND</option>
+            <option value="OR" selected>OR</option>
+            <option value="CATEGORY">CATEGORY</option>
+          </select>
+          <label class="indigo-text">Query Type:</label>
+        </div>
+
+        <div class="input-field col s8 m8">
+          <input placeholder="Add an Entity ..." name="text" id="searchBox" type="text" class="text" required>
+          <label for="searchBox" class="indigo-text">Input Query:</label>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="input-field col s6 offset-m1 m2">
+          <select name='algorithm' id='algorithm' class="validate" required>
+            <option value="STATISTICAL" selected>Statistical</option>
+            <option value="PAGERANK">PageRank</option>
+          </select>
+          <label class="indigo-text">Choose Algorithm:</label>
+        </div>
+
+        <div class="input-field col s6 m2" id='decayFactor'>
+          <select name='decayFactor' class="validate" required>
+            <option value="0.0" selected>0.0</option>
+            <option value="0.1" selected>0.1</option>
+            <option value="0.2" selected>0.2</option>
+            <option value="0.3" selected>0.3</option>
+            <option value="0.4" selected>0.4</option>
+            <option value="0.5" selected>0.5</option>
+            <option value="0.6" selected>0.6</option>
+            <option value="0.7" selected>0.7</option>
+            <option value="0.8" selected>0.8</option>
+            <option value="0.9" selected>0.9</option>
+            <option value="1.0" selected>1.0</option>
+          </select>
+          <label class="indigo-text">Decay Factor:</label>
+        </div>
+
+        <div class="input-field col s4 m2">
+          <input name="fromDate" placeholder="Select Date" type="text" class="datepicker" id="fromDate" required>
+          <label for="fromDate" class="indigo-text">Start Date:</label>
+        </div>
+
+        <div class="input-field col s4 m2">
+          <input name="toDate" placeholder="Select Date" type="text" class="datepicker" id="toDate" required>
+          <label for="toDate" class="indigo-text">End Date:</label>
+        </div>
+
+        <div class="input-field col s4 m2">
+          <select name='timePeriod' class="validate" required>
+            <option value="DAY" selected>Day</option>
+            <option value="MONTH">Month</option>
+            <option value="YEAR">Year</option>
+          </select>
+          <label class="indigo-text">Importance Time Period:</label>
+        </div>
+
+      </div>
+
+      <div class="row center">
+        <button type="submit" class="btn-large waves-effect waves-light indigo">Run</button>
+      </div>
+
+    </form>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+  </div>
+
+  {% endif %}
+
+
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <footer class="page-footer indigo" style="position:fixed; bottom:0; left:0; width:100%;">
+    <div class="container">
+      <div class="row">
+        <div class="col s6 m6 white-text">
+          Copyright &copy; 2016-21 Vaibhav Kasturia
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/init.js') }}"></script>
+  <script src=" https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+
+  <script type="text/javascript">
+    $('#decayFactor').hide();
+    $("#algorithm").change(function () {
+      console.log("function start");
+      if ($(this).val() == "PAGERANK") {
+        $('#decayFactor').show();
+        console.log("hide enabled");
+      } else {
+        $('#decayFactor').hide();
+        console.log("hide disabled");
+      }
+    });
+  </script>
+
+
+  <script type="text/javascript">
+    $("#queryType").change(function () {
+      console.log("function start");
+      if ($("#queryType").val() == "SINGLE") {
+        $("#searchBox").autocomplete({
+          source: function (request, response) {
+            console.log("in single");
+            console.log(request.term);
+            $.ajax({
+
+              // Wikipedia API url link 
+              url:
+                "http://en.wikipedia.org/w/api.php",
+              dataType: "jsonp",
+              data: {
+                action: "opensearch",
+                // Output format 
+                format: "json",
+                search: request.term,
+                namespace: 0,
+
+                // Maximum number of result 
+                // to be shown 
+                limit: 8,
+              },
+              success: function (data) {
+                response(data[1]);
+              },
+            });
+          },
+          select:{}
+        });
+      }
+      else if ($("#queryType").val() == "CATEGORY") {
+        $("#searchBox").autocomplete({
+          source: function (request, response) {
+            console.log("in category");
+            console.log(request.term);
+            $.ajax({
+
+              // Wikipedia API url link 
+              url:
+                "https://en.wikipedia.org/w/api.php",
+              dataType: "jsonp",
+              data: {
+                action: "query",
+                // Output format 
+                format: "json",
+                acprefix: request.term,
+                list: "allcategories",
+
+                // Maximum number of result 
+                // to be shown 
+                limit: 10,
+              },
+              success: function (data) {
+                //console.log(data.query.allcategories);
+                var categories = data.query.allcategories;
+                var arr = [];
+                for (var cat in categories) {
+                  //console.log(categories[cat]["*"]);
+                  arr.push(categories[cat]["*"]);
+                }
+                console.log(arr);
+                response(arr);
+              },
+            });
+          },
+          select:{}
+        });
+      }
+      else if ($("#queryType").val() == "OR" || $("#queryType").val() == "AND"){
+        $(function () {
+          function split(val) {
+            return val.split(/,\s*/);
+          }
+          function extractLast(term) {
+            return split(term).pop();
+          }
+
+          $("#searchBox").bind("keydown", function (event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+              $(this).autocomplete("instance").menu.active) {
+              event.preventDefault();
+            }
+          })
+            .autocomplete({
+              minLength: 1,
+              source: function (request, response) {
+                console.log("in else");
+                console.log(request.term);
+                $.ajax({
+
+                  // Wikipedia API url link 
+                  url:
+                    "http://en.wikipedia.org/w/api.php",
+                  dataType: "jsonp",
+                  data: {
+                    action: "opensearch",
+                    // Output format 
+                    format: "json",
+                    search: extractLast(request.term),
+                    namespace: 0,
+
+                    // Maximum number of result 
+                    // to be shown 
+                    limit: 8,
+                  },
+                  success: function (data) {
+                    response(data[1]);
+                  },
+                });
+              },
+              focus: function () {
+                // prevent value inserted on focus
+                return false;
+              },
+              select: function (event, ui) {
+                var terms = split(this.value);
+                // remove the current input
+                terms.pop();
+                // add the selected item
+                terms.push(ui.item.value);
+                // add placeholder to get the comma-and-space at the end
+                terms.push("");
+                console.log("Join statement");
+                this.value = terms.join(", ");
+                return false;
+              }
+            });
+        });
+      }
+    });
+
+
+  </script>
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      var options = {
+        defaultDate: new Date(1987, 0, 1),
+        minDate: new Date(1987, 0, 1),
+        maxDate: new Date(2007, 11, 31),
+        yearRange: 30,
+        format: 'yyyy-mm-dd',
+        setDefaultDate: true
+      };
+      var elems = document.querySelector('#fromDate');
+      var instance = M.Datepicker.init(elems, options);
+      // instance.open();
+      instance.setDate(new Date(1987, 0, 1));
+      var elems2 = document.querySelector('#toDate');
+      var instance2 = M.Datepicker.init(elems2, options);
+      // instance.open();
+      instance2.setDate(new Date(1987, 0, 1));
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('select').formSelect();
+      $('.tooltipped').tooltip();
+      // for HTML5 "required" attribute
+      $("select[required]").css({
+        display: "inline",
+        height: 0,
+        padding: 0,
+        width: 0
+      });
+    });
+
+  </script>
+
+</body>
+
+</html>

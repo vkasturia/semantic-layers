@@ -1,0 +1,15 @@
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/VirtuosoConnector.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/ranking_algo_main.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/Cat_to_entities.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/pagerank/GraphCreator.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/timeliness/TimelinessScore.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/Triple.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/pagerank/PageRank.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/Docs_and_Entities.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/relativeness/RelativenessScore.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/ScoreCombos.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/Test_Docs_and_Entities.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/ranking_ndcg/NDCG_Calc.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/App.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/relatedness/RelatednessScore.java
+/Users/vaibhav/paper-ranking-workspace/ranking_cat_pagerank/src/main/java/com/vaibhav/ranking_cat_pagerank/timeliness/ImportanceScoreP.java

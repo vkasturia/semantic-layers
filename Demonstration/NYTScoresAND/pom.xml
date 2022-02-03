@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>l3s.de</groupId>
+    <artifactId>NYTScoresAND</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>NYTScoresAND</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+    	<repository.path>/Users/vaibhav/paper-ranking-workspace/NYTScoresAND</repository.path>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <type>pom</type>
+            <version>3.1.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>de.l3s</groupId>
+            <artifactId>virtjdbc4</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${repository.path}/lib/de/l3s/virtjdbc4/1.0/virtjdbc4-1.0.jar</systemPath>
+        </dependency>
+        
+        <dependency>
+            <groupId>de.l3s</groupId>
+            <artifactId>virt_jena3</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${repository.path}/lib/de/l3s/virt_jena3/1.0/virt_jena3-1.0.jar</systemPath>
+        </dependency>
+    </dependencies>
+</project>
