@@ -11,8 +11,9 @@ Demonstration/*/.settings
 Demonstration/*/nbactions.xml
 Demonstration/*/*.iml
 
-
-
+.ipynb_checkpoints/
+Copyright/
+add-license-header.ipynb
 
 
 
