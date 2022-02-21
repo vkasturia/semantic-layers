@@ -11,4 +11,3 @@ Organization:
 * [Semantic Layer Journal](https://github.com/vkasturia/Semantic-Layers/tree/master/Paper_SemanticLayer_Journal):  Building and Querying Semantic Layers for Web Archives extended paper for journal
 * [Semantic Layer Poster](https://github.com/vkasturia/Semantic-Layers/tree/master/Paper_SemanticLayer_Poster): Building and Querying Semantic Layers for Web Archives poster
 * [Survey Paper](https://github.com/vkasturia/Semantic-Layers/tree/master/Paper_Survey): Survey for the ranking methods for structured and unstructured data
-* [Miscellaneous](https://github.com/vkasturia/Semantic-Layers/tree/master/_MISC): Other resources 
