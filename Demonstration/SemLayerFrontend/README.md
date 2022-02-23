@@ -1,6 +1,5 @@
-# Regulatory Search Front-end
-
-Front-end of Regulatory Search Engine
+# Semantic Layers Frontend
+Front-end of Semantic Layers
 
 ## Requirements 
 
