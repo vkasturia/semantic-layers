@@ -28,7 +28,11 @@ pip install unicodedata
 ```
 python3 app.py
 ```
+## Usage of the Front-end
 
+A characteristic of Semantic Layers is Robustness (to information change). You can explore a web archive by automatically taking into account the
+change of entities over time. For example, the company [Accenture](https://en.wikipedia.org/wiki/Accenture) was formerly known as Andersen Consulting, or the city [Saint Petersburg](https://en.wikipedia.org/wiki/Saint_Petersburg) was named Leningrad until 1991. Such temporal reference variants are common in the case of high impact events, new technologies, role changes, etc. 
 
+We can find Documents from the past about such entities without having to worry about their correct reference. This is shown in the example below.  
 
  
