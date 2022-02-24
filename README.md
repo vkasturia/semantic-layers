@@ -4,7 +4,7 @@
 
 A Semantic Layer is an RDF repository (RDF graph) of structured data about a collection of archived documents. Structured data includes not only metadata information about a document (like publication date), but also entity annotations, i.e., disambiguated entities mentioned in each document extracted using an [entity linking](https://en.wikipedia.org/wiki/Entity_linking) system.
 
-The following figure shows an example of (a part of) a Semantic Layer describing metadata and annotation information for a news article (non-versioned). We see that the document was published on 6 January 2012 and mentions the entity name “Giuliani” at character position 512, which probably (with confidence score 0.9/1.0) corresponds to the known American lawyer and former politician Rudy Giuliani. By accessing [DBpedia](https://www.dbpedia.org/), we can now retrieve more information about this entity like its birth date, an image, a description in a specific language, etc.
+The following figure shows an example of (a part of) a Semantic Layer describing metadata and annotation information for a news article (non-versioned). We see that the document was published on 6 January 2012 and mentions the entity name “Federer” at character position 512, which probably (with confidence score 0.9/1.0) corresponds to the known Swiss professional tennis player Roger Frederer. By accessing [DBpedia](https://www.dbpedia.org/), we can now retrieve more information about this entity like its birth date, an image, a description in a specific language, etc.
 
 ![](Images/SemLayerExample-article.jpeg)
 
