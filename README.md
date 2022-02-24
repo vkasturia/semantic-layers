@@ -1,6 +1,6 @@
 # Semantic Layers
 
-What is a Semantic Layer?
+## What is a Semantic Layer?
 
 A Semantic Layer is an RDF repository (RDF graph) of structured data about a collection of archived documents. Structured data includes not only metadata information about a document (like publication date), but also entity annotations, i.e., disambiguated entities mentioned in each document extracted using an [entity linking](https://en.wikipedia.org/wiki/Entity_linking) system.
 
@@ -42,6 +42,31 @@ More information (use cases, examples, etc.) can be found in the following publi
 
 > Pavlos Fafalios, Vaibhav Kasturia, and Wolfgang Nejdl. *Ranking Archived Documents for Structured Queries on Semantic Layers*. In Proceedings of the 18th ACM/IEEE Joint Conference on Digital Libraries (pp. 155-164). ACM. 2018.
 
+## Available Semantic Layers
+
+We have created three semantic layers for three different types of archives:
+
+* **news archive** (non-versioned)
+* **web archive** (versioned)
+* **social media archive** (tweets)
+
+### News Archive: Semantic Layer for the New York Times 1987-2007 corpus
+The corpus contains over 1.8 million articles published by New York Times between 1987 and 2007. We filtered out articles like memorial notices, corrections, letters, captions, etc. which actually are not articles. This reduced the number of articles to 1,456,896. The semantic layer contains totally 195,958,390 triples.
+
+SAMPLE FILE
+FULL DATASET
+
+### Web Archive: Semantic Layer for the Occupy Movement Archive-It collection
+The collection contains 9,094,573 captures of 3,036,326 web pages related to protests and demonstrations around the world calling for social and economic equality. The semantic layer was constructed using the ArchiveSpark2Triples framework and contains totally more than 10 billion triples (10,884,509,868).
+
+SAMPLE FILE
+FULL DATASET
+
+### Social Media Archive: Semantic Layer for a collection of tweets
+The collection comprises 1,363,487 tweets posted in 2016 by 469 twitter accounts of USA newspapers. The semantic layer contains totally 19,242,761 triples.
+
+SAMPLE FILE
+FULL DATASET
 
 
 
