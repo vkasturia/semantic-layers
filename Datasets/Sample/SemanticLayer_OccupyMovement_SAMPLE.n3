@@ -1,0 +1,40 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix owa: <http://l3s.de/owa/> .
+@prefix owl: <https://www.w3.org/2002/07/owl#> .
+@prefix schema: <http://schema.org/> .
+@prefix oae: <http://www.ics.forth.gr/isl/oae/core#> .
+
+<http://www.vice.com/en_us> rdf:type owa:ArchivedDocument ;
+    owa:numOfCaptures    "2"^^xsd:integer ;
+    owa:firstCapture     "2012-01-17T02:33:31"^^xsd:dateTime ;
+    owa:lastCapture      "2012-02-10T09:13:17"^^xsd:dateTime ;
+    dc:hasVersion        <https://wayback.archive-it.org/2950/20120117023331/http://www.vice.com/en_us>, 
+                         <https://wayback.archive-it.org/2950/20120210091317/http://www.vice.com/en_us> .
+		
+<https://wayback.archive-it.org/2950/20120117023331/http://www.vice.com/en_us> rdf:type owa:VersionedDocument ;
+    dc:date              "2012-01-17T02:33:31"^^xsd:dateTime ;
+    dc:format            "text/html" ;
+    dc:title             "VICE | United States | The Definitive Guide to Enlightening Information" ;
+    schema:mentions      _:e13230-0,
+                         _:e13230-1,
+                         _:e13230-2 .
+						 
+	_:e13230-0 rdf:type oae:Entity ;
+        oae:confidence       "-4.0371861460202005"^^xsd:double ;
+        oae:detectedAs       "john michaels" ;
+        oae:position         "4793"^^xsd:integer ;
+        oae:hasMatchedURI    <http://dbpedia.org/resource/John_Michaels> .
+
+    _:e13230-1 rdf:type oae:Entity ;
+        oae:confidence       "-3.4118101819287245"^^xsd:double ;
+        oae:detectedAs       "atlanta band" ;
+        oae:position         "5349"^^xsd:integer ;
+        oae:hasMatchedURI    <http://dbpedia.org/resource/Atlanta_%28band%29> .
+
+    _:e13230-2 rdf:type oae:Entity ;
+        oae:confidence       "-1.3660525014979006"^^xsd:double ;
+        oae:detectedAs       "fire island" ;
+        oae:position         "5631"^^xsd:integer ;
+        oae:hasMatchedURI    <http://dbpedia.org/resource/Fire_Island> .

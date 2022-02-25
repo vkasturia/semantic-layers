@@ -1,0 +1,28 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix owa: <http://l3s.de/owa/> .
+@prefix nyt: <http://query.nytimes.com/gst/fullpage.html?res=> .
+@prefix schema: <http://schema.org/> .
+@prefix oae: <http://www.ics.forth.gr/isl/oae/core#> .
+
+nyt:9405E6DF153AF932A1575AC0A966958260	rdf:type	owa:ArchivedDocument ;
+	dc:title	"Shy Man Becomes Mad Max; Wins Girl"@en ;
+	dc:date	"1990-09-21"^^xsd:date .
+
+nyt:9405E6DF153AF932A1575AC0A966958260	schema:mentions	_:e1 .
+_:e1	rdf:type	oae:Entity ;
+	oae:confidence	"0.65338"^^xsd:double ;
+	oae:detectedAs	"Jami Gertz" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Jami_Gertz> .
+nyt:9405E6DF153AF932A1575AC0A966958260	schema:mentions	_:e2 .
+_:e2	rdf:type	oae:Entity ;
+	oae:confidence	"0.5"^^xsd:double ;
+	oae:detectedAs	"Beth Grant" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Beth_Grant> .
+nyt:9405E6DF153AF932A1575AC0A966958260	schema:mentions	_:e3 .
+_:e3	rdf:type	oae:Entity ;
+	oae:confidence	"0.65523"^^xsd:double ;
+	oae:detectedAs	"Kyle MacLachlan" ;
+	oae:hasMatchedURI	<http://dbpedia.org/resource/Kyle_MacLachlan> .
+	

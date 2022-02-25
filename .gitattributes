@@ -1,0 +1,2 @@
+Datasets/Full/SemanticLayer_NewYorkTimesCorpus.zip filter=lfs diff=lfs merge=lfs -text
+Datasets/Full/SemanticLayer_Tweets.zip filter=lfs diff=lfs merge=lfs -text
